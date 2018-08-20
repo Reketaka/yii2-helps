@@ -7,6 +7,7 @@ use kartik\select2\Select2;
 use yii\grid\Column;
 use yii\helpers\Html;
 use Yii;
+use yii\helpers\Url;
 
 class EnableColumn extends Column
 {
@@ -87,11 +88,12 @@ class EnableColumn extends Column
         }
 
         if($this->attributeToggle){
+            $url = '#';
             if(!$this->attributeToggleUrl){
-                $this->attributeToggleUrl = [\Yii::$app->controller->id.'/toggle-attribute', 'id'=>$model->id, 'attributeName'=>$this->enableAttributeName];
+                $url = Url::toRoute([\Yii::$app->controller->id.'/toggle-attribute', 'id'=> (string) $key, 'attributeName'=>$this->enableAttributeName]);
             }
 
-            $content = Html::a($content, $this->attributeToggleUrl);
+            $content = Html::a($content, $url);
         }
 
         return $this->grid->formatter->format($content, $this->format);
