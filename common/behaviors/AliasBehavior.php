@@ -15,6 +15,7 @@ class AliasBehavior extends Behavior{
     public $title = 'title';
     public $callbackUniqAlias;
     public $event = ActiveRecord::EVENT_BEFORE_INSERT;
+    
     public $active;
 
     public function events()
