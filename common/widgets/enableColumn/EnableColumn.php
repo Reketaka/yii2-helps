@@ -24,6 +24,13 @@ class EnableColumn extends Column
 
     public $headerOptions = ['style' => 'width:100px;'];
 
+    public $attributeToggle = false;
+    /**
+     * Url адрес для переключения активности
+     * @var bool
+     */
+    public $attributeToggleUrl = false;
+
     protected function renderFilterCellContent()
     {
         $model = $this->grid->filterModel;
@@ -77,6 +84,14 @@ class EnableColumn extends Column
 
         if ($model->{$this->enableAttributeName}) {
             $content = Html::tag('span', null, ['class' => 'glyphicon glyphicon-ok']);
+        }
+
+        if($this->attributeToggle){
+            if(!$this->attributeToggleUrl){
+                $this->attributeToggleUrl = [\Yii::$app->controller->id.'/toggle-attribute', 'id'=>$model->id, 'attributeName'=>$this->enableAttributeName];
+            }
+
+            $content = Html::a($content, $this->attributeToggleUrl);
         }
 
         return $this->grid->formatter->format($content, $this->format);
