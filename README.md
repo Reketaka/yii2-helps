@@ -25,7 +25,14 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Установка контроллера миграций, задает ```CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB``` если не указанны опции создания таблицы
 
 ```php
-<?= \reketaka\helps\AutoloadExample::widget(); ?>```
+'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'templateFile' => '@reketaka/helps/common/views/migration/migration.php',
+            'generatorTemplateFiles' => [
+                'create_table'=>'@reketaka/helps/common/views/migration/createTableMigration.php'
+            ]
+        ]
+```
