@@ -36,3 +36,33 @@ Usage
             ]
         ]
 ```
+
+Для установки модуля принятия данных с 1с
+модуль автоматически принимает сохраняет данные, возможно принятия данных в zip формате
+
+Все принятые файлы храняться в `$module->getProgressDirPath()` после их обраотки можете скопировать их в папку `$module->getBackupDirPath()`
+
+
+
+```
+'modules'=>[
+        'importOnec'=>[
+            'class'=>'reketaka\helps\modules\onec\Module',
+            'userName'=>'test';
+            'userPassword'=>'test';
+            'authKeyName'=>'AuthKey';
+            'authKeyVal'=>'pzshkmm0VzIZru65cB1Zsr6o47xZYqpR';
+            'maxFileSize'=>102400;
+            'enableZip'=>true;
+            'saveDirPath'=>'@backend/runtime/temp';
+            'authKeyCallback' => function(){
+                if (!($cookie = Yii::$app->request->headers->get('cookie', false))) {
+                    throw new Exception('Not find authKey in Cookie');
+                }
+
+                list($n, $authKey) = explode('=', $cookie);
+                return $authKey;
+            }
+        ]
+    ]
+```
