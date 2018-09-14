@@ -42,7 +42,10 @@ Usage
 
 Все принятые файлы храняться в `$module->getProgressDirPath()` после их обраотки можете скопировать их в папку `$module->getBackupDirPath()`
 
-
+Вызов в 1с
+```
+http://dev_price.sunrise22.ru/importOnec/import-onec/auto
+```
 
 ```
 'modules'=>[

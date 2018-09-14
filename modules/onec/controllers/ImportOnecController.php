@@ -143,6 +143,8 @@ class ImportOnecController extends Controller{
             $zip = false;
         }
 
+        FileHelper::removeDirectory($this->getSaveDirPath());
+
         return [
             'zip'=>$zip?'yes':'no',
             'file_limit'=>$this->module->maxFileSize
@@ -158,11 +160,13 @@ class ImportOnecController extends Controller{
          */
         extract($args, EXTR_OVERWRITE);
 
+        if(!isset($filename)){
+            throw new Exception('Filename not set');
+        }
+
         Yii::info('1с передает файл с именем '.$filename, __METHOD__);
 
         $saveDirPath = $this->getSaveDirPath();
-
-        FileHelper::removeDirectory($saveDirPath);
 
         if(!FileHelper::createDirectory($saveDirPath)){
             throw new Exception('Can"t create dirSavePath');
