@@ -36,6 +36,10 @@ class Module extends \yii\base\Module{
         if(!$this->userModelClass || !$this->userModelSearchClass){
             throw new Exception('User model not set');
         }
+
+        if (Yii::$app instanceof \yii\console\Application) {
+            $this->controllerNamespace = 'reketaka\helps\modules\usermanager\commands';
+        }
     }
 
     public function getUserModel(){
