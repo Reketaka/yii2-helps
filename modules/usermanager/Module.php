@@ -7,6 +7,7 @@ use common\helpers\BaseHelper;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
+use yii\helpers\StringHelper;
 
 class Module extends \yii\base\Module{
 
@@ -81,7 +82,7 @@ class Module extends \yii\base\Module{
     }
 
     private function getChildsOfRole($roleName){
-        $roles = Yii::$app->authManager->getChildRoles($roleName);
+        $roles = Yii::$app->authManager->getChildren($roleName);
 
         $r = [];
 
@@ -92,7 +93,8 @@ class Module extends \yii\base\Module{
         foreach($roles as $role){
 
             $t = [
-                'name'=>$role->name
+                'name'=>$role->name,
+                'type'=>$role::className()
             ];
 
             if($childs = $this->getChildsOfRole($role->name)){
