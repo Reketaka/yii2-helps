@@ -3,12 +3,14 @@
 namespace reketaka\helps\modules\usermanager\controllers;
 
 use common\helpers\BaseHelper;
+use reketaka\helps\modules\usermanager\models\UserCommon;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use Yii;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class UserController extends Controller{
 
@@ -50,14 +52,43 @@ class UserController extends Controller{
         $userRoles = $user->getRoles($user->id);
         $userRoles = array_keys($userRoles);
         $allRolesHeirarchy = $this->module->getAllHierarchyRoles();
-
+        $userGroups = $user->groups;
 
         return $this->render('view', [
             'model'=>$user,
             'userViewAttributes'=>$userViewAttributes,
             'userRoles'=>$userRoles,
-            'allRolesHeirarchy'=>$allRolesHeirarchy
+            'allRolesHeirarchy'=>$allRolesHeirarchy,
+            'userGroups'=>$userGroups
         ]);
+    }
+
+    public function actionDeleteRoleFromUser($userId, $roleName){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!$user = $this->findModel($userId)){
+            return ['success'=>false, 'error'=>'User not found'];
+        }
+        /**
+         * @var $user UserCommon
+         */
+
+        $userRoles = $user->getRoles($user->id);
+        if(!array_key_exists($roleName, $userRoles)){
+            return ['success'=>false, 'error'=>'Role not found in user'];
+        }
+
+        $role = $userRoles[$roleName];
+        /**
+         * @var $role \yii\rbac\Assignment
+         */
+        $role = Yii::$app->authManager->getRole($role->roleName);
+
+        Yii::$app->authManager->revoke($role, $user->id);
+
+        return [
+            'success'=>true
+        ];
     }
 
     private function findModel($id){

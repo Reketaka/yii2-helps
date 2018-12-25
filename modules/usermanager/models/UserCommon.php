@@ -45,5 +45,12 @@ abstract class UserCommon extends ActiveRecord{
 
     abstract public function getUserStatuses();
 
-
+    /**
+     * Возвращает все группы в которых состоит пользователь
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroups(){
+        return $this->hasMany(UserGroup::class, ['id'=>'group_id'])
+            ->viaTable(UserInGroup::tableName(), ['user_id'=>'id']);
+    }
 }
