@@ -3,8 +3,10 @@
 namespace reketaka\helps\modules\usermanager\helpers;
 
 
+use common\helpers\BaseHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\rbac\Permission;
 use yii\web\View;
 
 class Helper{
@@ -44,15 +46,23 @@ JS;
                 echo $roleArray['name'];
                 echo " ";
 
-                echo Html::tag(
-                    'button',
-                    Html::tag('span', null, ['class'=>'glyphicon glyphicon-plus']),
-                    [
-                        'class'=>'btn btn-default btn-xs addRoleToUser',
-                        'data-user-id'=>$user->id,
-                        'data-role-name'=>$roleArray['name']
-                    ]
-                );
+//                if(isset($roleArray['type'])){
+//                    BaseHelper::dump($roleArray['type']);
+//                    BaseHelper::dump(Permission::class);
+//                }
+
+
+                if((isset($roleArray['type']) || in_array($roleArray['name'], \Yii::$app->getModule('usermanager')->rootRoles)) && (isset($roleArray['type']) && ($roleArray['type'] != Permission::class))) {
+                    echo Html::tag(
+                        'button',
+                        Html::tag('span', null, ['class' => 'glyphicon glyphicon-plus']),
+                        [
+                            'class' => 'btn btn-default btn-xs addRoleToUser',
+                            'data-user-id' => $user->id,
+                            'data-role-name' => $roleArray['name']
+                        ]
+                    );
+                }
 
                 if(array_key_exists('childs', $roleArray)){
                     self::generateRolesHierarchy($roleArray['childs'], $user);

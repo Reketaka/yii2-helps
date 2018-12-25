@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\BaseHelper;
 use yii\web\View;
 use reketaka\helps\modules\usermanager\helpers\Helper;
 
