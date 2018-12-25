@@ -12,7 +12,7 @@ use yii\helpers\Url;
 
 $urlToDeleteRoleFromUser = Url::to(['/usermanager/user/delete-role-from-user']);
 $jsText = <<<JS
-    $(".deleteRoleFromUser").click(function(e){
+    $(document.body).on('click', '.deleteRoleFromUser', function(e){
         e.preventDefault();
         var name = $(this).data('name');
         var userId = $(this).data('user-id');
@@ -21,6 +21,9 @@ $jsText = <<<JS
         $.getJSON('{$urlToDeleteRoleFromUser}?userId='+userId+'&roleName='+name, $.proxy(function(data){
             if(data.success){
                 $(this).closest('.list-group-item').remove();
+            }
+            if(!data.success){
+                alert(data.error);
             }
         }, this))
         
@@ -35,7 +38,7 @@ $this->registerJs($jsText, View::POS_LOAD);
 
 <div class="col-md-3">
     <h3>Role of user</h3>
-    <div class="list-group">
+    <div class="list-group userRoleBox">
         <?php foreach($userRoles as $userRole):?>
             <div class="list-group-item">
                 <?=$userRole?>

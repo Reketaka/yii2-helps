@@ -46,16 +46,10 @@ use yii\widgets\DetailView;
         'user'=>$model
     ])?>
 
-    <div class="col-md-3">
-        <h3>Available roles</h3>
-
-        <?php
-
-            Helper::generateRolesHierarchy($allRolesHeirarchy);
-
-        ?>
-
-    </div>
+    <?=$this->render('_include/availableRoles', [
+        'allRolesHeirarchy'=>$allRolesHeirarchy,
+        'user'=>$model
+    ])?>
 
     <div class="col-md-3">
         <h3>User Groups</h3>

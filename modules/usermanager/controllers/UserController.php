@@ -91,6 +91,34 @@ class UserController extends Controller{
         ];
     }
 
+    public function actionAddRoleToUser($userId, $roleName){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!$user = $this->findModel($userId)){
+            return ['success'=>false, 'error'=>'User not found'];
+        }
+        /**
+         * @var $user UserCommon
+         */
+
+        $userRoles = $user->getRoles($user->id);
+        if(array_key_exists($roleName, $userRoles)){
+            return ['success'=>false, 'error'=>'Role found in user'];
+        }
+
+        if(!$role = Yii::$app->authManager->getRole($roleName)){
+            return ['success'=>false, 'error'=>'Role not found'];
+        }
+
+        Yii::$app->authManager->assign($role, $userId);
+
+        return [
+            'success'=>true,
+            'roleName'=>$role->name,
+            'userId'=>$user->id
+        ];
+    }
+
     private function findModel($id){
 
         $class = $this->module->getUserModel();
