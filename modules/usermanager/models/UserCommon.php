@@ -53,4 +53,14 @@ abstract class UserCommon extends ActiveRecord{
         return $this->hasMany(UserGroup::class, ['id'=>'group_id'])
             ->viaTable(UserInGroup::tableName(), ['user_id'=>'id']);
     }
+
+    public function hasGroup($groupAlias){
+        $r = $this->getGroups()->where(['alias'=>$groupAlias])->one();
+
+        if($r){
+            return true;
+        }
+
+        return false;
+    }
 }
