@@ -37,6 +37,10 @@ class UserController extends Controller{
 
         $userEditAttributes = $this->module->userEditAttributes;
 
+        if($user->load(Yii::$app->request->post()) && $user->save()){
+            return $this->redirect(['/usermanager/user/view', 'id'=>$user->id]);
+        }
+
         return $this->render('update', [
             'model'=>$user,
             'userEditAttributes'=>$userEditAttributes
