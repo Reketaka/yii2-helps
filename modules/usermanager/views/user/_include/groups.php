@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 $removeGroupFromUser = Url::to(['/usermanager/user/remove-group-from-user']);
 $jsText = <<<JS
-    $(".deleteGroupFromUser").click(function(e){
+    $(document.body).on('click', ".deleteGroupFromUser", function(e){
         e.preventDefault();
         
         var userId = $(this).data('user-id');
@@ -20,7 +20,9 @@ $jsText = <<<JS
         $.getJSON('{$removeGroupFromUser}?userId='+userId+'&groupId='+groupId, $.proxy(function(data){
             
             if(data.success){
-                $(this).closest('a').remove();
+                $(this).closest('div').remove();
+                
+                $(".availableGroups .list-group-item[data-group-id='"+groupId+"'] button").show();
             }
                 
             if(!data.success){
@@ -41,7 +43,7 @@ JS;
 <div class="list-group userGroupListBox">
     <?php foreach($userGroups as $userGroup):
 
-        echo Html::beginTag('a', ['class'=>'list-group-item']);
+        echo Html::beginTag('div', ['class'=>'list-group-item', 'data-group-id'=>$userGroup->id]);
 
             echo $userGroup->title.' ';
 
@@ -56,7 +58,7 @@ JS;
             );
 
 
-        echo Html::endTag('a');
+        echo Html::endTag('div');
 
 
     endforeach; ?>
