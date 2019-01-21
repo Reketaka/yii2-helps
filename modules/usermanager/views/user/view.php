@@ -7,6 +7,7 @@
  * @var $allRolesHeirarchy
  * @var $userRoles
  * @var $userGroups
+ * @var $allGroups
  */
 
 use common\helpers\BaseHelper;
@@ -52,11 +53,15 @@ use yii\widgets\DetailView;
     ])?>
 
     <div class="col-md-3">
-        <h3>User Groups</h3>
-        <div class="list-group">
-            <?php foreach($userGroups as $userGroup):?>
-                <?=Html::a($userGroup->title, ['/usermanager/user-group/view', 'id'=>$userGroup->id], ['class'=>'list-group-item'])?>
-            <?php endforeach; ?>
-        </div>
+        <?=$this->render('_include/availableGroups', [
+            'allGroups'=>$allGroups,
+            'user'=>$model,
+            'userGroups'=>$userGroups
+        ])?>
+
+        <?=$this->render('_include/groups', [
+            'user'=>$model,
+            'userGroups'=>$userGroups
+        ])?>
     </div>
 </div>

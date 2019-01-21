@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\usermanager\models;
 
+use common\helpers\BaseHelper;
 use reketaka\helps\common\behaviors\AliasBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -52,7 +53,7 @@ class UserGroup extends ActiveRecord{
     }
 
     /**
-     * Добавляет пользователя $userId в текушую группу
+     * Добавляет пользователя $userId в текушую группу, если его там не было
      * @param $userId
      * @return bool
      */
@@ -64,20 +65,43 @@ class UserGroup extends ActiveRecord{
             return false;
         }
 
-        if(self::findOne(['user_id'=>$user->id, 'group_id'=>$this->id])){
+        if(!self::findOne(['id'=>$this->id])){
             return true;
         }
 
-        $userInGroup = new UserInGroup([
-            'user_id'=>$userId,
-            'group_id'=>$this->id
-        ]);
+        if(!$userInGroup = $user->getUserInGroups()->andWhere(['group_id'=>$this->id])->one()){
+            $userInGroup = new UserInGroup([
+                'user_id'=>$userId,
+                'group_id'=>$this->id
+            ]);
 
-        $userInGroup->save();
+            $userInGroup->save();
+        }
 
         if($userInGroup->hasErrors()){
             return false;
         }
+
+        return true;
+    }
+
+    public function removeUser($userId){
+        $modelClass = \Yii::$app->getModule('usermanager')->userModelClass;
+
+        if(!$user = $modelClass::findOne($userId)){
+            return false;
+        }
+
+        if(!self::findOne(['id'=>$this->id])){
+            return true;
+        }
+
+        $userInGroup = UserInGroup::find()
+            ->where(['user_id'=>$user->id])
+            ->andWhere(['group_id'=>$this->id])
+            ->one();
+
+        $userInGroup->delete();
 
         return true;
     }

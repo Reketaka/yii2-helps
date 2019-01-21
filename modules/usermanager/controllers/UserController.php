@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\usermanager\controllers;
 
 use common\helpers\BaseHelper;
 use reketaka\helps\modules\usermanager\models\UserCommon;
+use reketaka\helps\modules\usermanager\models\UserGroup;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -27,6 +28,26 @@ class UserController extends Controller{
             'searchModel'=>$searchModel,
             'userIndexAttributes'=>$this->module->userIndexAttributes
         ]);
+    }
+
+    public function actionCreate(){
+
+        $this->view->title = "Create User";
+
+        $model = $this->module->getUserModel();
+
+        if($model->load(Yii::$app->request->post()) && $model->validate()){
+            $userModel = $model->create();
+            return $this->redirect(['/usermanager/user/view', 'id'=>$userModel->id]);
+        }
+
+        $userEditAttributes = $this->module->userEditAttributes;
+
+        return $this->render('create', [
+            'model'=>$model,
+            'userEditAttributes'=>$userEditAttributes
+        ]);
+
     }
 
     public function actionUpdate($id){
@@ -58,12 +79,15 @@ class UserController extends Controller{
         $allRolesHeirarchy = $this->module->getAllHierarchyRoles();
         $userGroups = $user->groups;
 
+        $allGroups = ArrayHelper::map(UserGroup::find()->all(), 'id', 'title');
+
         return $this->render('view', [
             'model'=>$user,
             'userViewAttributes'=>$userViewAttributes,
             'userRoles'=>$userRoles,
             'allRolesHeirarchy'=>$allRolesHeirarchy,
-            'userGroups'=>$userGroups
+            'userGroups'=>$userGroups,
+            'allGroups'=>$allGroups
         ]);
     }
 
@@ -121,6 +145,56 @@ class UserController extends Controller{
             'roleName'=>$role->name,
             'userId'=>$user->id
         ];
+    }
+
+    public function actionAddGroupToUser($userId, $groupId){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!$user = $this->findModel($userId)){
+            return ['success'=>false, 'error'=>'User not found'];
+        }
+
+        if(!$group = UserGroup::findOne($groupId)){
+            return ['success'=>false, 'error'=>'Group not found'];
+        }
+        /**
+         * @var $user UserCommon
+         */
+
+        $group->addUser($user->id);
+
+        return [
+            'success'=>true,
+            'groupId'=>$group->id,
+            'userId'=>$user->id,
+            'groupTitle'=>$group->title
+        ];
+    }
+
+    public function actionRemoveGroupFromUser($userId, $groupId){
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!$user = $this->findModel($userId)){
+            return ['success'=>false, 'error'=>'User not found'];
+        }
+
+        if(!$group = UserGroup::findOne($groupId)){
+            return ['success'=>false, 'error'=>'Group not found'];
+        }
+        /**
+         * @var $user UserCommon
+         */
+
+        $group->removeUser($user->id);
+
+        return [
+            'success'=>true,
+            'groupId'=>$group->id,
+            'userId'=>$user->id,
+            'groupTitle'=>$group->title
+        ];
+
     }
 
     private function findModel($id){

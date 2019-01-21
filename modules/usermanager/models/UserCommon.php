@@ -45,6 +45,10 @@ abstract class UserCommon extends ActiveRecord{
 
     abstract public function getUserStatuses();
 
+    public function getUserInGroups(){
+        return $this->hasMany(UserInGroup::class, ['user_id'=>'id']);
+    }
+
     /**
      * Возвращает все группы в которых состоит пользователь
      * @return \yii\db\ActiveQuery
@@ -62,5 +66,22 @@ abstract class UserCommon extends ActiveRecord{
         }
 
         return false;
+    }
+
+    /**
+     * Создает нового пользователя
+     */
+    public function create(){
+        $password = 123;
+
+        $this->setPassword($password);
+        $this->generateAuthKey();
+        $this->save();
+
+        if($this->hasErrors()){
+            return false;
+        }
+
+        return $this;
     }
 }
