@@ -67,7 +67,9 @@ class Module extends \yii\base\Module{
         $authManager = Yii::$app->authManager;
 
         foreach($rootRoles as $rootRole){
-            $role = $authManager->getRole($rootRole);
+            if(!$role = $authManager->getRole($rootRole)){
+                continue;
+            }
 
             $t = [
                 'name'=>$role->name

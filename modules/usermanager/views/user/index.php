@@ -34,11 +34,6 @@ $attributes[] = [
 
     ],
     'template' => '{view}{update}{delete}',
-    'visibleButtons' => [
-        'view'=>Yii::$app->user->can('viewSitePerm'),
-        'delete'=>Yii::$app->user->can('deleteSitePerm'),
-        'update'=>Yii::$app->user->can('updateSitePerm') || Yii::$app->user->can('updateSiteLevel1Perm'),
-    ]
 ];
 
 ?>
