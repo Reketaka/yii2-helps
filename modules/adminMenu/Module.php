@@ -1,0 +1,32 @@
+<?php
+
+namespace reketaka\helps\modules\adminMenu;
+
+class Module extends \yii\base\Module{
+
+    public $userModelClass;
+    public $userModelSearchClass;
+
+    public function init(){
+        parent::init();
+
+//        if (\Yii::$app instanceof \yii\console\Application) {
+//            $this->controllerNamespace = 'backend\modules\webmaster\commands';
+//        }
+    }
+
+    public function getUserModel(){
+        $class = $this->userModelClass;
+        $class = new $class();
+
+        return $class;
+    }
+
+    public function getUserModelSearch(){
+        $class = $this->userModelSearchClass;
+        $class = new $class();
+
+        return $class;
+    }
+
+}

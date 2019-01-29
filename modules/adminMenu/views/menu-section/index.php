@@ -1,0 +1,45 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel backend\models\menu\MenuSectionSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = Yii::t('app', 'Menu Sections');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="menu-section-index">
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'create'), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            [
+                    'attribute' => 'id',
+                    'options' => [
+                            'style'=>'width:75px'
+                    ]
+            ],
+            'alias',
+            'title',
+            'order',
+
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'options'=>[
+                    'style'=>'width:75px;'
+                ]
+            ],
+        ],
+    ]); ?>
+</div>
