@@ -24,13 +24,11 @@ class MenuDynamic{
             return [];
         }
 
-        if(!$generateAll) {
-            $cache = \Yii::$app->cache;
-            $cacheKey = self::CACHE_KEY . \Yii::$app->user->getId();
+        $cache = \Yii::$app->cache;
+        $cacheKey = self::CACHE_KEY . ($generateAll?'all':\Yii::$app->user->getId());
 
-            if ($d = $cache->get($cacheKey)) {
-                return $d;
-            }
+        if ($d = $cache->get($cacheKey)) {
+            return $d;
         }
 
         $sections = null;
@@ -73,9 +71,7 @@ class MenuDynamic{
             $r[] = $t;
         }
 
-        if(!$generateAll) {
-            $cache->set($cacheKey, $r);
-        }
+        $cache->set($cacheKey, $r);
 
         return $r;
     }
