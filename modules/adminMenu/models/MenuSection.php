@@ -3,7 +3,7 @@
 namespace reketaka\helps\modules\adminMenu\models;
 
 use Yii;
-use common\models\CommonRecord;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu_section".
@@ -15,7 +15,7 @@ use common\models\CommonRecord;
  *
  * @property MenuItem[] $menuItems
  */
-class MenuSection extends CommonRecord
+class MenuSection extends ActiveRecord
 {
     public $behaviorAlias = true;
     /**

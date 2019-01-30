@@ -26,7 +26,7 @@ use yii\helpers\Url;
             'allowClear'=>true,
             'minimumInputLength'=>3,
             'ajax'=>[
-                'url'=>Url::to(['/wb/webmaster-site-select/get-system-user']),
+                'url'=>Url::to(['/adminmenu/menu-base/get-system-user']),
                 'dataType'=>'json',
                 'data'=>new JsExpression('function(params){return {q:params.term}; }')
             ]

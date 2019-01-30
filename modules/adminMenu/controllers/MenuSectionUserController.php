@@ -2,11 +2,14 @@
 
 namespace reketaka\helps\modules\adminMenu\controllers;
 
+use reketaka\helps\modules\adminMenu\models\MenuItem;
+use reketaka\helps\modules\adminMenu\models\MenuItemUser;
 use reketaka\helps\modules\adminMenu\models\MenuSectionUser;
 use reketaka\helps\modules\adminMenu\models\MenuSectionUserSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * MenuSectionUserController implements the CRUD actions for MenuSectionUser model.
@@ -116,6 +119,52 @@ class MenuSectionUserController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAddItemToSection($sectionId, $itemId){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $section = MenuSectionUser::find()
+            ->where([
+                'user_id'=>Yii::$app->user->getId(),
+                'id'=>$sectionId
+            ])
+            ->one();
+
+        if(!$section){
+            return [
+                'success'=>false,
+                'message'=>'Section not found'
+            ];
+        }
+
+        if(!$item = MenuItem::findOne($itemId)){
+            return [
+                'success'=>false,
+                'message'=>false
+            ];
+        }
+
+        $menuItemUser = MenuItemUser::findOne([
+            'menu_item_id'=>$item->id,
+            'menu_section_id'=>$section->id,
+            'user_id'=>Yii::$app->user->getId()
+        ]);
+
+        if(!$menuItemUser){
+            $menuItemUser = new MenuItemUser([
+                'menu_item_id'=>$item->id,
+                'menu_section_id'=>$section->id,
+                'user_id'=>Yii::$app->user->getId()
+            ]);
+
+            $menuItemUser->save();
+
+        }
+
+        return [
+            'success'=>true,
+        ];
     }
 
     /**

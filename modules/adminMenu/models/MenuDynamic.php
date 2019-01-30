@@ -19,20 +19,34 @@ class MenuDynamic{
         \Yii::$app->cache->delete(self::CACHE_KEY.$userId);
     }
 
-    public function generate(){
+    public function generate($generateAll = false){
         if(\Yii::$app->user->isGuest){
             return [];
         }
 
-        $cache = \Yii::$app->cache;
-        $cacheKey = self::CACHE_KEY.\Yii::$app->user->getId();
+        if(!$generateAll) {
+            $cache = \Yii::$app->cache;
+            $cacheKey = self::CACHE_KEY . \Yii::$app->user->getId();
 
-        if($d = $cache->get($cacheKey)){
-            return $d;
+            if ($d = $cache->get($cacheKey)) {
+                return $d;
+            }
+        }
+
+        $sections = null;
+        if(!$generateAll) {
+            $userHasOwnMenu = false;
+            $sections = MenuSectionUser::find()->where(['user_id' => \Yii::$app->user->getId()])->orderBy(['order' => SORT_ASC])->all();
+
+            if ($sections) {
+                $userHasOwnMenu = true;
+            }
         }
 
 
-        $sections = MenuSection::find()->orderBy(['order'=>SORT_ASC])->all();
+        if(!$sections) {
+            $sections = MenuSection::find()->orderBy(['order' => SORT_ASC])->all();
+        }
 
         if(!$sections){
             return [];
@@ -59,12 +73,14 @@ class MenuDynamic{
             $r[] = $t;
         }
 
-        $cache->set($cacheKey, $r);
+        if(!$generateAll) {
+            $cache->set($cacheKey, $r);
+        }
 
         return $r;
     }
 
-    public function getItemsSection(MenuSection $section, $userRoles){
+    public function getItemsSection($section, $userRoles){
 
         $items = $section->getMenuItems()->orderBy(['order'=>SORT_ASC])->all();
 
@@ -80,7 +96,8 @@ class MenuDynamic{
 
             $t = [
                 'label'=>$item->title,
-                'url'=>Url::to($item->url)
+                'url'=>Url::to($item->url),
+                'id'=>$item->id
             ];
 
             if(!$this->checkAccessToMenuItem($userRoles, $item->menuItemRoles)){
@@ -98,7 +115,9 @@ class MenuDynamic{
 
         $itemRoles = ArrayHelper::getColumn($menuRoles, 'role_name');
 
-        if(in_array('superadmin', $userRoles)){
+        $superadminRole = \Yii::$app->getModule('adminmenu')->superAdminRole;
+
+        if(in_array($superadminRole, $userRoles)){
             return true;
         }
 

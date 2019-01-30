@@ -6,6 +6,7 @@ class Module extends \yii\base\Module{
 
     public $userModelClass;
     public $userModelSearchClass;
+    public $superAdminRole = 'superadmin';
 
     public function init(){
         parent::init();

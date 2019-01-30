@@ -3,7 +3,7 @@
 namespace reketaka\helps\modules\adminMenu\models;
 
 use Yii;
-use common\models\CommonRecord;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu_item_roles".
@@ -14,7 +14,7 @@ use common\models\CommonRecord;
  *
  * @property MenuItem $menuItem
  */
-class MenuItemRoles extends CommonRecord
+class MenuItemRoles extends ActiveRecord
 {
     /**
      * @inheritdoc

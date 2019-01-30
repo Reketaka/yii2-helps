@@ -3,8 +3,8 @@
 namespace reketaka\helps\modules\adminMenu\models;
 
 use Yii;
-use common\models\CommonRecord;
 use common\models\User;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu_section_user".
@@ -20,7 +20,7 @@ use common\models\User;
  * @property MenuItemUser[] $menuItemUsers
  * @property User $user
  */
-class MenuSectionUser extends CommonRecord
+class MenuSectionUser extends ActiveRecord
 {
     public $behaviorTimestamp = true;
     /**
@@ -64,9 +64,14 @@ class MenuSectionUser extends CommonRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMenuItemUsers()
+    public function getMenuItemUser()
     {
         return $this->hasMany(MenuItemUser::className(), ['menu_section_id' => 'id']);
+    }
+
+    public function getMenuItems(){
+        return $this->hasMany(MenuItem::class, ['id'=>'menu_item_id'])
+            ->via('menuItemUser');
     }
 
     /**
@@ -74,6 +79,45 @@ class MenuSectionUser extends CommonRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Yii::$app->getModule('adminmenu')->userModelClass, ['id' => 'user_id']);
+    }
+
+    public static function getHierarchyArray($parent = 0, $userId=false){
+        $sections = MenuSectionUser::find()
+            ->where(['user_id'=>!$userId?Yii::$app->user->getId():$userId])
+            ->andWhere(['parent'=>$parent])
+            ->orderBy(['order'=>SORT_ASC])
+            ->all();
+
+        $r = [];
+
+        foreach($sections as $section){
+            $t = [
+                'title'=>$section->title,
+                'id'=>$section->id
+            ];
+
+            if($items = self::getHierarchyArray($section->id)){
+                $t['items'] = $items;
+            }
+
+            $r[] = $t;
+        }
+
+
+        return $r;
+    }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        foreach($this->menuItemUser as $menuItemUser){
+            $menuItemUser->delete();
+        }
+
+        return true;
     }
 }

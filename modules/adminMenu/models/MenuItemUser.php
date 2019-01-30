@@ -2,9 +2,8 @@
 
 namespace reketaka\helps\modules\adminMenu\models;
 
-use common\models\User;
 use Yii;
-use common\models\CommonRecord;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "menu_item_user".
@@ -18,7 +17,7 @@ use common\models\CommonRecord;
  * @property MenuItem $menuItem
  * @property MenuSectionUser $menuSection
  */
-class MenuItemUser extends CommonRecord
+class MenuItemUser extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -70,7 +69,7 @@ class MenuItemUser extends CommonRecord
     }
 
     public function getUser(){
-        return $this->hasOne(User::class, ['id'=>'user_id']);
+        return $this->hasOne(Yii::$app->getModule('adminmenu')->userModelClass, ['id'=>'user_id']);
     }
 
     /**
