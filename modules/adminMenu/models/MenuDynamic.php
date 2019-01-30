@@ -10,6 +10,7 @@ use yii\helpers\Url;
 class MenuDynamic{
 
     CONST CACHE_KEY = 'defaultMenuItemsUser';
+    CONST CACHE_KEY_ALL = 'all';
 
     /**
      * Очищает кеш меню для определенного пользователя
@@ -19,13 +20,17 @@ class MenuDynamic{
         \Yii::$app->cache->delete(self::CACHE_KEY.$userId);
     }
 
+    public static function clearCacheMenuAll(){
+        \Yii::$app->cache->delete(self::CACHE_KEY.self::CACHE_KEY_ALL);
+    }
+
     public function generate($generateAll = false){
         if(\Yii::$app->user->isGuest){
             return [];
         }
 
         $cache = \Yii::$app->cache;
-        $cacheKey = self::CACHE_KEY . ($generateAll?'all':\Yii::$app->user->getId());
+        $cacheKey = self::CACHE_KEY . ($generateAll?self::CACHE_KEY_ALL:\Yii::$app->user->getId());
 
         if ($d = $cache->get($cacheKey)) {
             return $d;
