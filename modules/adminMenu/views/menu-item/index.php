@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'content' => function($model){
                     if($section = $model->section){
-                        return Html::a($section->title, ['/menu/menu-section/view', 'id'=>$section->id]);
+                        return Html::a($section->title, ['/adminmenu/menu-section/view', 'id'=>$section->id]);
                     }
                 },
                 'filter' => Select2::widget([

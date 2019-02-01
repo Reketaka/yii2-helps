@@ -33,6 +33,8 @@ class Module extends \yii\base\Module{
             $this->userViewAttributes = $this->userEditAttributes;
         }
 
+        $this->userEditAttributes[] = 'password';
+
         if(!$this->userModelClass || !$this->userModelSearchClass){
             throw new Exception('User model not set');
         }

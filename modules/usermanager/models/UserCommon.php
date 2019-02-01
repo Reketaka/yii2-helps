@@ -11,6 +11,8 @@ abstract class UserCommon extends ActiveRecord{
 
     CONST SESSION_KEY_USER_ROLES = 'userRoles';
 
+    public $password = 123;
+
     /**
      * Используется для записи в сессию текущих ролей пользователя
      * @param $event
@@ -72,9 +74,7 @@ abstract class UserCommon extends ActiveRecord{
      * Создает нового пользователя
      */
     public function create(){
-        $password = 123;
-
-        $this->setPassword($password);
+        $this->setPassword($this->password);
         $this->generateAuthKey();
         $this->save();
 
