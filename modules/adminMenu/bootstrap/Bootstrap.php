@@ -17,6 +17,7 @@ class Bootstrap implements BootstrapInterface
 
         $app->user->on(User::EVENT_AFTER_LOGIN, function($event){
             MenuDynamic::clearCacheMenuForUser($event->sender->getId());
+            MenuDynamic::clearCacheMenuAll();
         });
     }
 }

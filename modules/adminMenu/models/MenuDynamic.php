@@ -18,6 +18,7 @@ class MenuDynamic{
      */
     public static function clearCacheMenuForUser($userId){
         \Yii::$app->cache->delete(self::CACHE_KEY.$userId);
+        \Yii::$app->cache->delete(self::CACHE_KEY.$userId.self::CACHE_KEY_ALL);
     }
 
     public static function clearCacheMenuAll(){
@@ -30,7 +31,7 @@ class MenuDynamic{
         }
 
         $cache = \Yii::$app->cache;
-        $cacheKey = self::CACHE_KEY . ($generateAll?self::CACHE_KEY_ALL:\Yii::$app->user->getId());
+        $cacheKey = self::CACHE_KEY . \Yii::$app->user->getId().($generateAll?self::CACHE_KEY_ALL:null);
 
         if ($d = $cache->get($cacheKey)) {
             return $d;
