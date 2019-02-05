@@ -23,6 +23,12 @@ use yii\widgets\DetailView;
 
 <div class="user-view">
 
+    <div class="row">
+        <div class="col-md-12">
+            <?=Html::a('Edit', ['/usermanager/user/update', 'id'=>$model->id], ['class'=>'btn btn-success'])?>
+        </div>
+    </div>
+
     <div class="col-md-3">
         <h3>User information</h3>
         <?php

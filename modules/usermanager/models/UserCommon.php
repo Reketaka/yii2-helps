@@ -11,7 +11,7 @@ abstract class UserCommon extends ActiveRecord{
 
     CONST SESSION_KEY_USER_ROLES = 'userRoles';
 
-    public $password = 123;
+    public $password;
 
     /**
      * Используется для записи в сессию текущих ролей пользователя

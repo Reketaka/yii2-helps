@@ -59,6 +59,12 @@ class UserController extends Controller{
         $userEditAttributes = $this->module->userEditAttributes;
 
         if($user->load(Yii::$app->request->post()) && $user->save()){
+            if($user->password){
+                $user->setPassword($user->password);
+                $user->generateAuthKey();
+                $user->save();
+            }
+
             return $this->redirect(['/usermanager/user/view', 'id'=>$user->id]);
         }
 
