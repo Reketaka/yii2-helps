@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\adminMenu\controllers;
 
+use common\helpers\BaseHelper;
 use reketaka\helps\modules\adminMenu\models\MenuItem;
 use reketaka\helps\modules\adminMenu\models\MenuItemUser;
 use reketaka\helps\modules\adminMenu\models\MenuSectionUser;
@@ -46,9 +47,11 @@ class MenuSectionUserController extends Controller
         $searchModel = new MenuSectionUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'isSuperAdmin'=>$this->module->isSuperAdminAuth()
         ]);
     }
 
@@ -60,8 +63,11 @@ class MenuSectionUserController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'menuItems'=>$model->menuItems
         ]);
     }
 

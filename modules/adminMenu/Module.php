@@ -7,6 +7,7 @@ class Module extends \yii\base\Module{
     public $userModelClass;
     public $userModelSearchClass;
     public $superAdminRole = 'superadmin';
+    public $superAdminLogin = 'superadmin';
 
     public function init(){
         parent::init();
@@ -28,6 +29,10 @@ class Module extends \yii\base\Module{
         $class = new $class();
 
         return $class;
+    }
+
+    public function isSuperAdminAuth(){
+        return $this->superAdminLogin == \Yii::$app->user->identity->username;
     }
 
 }

@@ -46,6 +46,8 @@ class MenuSectionUserSearch extends MenuSectionUser
             ])
             ->orderBy(['order'=>SORT_ASC]);
 
+        $query = $query->where(['user_id'=>Yii::$app->user->getId()]);
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

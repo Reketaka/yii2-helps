@@ -10,9 +10,15 @@ use yii\web\JsExpression;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\menu\MenuSectionUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/**
+ * @var bool $isSuperAdmin
+ */
 
 $this->title = Yii::t('app', 'Menu Section Users');
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 <div class="menu-section-user-index">
 
@@ -22,30 +28,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'rowOptions' => function ($model, $key, $index, $grid) {
-            return ['data-sortable-id' => $model->id];
-        },
-        'filterModel' => $searchModel,
-        'options' => [
-            'data' => [
-                'sortable-widget' => 1,
-                'sortable-url' => \yii\helpers\Url::toRoute(['sorting']),
-            ]
-        ],
-        'columns' => [
+    <?php
+
+        $columns = [
             [
                 'class' => \kotchuprik\sortable\grid\Column::className(),
             ],
             [
-                    'attribute' => 'id',
-                    'options' => [
-                            'style'=>'width:75px'
-                    ]
+                'attribute' => 'id',
+                'options' => [
+                    'style'=>'width:75px'
+                ]
             ],
             'title',
-            [
+            'order',
+            'parent',
+            //'created_at',
+            //'updated_at',
+        ];
+
+        if($isSuperAdmin){
+            $columns[] =  [
                 'attribute' => 'user_id',
                 'format'=>'raw',
                 'content' => function($model){
@@ -67,18 +70,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     ]
                 ])
-            ],
-            'order',
-            'parent',
-            //'created_at',
-            //'updated_at',
+            ];
+        }
 
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'options'=>[
-                    'style'=>'width:75px;'
-                ]
-            ],
+        $columns[] = [
+            'class' => 'yii\grid\ActionColumn',
+            'options'=>[
+                'style'=>'width:75px;'
+            ]
+        ];
+
+    ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'rowOptions' => function ($model, $key, $index, $grid) {
+            return ['data-sortable-id' => $model->id];
+        },
+        'filterModel' => $searchModel,
+        'options' => [
+            'data' => [
+                'sortable-widget' => 1,
+                'sortable-url' => \yii\helpers\Url::toRoute(['sorting']),
+            ]
         ],
+        'columns' => $columns
     ]); ?>
 </div>

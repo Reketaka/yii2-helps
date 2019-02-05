@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 foreach($menuItems as $menuItem):
 
-                    echo Html::beginTag('a', ['class'=>'list-group-item', 'href'=>Url::to(['/menu/menu-item/view', 'id'=>$menuItem->id])]);
+                    echo Html::beginTag('a', ['class'=>'list-group-item', 'href'=>Url::to(['/adminmenu/menu-item/view', 'id'=>$menuItem->id])]);
                         echo $menuItem->title;
                     echo Html::endTag('a');
 

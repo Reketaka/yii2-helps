@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'content' => function($model){
                     if($menuItem = $model->menuItem){
-                        return Html::a($menuItem->title, ['/menu/menu-item/view', 'id'=>$menuItem->id]);
+                        return Html::a($menuItem->title, ['/adminmenu/menu-item/view', 'id'=>$menuItem->id]);
                     }
                 }
             ],
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'content' => function($model){
                     if($menuSection = $model->menuSection){
-                        return Html::a($menuSection->title, ['/menu/menu-section/view', 'id'=>$menuSection->id]);
+                        return Html::a($menuSection->title, ['/adminmenu/menu-section-user/view', 'id'=>$menuSection->id]);
                     }
                 }
             ],
