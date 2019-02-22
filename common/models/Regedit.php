@@ -4,11 +4,15 @@ namespace reketaka\helps\common\models;
 
 
 use common\helpers\BaseHelper;
+use Faker\Provider\Base;
 use yii\db\ActiveRecord;
+use Yii;
 
 class Regedit extends ActiveRecord{
 
     private $storage;
+
+    CONST CACHE_REGEDIT_NAME = 'reketakaRegeditData';
 
     public static function tableName()
     {
@@ -134,8 +138,13 @@ class Regedit extends ActiveRecord{
      * @return $this
      */
     public function clearCache(){
+        if(!$cache = Yii::$app->get('cache')){
+            return true;
+        }
+
+        $cache->delete(self::CACHE_REGEDIT_NAME);
+
         return true;
-        return $this->saveRegistry([]);
     }
 
     /**
@@ -156,10 +165,8 @@ class Regedit extends ActiveRecord{
      */
     private function saveRegistry(array $registry) {
 
-        return true;
+        Yii::$app->cache->set(self::CACHE_REGEDIT_NAME, $registry);
 
-        $this->getStorage()
-            ->saveRawData('registry', $registry, time());
         return $this;
     }
 
@@ -171,17 +178,13 @@ class Regedit extends ActiveRecord{
      */
     private function getRegistry() {
 
-        return $this->loadRegistry();
-
-
-        $storage = $this->getStorage();
-        $registry = (array) $storage->loadRawData('registry');
-
-        if (empty($registry)) {
-            $this->saveRegistry($this->loadRegistry());
+        if($registry = Yii::$app->cache->get(self::CACHE_REGEDIT_NAME)){
+            return $registry;
         }
 
-        return (array) $storage->loadRawData('registry');
+        $this->saveRegistry(($registry = $this->loadRegistry()));
+
+        return $registry;
     }
 
     /**
