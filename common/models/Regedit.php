@@ -92,15 +92,15 @@ class Regedit extends ActiveRecord{
 
         $keyId = $this->getKeyId($path);
 
-        if (!$keyId) {
+        if($keyId === FALSE) {
             $keyId = $this->createKey($path);
         }
 
-        $connection = $this->getConnection();
-        $value = $connection->escape($value);
-        $keyId = (int) $keyId;
-        $sql = "UPDATE `cms_reg` SET `val` = '{$value}' WHERE `id` = $keyId";
-        $connection->query($sql);
+        \Yii::$app->db->createCommand()->update(self::tableName(), [
+            'val'=>$value
+        ], [
+            'id'=>$keyId
+        ])->execute();
 
         $registry = $this->getRegistry();
         $registry[$this->getIdKey($keyId)]['val'] = (string) $value;
@@ -118,14 +118,11 @@ class Regedit extends ActiveRecord{
     public function remove($path){
         $keyId = $this->getKeyId($path);
 
-        if (!$keyId) {
+        if ($keyId === FALSE) {
             return false;
         }
 
-        $keyId = (int) $keyId;
-        $sql = "DELETE FROM `cms_reg` WHERE `rel` = $keyId OR `id` = $keyId";
-        $this->getConnection()
-            ->query($sql);
+        \Yii::$app->db->createCommand()->delete(self::tableName(), 'rel =:rel OR id =:rel', [':rel' => $keyId])->execute();
         $this->clearCache();
 
         return true;
@@ -137,6 +134,7 @@ class Regedit extends ActiveRecord{
      * @return $this
      */
     public function clearCache(){
+        return true;
         return $this->saveRegistry([]);
     }
 
@@ -157,6 +155,9 @@ class Regedit extends ActiveRecord{
      * @return $this
      */
     private function saveRegistry(array $registry) {
+
+        return true;
+
         $this->getStorage()
             ->saveRawData('registry', $registry, time());
         return $this;
@@ -185,9 +186,8 @@ class Regedit extends ActiveRecord{
 
     /**
      * Возвращает хранилище кеша
-     * @return iCacheEngine
      */
-    private function getStorage() {
+    public function getStorage() {
         return $this->storage;
     }
 
@@ -204,47 +204,6 @@ class Regedit extends ActiveRecord{
         $registry = [];
 
         foreach($result as $row){
-            $id = $row['id'];
-            $parentId = $row['rel'];
-            $parentIdKey = $this->getIdKey($parentId);
-
-            BaseHelper::dump($parentIdKey);
-
-            if (isset($registry[$parentIdKey])) {
-                $path = ($parentId == 0) ? $row['var'] : $registry[$parentIdKey]['path'] . '/' . $row['var'];
-                $registry[$parentIdKey]['children'][] = $id;
-            } else {
-                $path = $row['var'];
-                $registry[$parentId] = [
-                    'id' => $parentId,
-                    'children' => [
-                        $id
-                    ]
-                ];
-            }
-
-            $row['path'] = $path;
-            $row['children'] = [];
-            $registry[$this->getIdKey($id)] = $row;
-            $registry[$path] = $id;
-        }
-
-        BaseHelper::dd($registry);
-
-        return $registry;
-
-
-
-
-        $sql = <<<SQL
-SELECT `id`, `var`, `val`, `rel` FROM `cms_reg` ORDER BY `id`
-SQL;
-        $result = $this->getConnection()
-            ->queryResult($sql);
-        $result->setFetchType(IQueryResult::FETCH_ASSOC);
-        $registry = [];
-
-        foreach ($result as $row) {
             $id = $row['id'];
             $parentId = $row['rel'];
             $parentIdKey = $this->getIdKey($parentId);
@@ -279,6 +238,80 @@ SQL;
     private function getIdKey($id) {
         return sprintf('id_%d', $id);
     }
+
+    /**
+     * Возвращает идентификатор ключа реестра
+     * @param string $path путь реестра
+     * @return int|false
+     */
+    private function getKeyId($path) {
+        $path = trim($path, '/');
+        $keyId = 0;
+
+        foreach (explode('/', $path) as $key) {
+
+            if(!$result = self::find()->where(['rel'=>$keyId, 'var'=>$key])->createCommand()->queryOne()){
+                return false;
+            }
+
+            $keyId = $result['id'];
+        }
+
+        return $keyId;
+    }
+
+    /**
+     * Создает ключ реестра и возвращает его идентификатор
+     * @param string $path путь реестра
+     * @return int|null
+     */
+    protected function createKey($path) {
+        $path = trim($path, '/');
+        $subKeyPath = '//';
+
+        $relId = 0;
+        $keyId = null;
+
+        foreach (explode('/', $path) as $key) {
+            $subKeyPath .= $key . '/';
+            $keyId = $this->getKeyId($subKeyPath);
+
+            if ($keyId !== FALSE) {
+                $relId = $keyId;
+                continue;
+            }
+
+            $relId = (int) $relId;
+
+            \Yii::$app->db->createCommand()->insert(self::tableName(), [
+                'rel'=>$relId,
+                'var'=>$key,
+                'val'=>''
+            ])->execute();
+
+            $keyId = \Yii::$app->db->getLastInsertID();
+
+            $registry = $this->getRegistry();
+            $registry[$this->getIdKey($keyId)] = [
+                'id' => $keyId,
+                'var' => $key,
+                'val' => null,
+                'rel' => $relId,
+                'children' => []
+            ];
+
+            $registry[trim($subKeyPath, '/')] = $keyId;
+            $registry[$this->getIdKey($relId)]['children'][] = $keyId;
+            $this->saveRegistry($registry);
+
+            $relId = $keyId;
+        }
+
+        return $keyId;
+    }
+
+
+
 
 
 
