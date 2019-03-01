@@ -37,6 +37,29 @@ Usage
         ]
 ```
 
+Модель Regedit
+
+**config.php**
+```
+    'components' => [
+        'regedit'=>[
+            'class'=>'reketaka\helps\common\models\Regedit'
+        ]
+    ]
+```
+
+**Использование**
+```
+    Yii::$app->regedit->get('//modules/myModule/someVar');
+    Yii::$app->regedit->remove('//modules/myModule/someVar');
+    Yii::$app->regedit->clearCache();
+    Yii::$app->regedit->getList('//modules/myModule/someVar');
+    Yii::$app->regedit->set('//modules/myModule/someVar', 'test');
+    
+```
+
+**Модуль обмена данными с 1c**
+
 Для установки модуля принятия данных с 1с
 модуль автоматически принимает сохраняет данные, возможно принятия данных в zip формате
 
