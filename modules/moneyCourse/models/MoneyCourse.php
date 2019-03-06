@@ -90,6 +90,7 @@ class MoneyCourse extends \yii\db\ActiveRecord
 
         if(!$request->isOk){
             echo Console::ansiFormat("Can't get data from url", [Console::FG_YELLOW]).PHP_EOL;
+            return false;
         }
 
         echo "Data success get".PHP_EOL;
