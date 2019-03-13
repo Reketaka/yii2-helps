@@ -39,6 +39,15 @@ Usage
 
 Модель Regedit
 
+**console config.php**
+```
+'controllerMap' => [
+        'regedit'=>[
+            'class'=>'reketaka\helps\common\commands\RegeditController'
+        ]
+    ],
+```
+
 **config.php**
 ```
     'components' => [
