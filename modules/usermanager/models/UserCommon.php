@@ -32,6 +32,17 @@ abstract class UserCommon extends ActiveRecord{
     }
 
     /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
      * Возвращает роли пользоватлея
      * @return mixed
      */
