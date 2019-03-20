@@ -15,7 +15,8 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "2amigos/yii2-transliterator-helper": "*",
         "yiisoft/yii2-httpclient": "^2.0",
-        "npm-asset/bootstrap-notify": "*"
+        "npm-asset/bootstrap-notify": "*",
+        "kotchuprik/yii2-sortable-widgets":"*"
     },
     "autoload": {
         "psr-4": {
