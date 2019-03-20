@@ -48,10 +48,10 @@ abstract class UserCommon extends ActiveRecord{
      */
     public function getRoles($userId = false){
         if(!$userId) {
-            return Yii::$app->session->get(self::SESSION_KEY_USER_ROLES);
+            return !($userRoles = Yii::$app->session->get(self::SESSION_KEY_USER_ROLES))?[]:$userRoles;
         }
 
-        return Yii::$app->authManager->getAssignments($userId);
+        return !($userRoles = Yii::$app->authManager->getAssignments($userId))?[]:$userRoles;
     }
 
 
