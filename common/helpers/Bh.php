@@ -147,4 +147,8 @@ class Bh{
         self::dump($v);
         exit();
     }
+
+    public static function oneStringAndNumbers($var){
+        return preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '',$var );
+    }
 }
