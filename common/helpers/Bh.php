@@ -158,11 +158,19 @@ class Bh{
      * @param $fieldName
      * @return int
      */
-    public static function getTotal($provider, $fieldName){
+    public static function getTotal($provider, $fieldName, $callback = null){
         $total = 0;
 
-        foreach ($provider as $item) {
-            $total += $item[$fieldName];
+        if(!$callback) {
+            foreach ($provider as $item) {
+                $total += $item[$fieldName];
+            }
+        }
+
+        if($callback instanceof \Closure){
+            foreach($provider as $item){
+                $total += $callback($item, $fieldName);
+            }
         }
 
         return $total;
