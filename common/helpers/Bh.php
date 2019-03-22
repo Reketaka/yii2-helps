@@ -151,4 +151,20 @@ class Bh{
     public static function oneStringAndNumbers($var){
         return preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '',$var );
     }
+
+    /**
+     * Выполняет подсчет по моделям по указанному полю
+     * @param $provider
+     * @param $fieldName
+     * @return int
+     */
+    public static function getTotal($provider, $fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            $total += $item[$fieldName];
+        }
+
+        return $total;
+    }
 }
