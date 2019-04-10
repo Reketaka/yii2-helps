@@ -177,6 +177,14 @@ class UserController extends Controller{
         ];
     }
 
+    public function actionDelete($id){
+        $user = $this->findModel($id);
+
+        $user->delete();
+
+        return $this->redirect(['/usermanager/user/index']);
+    }
+
     public function actionRemoveGroupFromUser($userId, $groupId){
 
         Yii::$app->response->format = Response::FORMAT_JSON;
