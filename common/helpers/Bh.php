@@ -2,6 +2,8 @@
 
 namespace reketaka\helps\common\helpers;
 
+use yii\db\ActiveRecord;
+use yii\helpers\Console;
 use yii\helpers\VarDumper;
 use Yii;
 
@@ -174,5 +176,41 @@ class Bh{
         }
 
         return $total;
+    }
+
+    /**
+     * Эмуляция функции ActiveRecord::deleteAll(['somthing'=>23])
+     * Только находит все модели и запускает удаление $model->delete();
+     * если запускается из под консоли выводит информационные сообщения
+     * @param $modelClass ActiveRecord
+     * @param $whereData
+     */
+    public static function deleteAll($modelClass, $whereData){
+        $isConsole = \Yii::$app instanceof \yii\console\Application;
+
+        if(!$items = $modelClass::findAll($whereData)){
+
+            if($isConsole) {
+                echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_YELLOW]) . " не найденно записей для удаления".PHP_EOL;
+            }
+
+            return false;
+        }
+
+        if($isConsole) {
+            echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_GREEN]) . " найденно ".Console::ansiFormat(($count =count($items)), [Console::FG_GREEN])." записей для удаления".PHP_EOL;
+        }
+
+        foreach($items as $item){
+            $item->delete();
+        }
+
+        if($isConsole) {
+            echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_GREEN]) . " удаленно ".Console::ansiFormat($count, [Console::FG_GREEN])." записей".PHP_EOL;
+        }
+
+
+        return true;
+
     }
 }
