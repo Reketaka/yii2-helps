@@ -185,19 +185,19 @@ class Bh{
      * @param $modelClass ActiveRecord
      * @param $whereData
      */
-    public static function deleteAll($modelClass, $whereData){
+    public static function deleteAll($modelClass, $whereData, $outputConsole = false){
         $isConsole = \Yii::$app instanceof \yii\console\Application;
 
         if(!$items = $modelClass::findAll($whereData)){
 
-            if($isConsole) {
+            if($isConsole && $outputConsole) {
                 echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_YELLOW]) . " не найденно записей для удаления".PHP_EOL;
             }
 
             return false;
         }
 
-        if($isConsole) {
+        if($isConsole && $outputConsole) {
             echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_GREEN]) . " найденно ".Console::ansiFormat(($count =count($items)), [Console::FG_GREEN])." записей для удаления".PHP_EOL;
         }
 
@@ -205,7 +205,7 @@ class Bh{
             $item->delete();
         }
 
-        if($isConsole) {
+        if($isConsole && $outputConsole) {
             echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_GREEN]) . " удаленно ".Console::ansiFormat($count, [Console::FG_GREEN])." записей".PHP_EOL;
         }
 
