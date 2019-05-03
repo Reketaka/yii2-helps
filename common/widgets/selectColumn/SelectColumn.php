@@ -86,6 +86,11 @@ class SelectColumn extends Column
      */
     protected function renderDataCellContent($model, $key, $index)
     {
+        if($this->attributeSetUrl){
+            $this->attributeSetUrl = str_replace(urlencode('{id}'), $key, $this->attributeSetUrl);
+        }
+
+
         if(!$setAttributeUrl = $this->attributeSetUrl){
             $setAttributeUrl = Url::toRoute([\Yii::$app->controller->id.'/set-attribute', 'id'=> (string) $key, 'attributeName'=>$this->attributeName, 'value'=>'']);
         }
