@@ -4,6 +4,7 @@
 namespace reketaka\helps\common\controllers;
 
 use yii\db\ColumnSchemaBuilder;
+use yii\db\Schema;
 
 class Migration extends \yii\db\Migration{
 
@@ -21,6 +22,11 @@ class Migration extends \yii\db\Migration{
             }
         }
         $this->endCommand($time);
+    }
+
+    public function string($length = null)
+    {
+        return $this->getDb()->getSchema()->createColumnSchemaBuilder(Schema::TYPE_STRING, $length)->null();
     }
 
 
