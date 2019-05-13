@@ -9,6 +9,38 @@ use Yii;
 
 class Bh{
 
+    public static function appendWordToMaxLength($ms, $maxLength){
+        if(mb_strlen($ms) < $maxLength){
+            for($a = 0;($maxLength - mb_strlen($ms));$a++){
+                $ms .= ' ';
+            }
+        }
+
+        return $ms;
+    }
+    /**
+     * Возвращает длину самого длинного слова
+     * @param $items
+     */
+    public static function getMaxLengthOfWords($items, $callback = false){
+
+        $maxLength = 0;
+        foreach($items as $item){
+            if(!($callback instanceof \Closure)){
+                $mx = mb_strlen($item);
+            }
+
+            if($callback instanceof \Closure){
+                $mx = mb_strlen($callback($item));
+            }
+
+            if($mx >= $maxLength){
+                $maxLength = $mx;
+            }
+        }
+
+        return $maxLength;
+    }
     /**
      * Возвращает случайный string
      * @param int $length
