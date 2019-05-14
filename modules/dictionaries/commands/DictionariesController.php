@@ -22,7 +22,7 @@ class DictionariesController extends Controller{
 
         $dictionary = new DictionariesName([
             'alias'=>$alias,
-            'title' =>$title
+            'title'=>$title?$title:$alias
         ]);
 
         $dictionary->save();

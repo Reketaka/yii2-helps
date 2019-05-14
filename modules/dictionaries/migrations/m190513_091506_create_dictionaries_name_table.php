@@ -19,6 +19,8 @@ class m190513_091506_create_dictionaries_name_table extends Migration
             'alias' => $this->string()->null(),
             'description' => $this->string()->null(),
         ]);
+
+        $this->createIndex('idx-dictionaries_name-alias', 'dictionaries_name', 'alias', true);
     }
 
     /**

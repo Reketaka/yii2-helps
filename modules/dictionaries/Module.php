@@ -12,5 +12,4 @@ class Module extends \yii\base\Module{
             $this->controllerNamespace = 'reketaka\helps\modules\dictionaries\commands';
         }
     }
-
 }

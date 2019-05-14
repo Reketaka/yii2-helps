@@ -2,7 +2,9 @@
 
 namespace reketaka\helps\modules\dictionaries\models;
 
+use common\helpers\BaseHelper;
 use Yii;
+use yii\base\Event;
 
 /**
  * This is the model class for table "dictionaries_value".
@@ -61,5 +63,17 @@ class DictionariesValue extends \yii\db\ActiveRecord
     public function getDictionary()
     {
         return $this->hasOne(DictionariesName::className(), ['id' => 'dictionary_id']);
+    }
+
+    public function refreshCache(Event $event){
+
+        try{
+            DictionariesHelper::clearCache($event->sender->dictionary->alias);
+        }catch (\Exception $exception){
+            Yii::error($exception->getMessage(), __METHOD__);
+            return false;
+        }
+
+        return true;
     }
 }
