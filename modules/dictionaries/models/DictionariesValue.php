@@ -32,6 +32,14 @@ class DictionariesValue extends \yii\db\ActiveRecord
             [['dictionary_id'], 'integer'],
             [['value'], 'string'],
             [['dictionary_id'], 'exist', 'targetRelation' => 'dictionary', 'skipOnError' => false, 'skipOnEmpty' => false],
+            [['value'], function($attr){
+                if(self::findOne(['dictionary_id'=>$this->dictionary_id, 'value'=>$this->value])){
+                    $this->addError($attr, "Duplicate Value in dictionary");
+                    return false;
+                }
+
+                return true;
+            }]
         ];
     }
 
