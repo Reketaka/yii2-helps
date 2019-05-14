@@ -43,7 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($dictionary = $model->dictionary){
                         return Html::a($dictionary->title, ['/dc/dictionaries-name/view', 'id'=>$dictionary->id]);
                     }
-                }
+                },
+                'alias'
             ],
             'value'
         ]

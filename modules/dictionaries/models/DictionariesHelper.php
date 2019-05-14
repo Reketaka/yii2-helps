@@ -65,7 +65,7 @@ class DictionariesHelper extends Model{
      * @param array $dataValues
      * @return boolean
      */
-    public static function create($alias, $values=[], $title=false){
+    public static function create($alias, $values=[], $title=false, $valueWithAlias=false){
         if(!$values){
             return false;
         }
@@ -85,11 +85,15 @@ class DictionariesHelper extends Model{
             return true;
         }
 
-        foreach($values as $value){
+        foreach($values as $alias=>$value){
             $dictionaryValue = new DictionariesValue([
                 'dictionary_id' => $dictionary->id,
                 'value'=>$value
             ]);
+
+            if($valueWithAlias){
+                $dictionaryValue->alias = $alias;
+            }
 
             $dictionaryValue->save();
         }

@@ -20,7 +20,10 @@ class m190513_093111_create_dictionaries_value_table extends Migration
             'id' => $this->primaryKey(),
             'dictionary_id' => $this->integer(),
             'value' => $this->string()->null(),
+            'alias'=>$this->string()
         ]);
+
+        $this->createIndex('idx-dictionaries_value-alias', 'dictionaries_value', 'alias');
 
         // creates index for column `dictionary_id`
         $this->createIndex(
@@ -45,6 +48,8 @@ class m190513_093111_create_dictionaries_value_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropIndex('idx-dictionaries_value-alias', 'dictionaries_value');
+
         // drops foreign key for table `dictionaries_name`
         $this->dropForeignKey(
             'fk-dictionaries_value-dictionary_id',

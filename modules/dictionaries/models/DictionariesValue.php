@@ -13,6 +13,7 @@ use yii\base\UnknownPropertyException;
  * @property int $id
  * @property int $dictionary_id
  * @property string $value
+ * @property string $alias
  *
  * @property DictionariesName $dictionary
  */
@@ -47,7 +48,7 @@ class DictionariesValue extends \yii\db\ActiveRecord
     {
         return [
             [['dictionary_id'], 'integer'],
-            [['value'], 'string'],
+            [['value', 'alias'], 'string'],
             [['dictionary_id'], 'exist', 'targetRelation' => 'dictionary', 'skipOnError' => false, 'skipOnEmpty' => false],
             [['value'], function($attr){
                 if(self::findOne(['dictionary_id'=>$this->dictionary_id, 'value'=>$this->value])){

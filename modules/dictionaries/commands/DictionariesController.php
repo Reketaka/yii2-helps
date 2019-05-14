@@ -142,7 +142,7 @@ class DictionariesController extends Controller{
      * @param $value
      * @return bool|void
      */
-    public function actionAddValue($dAlias, $value){
+    public function actionAddValue($dAlias, $value, $alias=false){
         if(!$dictionary = DictionariesName::findOne(['alias'=>$dAlias])){
             echo "Справочник не найден".PHP_EOL;
             return;
