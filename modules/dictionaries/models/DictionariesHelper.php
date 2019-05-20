@@ -107,10 +107,10 @@ class DictionariesHelper extends Model{
     /**
      * Возвращает связь со справочникам для реализации связи в моделя ActiveRecord hasOne hasMany
      */
-    public static function getRelationWith(ActiveRecord $model, $dictionaryAlias){
-        return $model->hasOne(DictionariesValue::class, ['id'=>'type_ur_help'])
+    public static function getRelationWith(ActiveRecord $model, $dictionaryAlias, $fieldName){
+        return $model->hasOne(DictionariesValue::class, ['id'=>$fieldName])
             ->innerJoin(['dn'=>DictionariesName::tableName()], ['dictionaries_value.dictionary_id'=>new Expression("dn.id")])
-            ->andOnCondition(['dn.alias'=>$dictionaryAlias]);
+            ->andOnCondition(['dn.alias'=>'per_telephone_status']);
     }
 
 }
