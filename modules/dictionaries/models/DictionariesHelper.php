@@ -3,6 +3,8 @@
 namespace reketaka\helps\modules\dictionaries\models;
 
 use yii\base\Model;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 class DictionariesHelper extends Model{
@@ -100,6 +102,15 @@ class DictionariesHelper extends Model{
 
 
         return true;
+    }
+
+    /**
+     * Возвращает связь со справочникам для реализации связи в моделя ActiveRecord hasOne hasMany
+     */
+    public static function getRelationWith(ActiveRecord $model, $dictionaryAlias){
+        return $model->hasOne(DictionariesValue::class, ['id'=>'type_ur_help'])
+            ->innerJoin(['dn'=>DictionariesName::tableName()], ['dictionaries_value.dictionary_id'=>new Expression("dn.id")])
+            ->andOnCondition(['dn.alias'=>$dictionaryAlias]);
     }
 
 }
