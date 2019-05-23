@@ -32,6 +32,35 @@ class DictionariesHelper extends Model{
     }
 
     /**
+     * Возвращает модель DictionaryValuesValue для значения поля определенного справочника
+     * @param $dictionaryAlias
+     * @param $valueAlias
+     * @return array|bool|DictionariesName|ActiveRecord|null
+     */
+    public static function getValue($dictionaryAlias, $valueAlias){
+
+        $cache = \Yii::$app->cache;
+        $key = ['DictionaryValueOne', $dictionaryAlias, $valueAlias];
+        $key = md5(implode(' ', $key));
+
+        if($cacheData = $cache->get($key)){
+            return $cacheData;
+        }
+
+        if(!$dictionary = DictionariesName::findOne(['alias'=>$dictionaryAlias])){
+            return false;
+        }
+
+        if(!$value = $dictionary->getDictionariesValues()->where(['dictionaries_value.alias'=>$valueAlias])->one()){
+            return false;
+        }
+
+        $cache->set($key, $value);
+
+        return $value;
+    }
+
+    /**
      * Возвращает все значения справчоника в формате ['id'=>'value']
      * @param $alias
      * @return array
