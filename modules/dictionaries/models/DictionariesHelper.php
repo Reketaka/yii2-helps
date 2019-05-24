@@ -139,7 +139,7 @@ class DictionariesHelper extends Model{
     public static function getRelationWith(ActiveRecord $model, $dictionaryAlias, $fieldName){
         return $model->hasOne(DictionariesValue::class, ['id'=>$fieldName])
             ->innerJoin(['dn'=>DictionariesName::tableName()], ['dictionaries_value.dictionary_id'=>new Expression("dn.id")])
-            ->andOnCondition(['dn.alias'=>'per_telephone_status']);
+            ->andOnCondition(['dn.alias'=>$dictionaryAlias]);
     }
 
 }
