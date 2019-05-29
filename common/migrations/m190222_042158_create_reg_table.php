@@ -21,6 +21,8 @@ class m190222_042158_create_reg_table extends Migration
         ]);
 
         $this->addColumn('regedit', 'rel', Schema::TYPE_INTEGER." DEFAULT 0");
+
+        $this->createIndex('idx-regedit-rel', 'regedit', 'rel');
     }
 
     /**
@@ -28,6 +30,7 @@ class m190222_042158_create_reg_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropIndex('idx-regedit-rel', 'regedit');
         $this->dropTable('regedit');
         return true;
     }
