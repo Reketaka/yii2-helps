@@ -62,6 +62,28 @@ class DictionariesHelper extends Model{
     }
 
     /**
+     * Производит поиск в значениях справочника указанное значение по указанному полю $whereSearch
+     * возвращает массив искомого значения ['id'=>'', 'value'=>'', 'alias'=>'']
+     * @param $alias
+     * @param $whereSearch
+     * @return boolean|array
+     */
+    public static function findInValues($alias, $value, $whereSearch = 'alias'){
+
+        if(!$values = self::getValues($alias, 'full')){
+            return false;
+        }
+
+        foreach($values as $valueData){
+            if($valueData[$whereSearch] == $value){
+                return $valueData;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Возвращает все значения справчоника в формате [$from=>'value']
      * если указать $from = 'full' ['id'=>['alias'=>'', 'value'=>'']]
      * @param $alias
