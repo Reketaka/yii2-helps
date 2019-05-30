@@ -65,10 +65,10 @@ class DictionariesHelper extends Model{
      * @param $alias
      * @return array
      */
-    public static function getValues($alias){
+    public static function getValues($alias, $from='id'){
 
         $cache = \Yii::$app->cache;
-        $cacheName = self::getCacheName($alias);
+        $cacheName = self::getCacheName($alias.$from);
 
         if($cacheData = $cache->get($cacheName)){
             return $cacheData;
@@ -82,7 +82,7 @@ class DictionariesHelper extends Model{
             return [];
         }
 
-        $result = ArrayHelper::map($values, 'id', 'value');
+        $result = ArrayHelper::map($values, $from, 'value');
 
         $cache->set($cacheName, $result);
 
