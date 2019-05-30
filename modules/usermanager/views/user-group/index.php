@@ -43,7 +43,7 @@ $attributes = [
 <div class="row">
     <div class="col-md-12">
 
-        <p><?=Html::a('Create User Group', ['/usermanager/user-group/create'], ['class'=>'btn btn-success'])?></p>
+        <p><?=Html::a(Yii::t('app', 'create'), ['/usermanager/user-group/create'], ['class'=>'btn btn-success'])?></p>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,

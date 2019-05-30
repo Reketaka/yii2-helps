@@ -17,6 +17,6 @@ use yii\helpers\Html;
 
     <?=$form->field($model, 'alias')->textInput()?>
 
-    <?=Html::submitButton($model->isNewRecord?'Create':'Save', ['class'=>'btn btn-success'])?>
+    <?=Html::submitButton(Yii::t('app', $model->isNewRecord?'create':'save'), ['class'=>'btn btn-success'])?>
 
 <?php ActiveForm::end()?>
