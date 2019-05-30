@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\dictionaries\models;
 
+use common\helpers\BaseHelper;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -61,11 +62,15 @@ class DictionariesHelper extends Model{
     }
 
     /**
-     * Возвращает все значения справчоника в формате ['id'=>'value']
+     * Возвращает все значения справчоника в формате [$from=>'value']
+     * если указать $from = 'full' ['id'=>['alias'=>'', 'value'=>'']]
      * @param $alias
      * @return array
      */
     public static function getValues($alias, $from='id'){
+        if(!in_array($from, ['id', 'alias', 'full'])){
+            return [];
+        }
 
         $cache = \Yii::$app->cache;
         $cacheName = self::getCacheName($alias.$from);
@@ -82,7 +87,22 @@ class DictionariesHelper extends Model{
             return [];
         }
 
-        $result = ArrayHelper::map($values, $from, 'value');
+        $result = [];
+        if($from != 'full'){
+            $result = ArrayHelper::map($values, $from, 'value');
+        }
+
+        if($from == 'full'){
+            $result = ArrayHelper::toArray($values, [
+                'reketaka\helps\modules\dictionaries\models\DictionariesValue'=>[
+                    'id',
+                    'value',
+                    'alias'
+                ]
+            ]);
+            $result = ArrayHelper::index($result, 'id');
+        }
+
 
         $cache->set($cacheName, $result);
 
