@@ -36,7 +36,7 @@ $attributes[] = [
     'template' => '{view}{update}{delete}',
 ];
 
-echo Html::a('Create', ['/usermanager/user/create'], ['class'=>'btn btn-success']);
+echo Html::a(Yii::t('app', 'create'), ['/usermanager/user/create'], ['class'=>'btn btn-success']);
 
 ?>
 
