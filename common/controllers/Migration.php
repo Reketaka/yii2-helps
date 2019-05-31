@@ -4,6 +4,7 @@
 namespace reketaka\helps\common\controllers;
 
 use yii\db\ColumnSchemaBuilder;
+use yii\db\Query;
 use yii\db\Schema;
 
 class Migration extends \yii\db\Migration{
@@ -27,6 +28,24 @@ class Migration extends \yii\db\Migration{
     public function string($length = null)
     {
         return $this->getDb()->getSchema()->createColumnSchemaBuilder(Schema::TYPE_STRING, $length)->null();
+    }
+
+    /**
+     * @param $tableName
+     * @param $keyName
+     * @throws \yii\db\Exception
+     * @return bool;
+     */
+    function isForeignKeyExists($tableName, $keyName)
+    {
+        $cnt = (new Query())
+            ->createCommand()->setRawSql("
+                SELECT COUNT(*) cnt
+                FROM information_schema.table_constraints
+                WHERE constraint_name = '{$keyName}'
+                  AND table_name = '{$tableName}'")
+            ->queryOne()['cnt'];
+        return ($cnt != 0);
     }
 
 
