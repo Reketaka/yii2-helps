@@ -68,19 +68,23 @@ class DictionariesHelper extends Model{
      * @param $whereSearch
      * @return boolean|array
      */
-    public static function findInValues($alias, $value, $whereSearch = 'alias'){
+    public static function findInValues($alias, $value, $whereSearch = 'alias', $fieldReturn = 'full'){
+        if(!in_array($fieldReturn, ['full', 'id', 'alias', 'value'])){
+            return [];
+        }
+
 
         if(!$values = self::getValues($alias, 'full')){
-            return false;
+            return [];
         }
 
         foreach($values as $valueData){
             if($valueData[$whereSearch] == $value){
-                return $valueData;
+                return $fieldReturn == 'full'?$valueData:$valueData[$fieldReturn];
             }
         }
 
-        return false;
+        return [];
     }
 
     /**
