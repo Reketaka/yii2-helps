@@ -3,10 +3,13 @@
 namespace reketaka\helps\modules\dictionaries\models;
 
 use common\helpers\BaseHelper;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Console;
 
 class DictionariesHelper extends Model{
 
@@ -186,6 +189,127 @@ class DictionariesHelper extends Model{
         return $model->hasOne(DictionariesValue::class, ['id'=>$fieldName])
             ->innerJoin(['dn'=>DictionariesName::tableName()], ['dictionaries_value.dictionary_id'=>new Expression("dn.id")])
             ->andOnCondition(['dn.alias'=>$dictionaryAlias]);
+    }
+
+    public static function convertToDictionary($oldTableNameWithStatus, $dictionaryName, $accordance, $dataTableChanges, $debug = true){
+
+
+        $oldStatuses = (new Query())->select(array_values($accordance))->from($oldTableNameWithStatus)->createCommand()->queryAll();
+        $oldStatusesAlias = ArrayHelper::map($oldStatuses, $accordance['alias'], $accordance['title']);
+
+        if(!DictionariesName::findOne(['alias'=>$dictionaryName])){
+            echo "Создаем новый справочник данных ".Console::ansiFormat($dictionaryName, [Console::FG_YELLOW]).PHP_EOL;
+            if(!self::create($dictionaryName, $oldStatusesAlias, $dictionaryName, true)){
+                throw new Exception("Не смогли создать справочник");
+            }
+        }
+
+
+        foreach($oldStatuses as $key=>$oldStatusItem){
+            if(!array_key_exists($oldStatusItem[$accordance['alias']], $oldStatusesAlias)){
+                continue;
+            }
+
+            $newStatusId = self::findInValues($dictionaryName, $oldStatusItem[$accordance['alias']], 'alias', 'id');
+
+            $oldStatuses[$key]['new_id'] = $newStatusId;
+        }
+
+
+        $transaction = \Yii::$app->db->beginTransaction();
+
+//        BaseHelper::dump($oldStatuses);
+        $newStatusDataKeyId = self::getValues($dictionaryName, 'id');
+//        BaseHelper::dump($newStatusData);
+
+        /**
+         * Ищем foreignKey на указанные колонки
+         */
+        foreach($dataTableChanges as $tableName=>$columns) {
+            foreach ($columns as $columnName) {
+
+                $sql = "SELECT
+    TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME, REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
+FROM
+    INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE
+        REFERENCED_TABLE_NAME = '$oldTableNameWithStatus' AND
+        TABLE_NAME = '$tableName' AND
+        REFERENCED_COLUMN_NAME = 'id'";
+
+                $foreignData = \Yii::$app->db->createCommand($sql)->queryOne();
+
+                if(!$foreignData){
+                    continue;
+                }
+
+                echo "Найдена установка foreignKey на колонку ".Console::ansiFormat($columnName, [Console::FG_YELLOW])." в таблице ".Console::ansiFormat($tableName, [Console::FG_YELLOW])." удаляем её".PHP_EOL;
+
+
+                if(!$debug) {
+                    \Yii::$app->db->createCommand()->dropForeignKey($foreignData['CONSTRAINT_NAME'],
+                        $foreignData['TABLE_NAME'])->execute();
+                }
+
+            }
+        }
+
+        try {
+
+            foreach($dataTableChanges as $tableName=>$columns){
+                foreach($columns as $columnName){
+                    echo "Начинаем менять статусы в таблице ".Console::ansiFormat($tableName, [Console::FG_GREEN])." в колонке ".Console::ansiFormat($columnName, [Console::FG_YELLOW]).PHP_EOL;
+
+                    $oldStatusIds = ArrayHelper::getColumn($oldStatuses, 'id');
+                    foreach($oldStatuses as $oldStatusData){
+                        if(array_key_exists($oldStatusData['id'], $newStatusDataKeyId)){
+                            echo Console::ansiFormat("Пропускаем этот статус потому что старый id совпадает с новым", [Console::FG_YELLOW]).PHP_EOL;
+                            continue;
+                        }
+
+                        $sqlUpdate = \Yii::$app->db->createCommand()->update($tableName, [$columnName=>$oldStatusData['id']], "$columnName = {$oldStatusData['new_id']}");
+
+                        echo $sqlUpdate->getRawSql().PHP_EOL;
+
+                        if(!$debug){
+                            $sqlUpdate->execute();
+                        }
+
+                    }
+
+                }
+            }
+
+        }catch (\Exception $exception){
+            $transaction->rollBack();
+        }
+
+        $transaction->commit();
+
+
+        /**
+         * Устанавливаем новые foreignKey
+         */
+        foreach($dataTableChanges as $tableName=>$columns) {
+            foreach ($columns as $columnName) {
+
+                $foreignKeyName = "fk-$tableName-$columnName-".DictionariesValue::tableName()."-id";
+
+                echo "Устанавливаем foreignKey ".Console::ansiFormat($tableName, [Console::FG_YELLOW])." на колонку ".Console::ansiFormat($columnName, [Console::FG_YELLOW])." ссылаемся на таблицу ".Console::ansiFormat(DictionariesValue::tableName(), [Console::FG_YELLOW])." колонка ".Console::ansiFormat("id", [Console::FG_YELLOW]).PHP_EOL;
+
+                if(!$debug) {
+                    \Yii::$app->db->createCommand()->addForeignKey($foreignKeyName, $tableName, $columnName,
+                        DictionariesValue::tableName(), 'id')->execute();
+                }
+
+            }
+        }
+
+
+
+
+//        BaseHelper::dd($oldStatuses);
+
     }
 
 }
