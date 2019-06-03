@@ -44,6 +44,6 @@ class DictionaryBehavior extends Behavior{
     }
 
     public function getDictionaryRelation($field){
-        return DictionariesHelper::getRelationWith($this->owner, 'callback_type', 'type_id');
+        return DictionariesHelper::getRelationWith($this->owner, $this->settings[$field], $field);
     }
 }
