@@ -234,7 +234,7 @@ WHERE
                             continue;
                         }
 
-                        $sqlUpdate = \Yii::$app->db->createCommand()->update($tableName, [$columnName=>$oldStatusData['id']], "$columnName = {$oldStatusData['new_id']}");
+                        $sqlUpdate = \Yii::$app->db->createCommand()->update($tableName, [$columnName=>$oldStatusData['new_id']], "$columnName = {$oldStatusData['id']}");
 
                         echo $sqlUpdate->getRawSql().PHP_EOL;
 
