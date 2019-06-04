@@ -29,6 +29,14 @@ class DictionaryBehavior extends Behavior{
         return $value;
     }
 
+    public function getDictionaryValueAlias($field){
+        if(!$fieldData = $this->getDictionaryData($field)){
+            return null;
+        }
+
+        return $fieldData['alias'];
+    }
+
     public function getDictionaryData($field){
         if(!array_key_exists($field, $this->settings)){
             throw new Exception("Can't find in settings field '$field'");
