@@ -2,9 +2,8 @@
 
 namespace reketaka\helps\common\models;
 
-use Yii;
 
-class DebugModule extends yii\debug\Module
+class DebugModule extends \yii\debug\Module
 {
     private $_basePath;
 
