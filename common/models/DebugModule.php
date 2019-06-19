@@ -12,17 +12,21 @@ class DebugModule extends \yii\debug\Module
 
     protected function checkAccess()
     {
-        try {
-            $user = Yii::$app->getUser();
+        $checkAccess = parent::checkAccess();
 
-            if (($userIdentity = $user->identity) && (in_array($userIdentity->username, $this->usernamesAllows))) {
-                return true;
+        try {
+            if(!$checkAccess) {
+                $user = Yii::$app->getUser();
+
+                if (($userIdentity = $user->identity) && (in_array($userIdentity->username, $this->usernamesAllows))) {
+                    return true;
+                }
             }
         }catch (\Exception $exception){
             Yii::error($exception->getMessage(), __METHOD__);
         }
 
-        return parent::checkAccess();
+        return $checkAccess;
     }
 
     /**
