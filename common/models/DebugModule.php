@@ -10,7 +10,7 @@ class DebugModule extends \yii\debug\Module
 
     public $usernamesAllows = ['superadmin'];
 
-    protected function checkAccess()
+    protected function checkAccess($action = null)
     {
         $checkAccess = parent::checkAccess();
 
