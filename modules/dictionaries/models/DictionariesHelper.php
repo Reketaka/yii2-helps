@@ -187,8 +187,7 @@ class DictionariesHelper extends Model{
      */
     public static function getRelationWith(ActiveRecord $model, $dictionaryAlias, $fieldName){
         return $model->hasOne(DictionariesValue::class, ['id'=>$fieldName])
-            ->innerJoin(['dn'=>DictionariesName::tableName()], ['dictionaries_value.dictionary_id'=>new Expression("dn.id")])
-            ->andOnCondition(['dn.alias'=>$dictionaryAlias]);
+            ->innerJoin(['dn'=>DictionariesName::tableName()], "dictionaries_value.dictionary_id = dn.id AND dn.alias = '$dictionaryAlias'");
     }
 
     public static function convertToDictionary($oldTableNameWithStatus, $dictionaryName, $accordance, $dataTableChanges, $debug = true){
