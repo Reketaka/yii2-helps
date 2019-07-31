@@ -4,6 +4,7 @@ namespace reketaka\helps\common\helpers;
 
 use yii\db\ActiveRecord;
 use yii\helpers\Console;
+use yii\helpers\Html;
 use yii\helpers\VarDumper;
 use Yii;
 
@@ -250,5 +251,31 @@ class Bh{
     {
         return mb_strtoupper(mb_substr($string, 0, 1, $enc), $enc) .
             mb_substr($string, 1, mb_strlen($string, $enc), $enc);
+    }
+
+    public static function getCommonModelBooleanView($attributeName, $value)
+    {
+        return [
+            'attribute' => $attributeName,
+            'format' => 'raw',
+            'value' => function () use ($value) {
+                if ($value) {
+                    return Html::tag('span', null, ['class' => 'glyphicon glyphicon-ok']);
+                }
+
+                return Html::tag('span', null, ['class' => 'glyphicon glyphicon-remove']);
+            }
+        ];
+    }
+
+    public static function getCommonModelAsDecimial($attributeName, $value)
+    {
+        return [
+            'attribute' => $attributeName,
+            'format' => 'raw',
+            'value' => function () use ($value) {
+                return Yii::$app->formatter->asDecimal($value);
+            }
+        ];
     }
 }
