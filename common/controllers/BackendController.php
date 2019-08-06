@@ -2,12 +2,20 @@
 
 namespace reketaka\helps\common\controllers;
 
+use common\models\User;
 use Yii;
 use yii\helpers\Html;
 use yii\web\Controller;
 use reketaka\helps\common\helpers\Bh as BaseHelper;
 
 class BackendController extends Controller{
+
+    /**
+     * @return User|\yii\web\IdentityInterface|null
+     */
+    public function getUserIdentity(){
+        return \Yii::$app->user->identity;
+    }
 
     /**
      * Устанавливает содержимое тега description
