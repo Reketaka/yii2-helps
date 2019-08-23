@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\helpers;
 
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
 use yii\helpers\Html;
 use yii\helpers\VarDumper;
@@ -277,5 +278,33 @@ class Bh{
                 return Yii::$app->formatter->asDecimal($value);
             }
         ];
+    }
+
+    public static function getMaxValueColumn($array, $column, $toMax=false, $returnElem = false){
+
+        if(!$toMax) {
+            $columnData = ArrayHelper::getColumn($array, $column);
+            return max($columnData);
+        }
+
+        $resultMax = 0;
+        $resultKey = null;
+        foreach($array as $key=>$arrayData){
+            $arrayValue = is_object($arrayData)?$arrayData->{$column}:$arrayData[$column];
+
+            if(($toMax >= $arrayValue) && ($resultMax <= $arrayValue)){
+                $resultMax = $arrayValue;
+                $resultKey = $key;
+            }
+
+        }
+
+        if($returnElem){
+            return [$resultKey=>$array[$resultKey]];
+        }
+
+
+
+        return $resultMax;
     }
 }
