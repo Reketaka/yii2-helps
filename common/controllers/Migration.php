@@ -9,6 +9,27 @@ use yii\db\Schema;
 
 class Migration extends \yii\db\Migration{
 
+    public function addColumn($table, $column, $type)
+    {
+        $time = $this->beginCommand("add column $column $type to table $table");
+        $this->db->createCommand()->addColumn($table, $column, $type)->execute();
+        if ($type instanceof ColumnSchemaBuilder && $type->comment !== null) {
+            $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();
+        }
+
+        if($type->isIndex()){
+            $name = "idx-$table-$column";
+            $unique = $type->getUniqIndex();
+
+            $time = $this->beginCommand('create' . ($unique ? ' unique' : '') . " index $name on $table (" . $column . ')');
+            $this->db->createCommand()->createIndex($name, $table, $column, $unique)->execute();
+            $this->endCommand($time);
+        }
+
+
+        $this->endCommand($time);
+    }
+
     public function createTable($table, $columns, $options = null)
     {
         if($this->db->driverName == 'mysql' && !$options){
