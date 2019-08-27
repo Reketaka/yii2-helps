@@ -37,12 +37,26 @@ class Migration extends \yii\db\Migration{
         }
 
         $time = $this->beginCommand("create table $table");
+
+
+
         $this->db->createCommand()->createTable($table, $columns, $options)->execute();
         foreach ($columns as $column => $type) {
             if ($type instanceof ColumnSchemaBuilder && $type->comment !== null) {
                 $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();
             }
+
+            if($type->isIndex()){
+                $name = "idx-$table-$column";
+                $unique = $type->getUniqIndex();
+
+                $time = $this->beginCommand('create' . ($unique ? ' unique' : '') . " index $name on $table (" . $column . ')');
+                $this->db->createCommand()->createIndex($name, $table, $column, $unique)->execute();
+                $this->endCommand($time);
+            }
         }
+
+
         $this->endCommand($time);
     }
 
