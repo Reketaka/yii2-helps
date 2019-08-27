@@ -54,6 +54,11 @@ Usage
     'components' => [
         'regedit'=>[
             'class'=>'reketaka\helps\common\models\Regedit'
+        ],
+        'db'=>[
+            'schemaMap' => [
+                'mysql'=>'reketaka\helps\common\models\db\mysql\Schema'
+            ]
         ]
     ]
 ```
