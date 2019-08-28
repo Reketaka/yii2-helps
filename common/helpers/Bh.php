@@ -214,15 +214,25 @@ class Bh{
 
     /**
      * Эмуляция функции ActiveRecord::deleteAll(['somthing'=>23])
+     * Если нужно удалить все записи оставляйте $whereData = []
      * Только находит все модели и запускает удаление $model->delete();
      * если запускается из под консоли выводит информационные сообщения
      * @param $modelClass ActiveRecord
      * @param $whereData
      */
-    public static function deleteAll($modelClass, $whereData, $outputConsole = false){
+    public static function deleteAll($modelClass, $whereData = [], $outputConsole = false){
         $isConsole = \Yii::$app instanceof \yii\console\Application;
 
-        if(!$items = $modelClass::findAll($whereData)){
+
+        if($whereData){
+            $items = $modelClass::findAll($whereData);
+        }
+
+        if(!$whereData){
+            $items = $modelClass::find()->all();
+        }
+
+        if(!$items){
 
             if($isConsole && $outputConsole) {
                 echo "По модели " . Console::ansiFormat($modelClass, [Console::FG_YELLOW]) . " не найденно записей для удаления".PHP_EOL;
