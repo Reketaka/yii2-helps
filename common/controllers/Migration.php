@@ -17,7 +17,8 @@ class Migration extends \yii\db\Migration{
             $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();
         }
 
-        if($type->isIndex()){
+
+        if(method_exists($type, "isIndex") && $type->isIndex()){
             $name = "idx-$table-$column";
             $unique = $type->getUniqIndex();
 
@@ -46,7 +47,7 @@ class Migration extends \yii\db\Migration{
                 $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();
             }
 
-            if($type->isIndex()){
+            if(method_exists($type, "isIndex") && $type->isIndex()){
                 $name = "idx-$table-$column";
                 $unique = $type->getUniqIndex();
 
