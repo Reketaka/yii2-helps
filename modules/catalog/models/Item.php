@@ -7,6 +7,9 @@ use reketaka\helps\common\models\CommonRecord;
 
 class Item extends CommonRecord{
 
+    CONST EVENT_CHANGE_PRICE = 'eventChangePrice';
+    CONST EVENT_CHANGE_AMOUNT = 'eventChangeAmount';
+
     public $behaviorTimestamp = true;
 
     public static function tableName()
