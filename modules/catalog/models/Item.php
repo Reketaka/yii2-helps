@@ -6,7 +6,7 @@ use common\helpers\BaseHelper;
 use reketaka\helps\common\models\CommonRecord;
 use yii\helpers\ArrayHelper;
 
-class Item extends CommonRecord{
+class Item extends BaseModel {
 
     CONST EVENT_CHANGE_PRICE = 'eventChangePrice';
     CONST EVENT_CHANGE_AMOUNT = 'eventChangeAmount';
@@ -45,6 +45,17 @@ class Item extends CommonRecord{
      */
     public function getItemStores(){
         return $this->hasMany(ItemStore::class, ['item_id'=>'id']);
+    }
+
+    /**
+     * Возвращает количество товара на определенном складе
+     * @param $id
+     * @return int
+     */
+    public function getAmountStoreById($id){
+        $itemStores = ArrayHelper::index($this->itemsStores, 'id');
+
+        return isset($itemStores[$id])?$itemStores[$id]->amount:0;
     }
 
     /**
