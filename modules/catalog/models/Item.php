@@ -72,6 +72,8 @@ class Item extends CommonRecord{
 
         $this->total_amount = $allAmount;
         $this->save();
+
+        return $this;
     }
 
     public function beforeDelete()
