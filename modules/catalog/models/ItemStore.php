@@ -33,6 +33,7 @@ class ItemStore extends CommonRecord{
             'item_id'=>\Yii::t('app', 'item_id'),
             'store_id'=>\Yii::t('app', 'store_id'),
             'uid'=>\Yii::t('app','uid'),
+            'amount'=>\Yii::t('app','amount'),
             'created_at'=>\Yii::t('app','created_at'),
             'updated_at'=>\Yii::t('app', 'updated_at')
         ];

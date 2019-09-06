@@ -13,6 +13,10 @@ Event::on(Item::class, Item::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalo
 //Event::on(Item::class, Item::EVENT_CHANGE_PRICE, []);
 //Event::on(Item::class, Item::EVENT_CHANGE_AMOUNT, []):
 
-
+$item = (new Item())
+    ->setAmountStore([
+        'uid'=>4,
+        'uid2'=>6
+    ]);
 
 ?>

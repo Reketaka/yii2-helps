@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\catalog\models;
 
 use common\helpers\BaseHelper;
 use reketaka\helps\common\models\CommonRecord;
+use yii\helpers\ArrayHelper;
 
 class Item extends CommonRecord{
 
@@ -44,6 +45,33 @@ class Item extends CommonRecord{
      */
     public function getItemStores(){
         return $this->hasMany(ItemStore::class, ['item_id'=>'id']);
+    }
+
+    /**
+     * Изменяет количество товара на определенных складах ['uid_store'=>34, 'uid_store2'=>54]
+     * @param $storeData
+     * @throws \yii\base\Exception
+     */
+    public function setAmountStore($storeData){
+
+        foreach($storeData as $storeUid=>$amount){
+            if(!$store = Store::findOne(['uid'=>$storeData])){
+                continue;
+            }
+
+            $itemStore = ItemStore::getOrCreate([
+                'item_id'=>$this->id,
+                'store_id'=>$store->id
+            ]);
+
+            $itemStore->amount = $amount;
+            $itemStore->save();
+        }
+
+        $allAmount = array_sum($storeData);
+
+        $this->total_amount = $allAmount;
+        $this->save();
     }
 
     public function beforeDelete()
