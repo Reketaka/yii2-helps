@@ -7,6 +7,7 @@ use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\StringHelper;
+use yii\log\Logger;
 
 class CommonRecord extends ActiveRecord{
 
@@ -135,6 +136,15 @@ class CommonRecord extends ActiveRecord{
         }
 
         return User::findOne(['user_id'=>$this->owner_id]);
+    }
+
+    /**
+     * Если есть ошибки валидации записывает их в лог
+     */
+    public function ifErrorLog(){
+        if($this->hasErrors()){
+            \Yii::getLogger()->log($this->errors, Logger::LEVEL_TRACE);
+        }
     }
 
 

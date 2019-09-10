@@ -10,6 +10,7 @@ class Module extends \yii\base\Module{
     CONST TYPE = 'type';
 
     public $tableItemFields = [];
+    public $defaultRoute = ['item/index'];
 
     public function init(){
         parent::init();
