@@ -9,8 +9,10 @@ class Module extends \yii\base\Module{
 
     CONST TYPE = 'type';
 
+    public static $tablePrefix = '';
+
     public $tableItemFields = [];
-    public $defaultRoute = ['item/index'];
+    public $defaultRoute = ['default/index'];
 
     public function init(){
         parent::init();
@@ -32,9 +34,6 @@ class Module extends \yii\base\Module{
             ],
             'uid'=>[
                 self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_STRING)->null()->asIndex()
-            ],
-            'price'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_FLOAT)->defaultValue(0)
             ],
             'total_amount'=>[
                 self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_INTEGER)->defaultValue(0)

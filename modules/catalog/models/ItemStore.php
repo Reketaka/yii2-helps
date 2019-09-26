@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\catalog\models;
 
 
 use reketaka\helps\common\models\CommonRecord;
+use reketaka\helps\modules\catalog\Module;
 
 class ItemStore extends CommonRecord{
 
@@ -11,7 +12,7 @@ class ItemStore extends CommonRecord{
 
     public static function tableName()
     {
-        return 'reketaka_item_store';
+        return Module::$tablePrefix.'item_store';
     }
 
     /**

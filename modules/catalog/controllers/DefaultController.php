@@ -1,0 +1,15 @@
+<?php
+
+namespace reketaka\helps\modules\catalog\controllers;
+
+use yii\web\Controller;
+
+class DefaultController extends Controller{
+
+    public function actionIndex(){
+
+
+        return $this->render('index');
+    }
+
+}

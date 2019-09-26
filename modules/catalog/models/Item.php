@@ -3,7 +3,7 @@
 namespace reketaka\helps\modules\catalog\models;
 
 use common\helpers\BaseHelper;
-use reketaka\helps\common\models\CommonRecord;
+use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
 
 class Item extends BaseModel {
@@ -15,7 +15,7 @@ class Item extends BaseModel {
 
     public static function tableName()
     {
-        return "reketaka_catalog_item";
+        return Module::$tablePrefix."catalog_item";
     }
 
     public function rules(){
@@ -33,7 +33,6 @@ class Item extends BaseModel {
         return [
             'title'=>\Yii::t('app', 'title'),
             'uid'=>\Yii::t('app','uid'),
-            'price'=>\Yii::t('app', 'price'),
             'total_amount'=>\Yii::t('app', 'total_amount'),
             'created_at'=>\Yii::t('app','created_at'),
             'updated_at'=>\Yii::t('app', 'updated_at')
@@ -45,6 +44,13 @@ class Item extends BaseModel {
      */
     public function getItemStores(){
         return $this->hasMany(ItemStore::class, ['item_id'=>'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrices(){
+        return $this->hasMany(ItemPrice::class, ['item_id'=>'id']);
     }
 
     /**

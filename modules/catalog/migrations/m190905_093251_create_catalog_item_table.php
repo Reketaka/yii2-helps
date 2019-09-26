@@ -7,7 +7,7 @@ use reketaka\helps\modules\catalog\Module;
 /**
  * Handles the creation of table `reketaka_catalog_item`.
  */
-class m190905_093251_create_reketaka_catalog_item_table extends Migration
+class m190905_093251_create_catalog_item_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,8 @@ class m190905_093251_create_reketaka_catalog_item_table extends Migration
         }
 
 
-        $this->createTable('reketaka_catalog_item', $data);
+
+        $this->createTable(Module::$tablePrefix."catalog_item", $data);
     }
 
     /**
@@ -30,7 +31,7 @@ class m190905_093251_create_reketaka_catalog_item_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('reketaka_catalog_item');
+        $this->dropTable(Module::$tablePrefix."catalog_item");
         return true;
     }
 }
