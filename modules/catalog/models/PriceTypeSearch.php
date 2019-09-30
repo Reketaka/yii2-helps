@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
  */
 class PriceTypeSearch extends PriceType
 {
+    public $behaviorTimestamp = false;
     /**
      * @inheritdoc
      */

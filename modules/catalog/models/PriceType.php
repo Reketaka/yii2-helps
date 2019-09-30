@@ -17,6 +17,7 @@ use reketaka\helps\modules\catalog\Module;
 class PriceType extends BaseModel {
 
     public $behaviorTimestamp = true;
+    public $behaviorAlias = true;
 
     public static function tableName()
     {
@@ -27,7 +28,8 @@ class PriceType extends BaseModel {
         return [
             [['default'], 'integer'],
             [['title', 'alias', 'description'], 'string'],
-            [['uid'], 'unique', 'skipOnEmpty'=>true]
+            [['uid'], 'unique', 'skipOnEmpty'=>true],
+            [['uid'], 'default', 'value'=>null]
         ];
     }
 

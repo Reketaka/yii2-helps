@@ -14,6 +14,8 @@ use yii\web\View;
 
 ?>
 
+<?=Html::a(Yii::t('app', 'create'), ['create'], ['class'=>'btn btn-success'])?>
+
 <?=GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
@@ -23,15 +25,9 @@ use yii\web\View;
         'alias',
         'uid',
         [
-            'attribute'=>'default',
-            'format'=>'raw',
-            'content'=>function($model){
-                if($model->default){
-                    return Html::tag('span', null, ['class'=>'glyphicon glyphicon-ok']);
-                }
-
-                return Html::tag('span', null, ['class'=>'glyphicon glyphicon-remove']);
-            }
+            'class'=>'reketaka\helps\common\widgets\enableColumn\EnableColumn',
+            'enableAttributeName' => 'default',
+            'attributeToggle'=>true,
         ],
         'created_at',
         [
