@@ -18,6 +18,8 @@ use yii\helpers\ArrayHelper;
 
 ?>
 
+<?=Html::a(Yii::t('app','create'), ['create'], ['class'=>'btn btn-success'])?>
+
 <div>
 
     <?=GridView::widget([
@@ -38,7 +40,6 @@ use yii\helpers\ArrayHelper;
                     return implode("<BR>", $text);
                 }
             ],
-            'price',
             'total_amount',
             [
                 'label' => Yii::t('app', 'amount_in_stores'),

@@ -18,8 +18,7 @@ class ItemSearch extends Item
     {
         return [
             [['title', 'uid'], 'string'],
-            [['id', 'total_amount'], 'integer'],
-            [['price'], 'double']
+            [['id', 'total_amount'], 'integer']
         ];
     }
 
@@ -64,7 +63,6 @@ class ItemSearch extends Item
         // grid filtering conditions
         $query->andFilterWhere([
             'id'=>$this->id,
-            'price'=>$this->price,
             'uid'=>$this->uid
         ]);
 

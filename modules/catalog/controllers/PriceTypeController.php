@@ -24,6 +24,7 @@ class PriceTypeController extends Controller{
         $searchModel = new PriceTypeSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
+        $this->view->title = "Price Type List";
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -38,6 +39,7 @@ class PriceTypeController extends Controller{
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
         }
+
 
         $this->view->title = 'Create new PriceType';
 
@@ -54,6 +56,8 @@ class PriceTypeController extends Controller{
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
         }
+
+        $this->view->title = "Update PriceType #{$model->id}";
 
         return $this->render('update', [
             'model'=>$model
