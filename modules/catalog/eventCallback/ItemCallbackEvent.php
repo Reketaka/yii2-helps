@@ -2,13 +2,13 @@
 
 namespace reketaka\helps\modules\catalog\eventCallback;
 
-use common\models\CommonModel;
 use reketaka\helps\modules\catalog\events\AmountChangeEvent;
 use reketaka\helps\modules\catalog\events\PriceChangeEvent;
 use reketaka\helps\modules\catalog\models\Item;
 use yii\base\Event;
+use yii\base\Model;
 
-class ItemCallbackEvent extends CommonModel{
+class ItemCallbackEvent extends Model {
 
     public static function changeAttribute(Event $event){
         /**
