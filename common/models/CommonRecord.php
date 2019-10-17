@@ -147,6 +147,15 @@ class CommonRecord extends ActiveRecord{
         }
     }
 
+    public function getErrorsString($delemiter = ', '){
+
+        $text = [];
+        foreach($this->getErrors() as $attribute=>$errors){
+            $text[] = implode($delemiter, $errors);
+        }
+        return implode($delemiter, $text);
+    }
+
 
 
 }
