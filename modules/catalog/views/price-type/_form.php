@@ -3,6 +3,7 @@
 use yii\web\View;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use reketaka\helps\modules\catalog\Module;
 
 /**
  * @var $this View
@@ -42,6 +43,6 @@ use yii\helpers\Html;
     </div>
 
 
-    <?=Html::submitButton(Yii::t('app', $model->isNewRecord?"create":"update"), ['class'=>'btn btn-success'])?>
+    <?=Html::submitButton(Module::t('app', $model->isNewRecord?"create":"update"), ['class'=>'btn btn-success'])?>
 
 <?php ActiveForm::end()?>

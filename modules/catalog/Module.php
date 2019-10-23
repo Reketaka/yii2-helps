@@ -12,7 +12,7 @@ class Module extends \yii\base\Module{
     public static $tablePrefix = '';
 
     public $tableItemFields = [];
-    public $defaultRoute = ['default/index'];
+    public $defaultRoute = 'default/index';
 
     public function init(){
         parent::init();
@@ -20,6 +20,8 @@ class Module extends \yii\base\Module{
         if (\Yii::$app instanceof \yii\console\Application) {
             $this->controllerNamespace = 'reketaka\helps\modules\catalog\commands';
         }
+
+        $this->registerTranslations();
     }
 
     public function getItemsFields(){
@@ -54,4 +56,22 @@ class Module extends \yii\base\Module{
 
         return $this->tableItemFields;
     }
+
+    public function registerTranslations()
+    {
+        \Yii::$app->i18n->translations['modules/catalog/*'] = [
+            'class'          => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath'       => \Yii::getAlias('@reketaka/helps/modules/catalog/messages'),
+            'fileMap'=>[
+                'modules/catalog/app'=>'app.php'
+            ]
+        ];
+    }
+
+    public static function t($category, $message, $params = [], $language = null)
+    {
+        return \Yii::t('modules/catalog/' . $category, $message, $params, $language);
+    }
+
 }

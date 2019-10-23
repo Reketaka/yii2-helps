@@ -27,10 +27,10 @@ class ItemPrice extends BaseModel {
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
+            'title'=>Module::t('app', 'title'),
             'alias'=>\Yii::t('app','alias'),
             'description'=>\Yii::t('app', 'description'),
-            'uid'=>\Yii::t('app', 'uid')
+            'uid'=>Module::t('app', 'uid')
         ];
     }
 
