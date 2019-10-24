@@ -4,6 +4,20 @@ namespace reketaka\helps\modules\catalog\models;
 
 use reketaka\helps\modules\catalog\Module;
 
+/**
+ * Class ItemPrice
+ * @package reketaka\helps\modules\catalog\models
+ *
+ * @property $id
+ * @property $item_id
+ * @property $price_type_id
+ * @property $price
+ * @property $created_at
+ * @property $updated_at
+ *
+ * @property $item Item
+ * @property $priceType PriceType
+ */
 class ItemPrice extends BaseModel {
 
     public $behaviorTimestamp = true;
@@ -27,10 +41,11 @@ class ItemPrice extends BaseModel {
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
-            'alias'=>\Yii::t('app','alias'),
-            'description'=>\Yii::t('app', 'description'),
-            'uid'=>\Yii::t('app', 'uid')
+            'item_id'=>Module::t('app', 'item_id'),
+            'price_type_id'=>Module::t('app', 'price_type_id'),
+            'price'=>Module::t('app', 'price'),
+            'created_at'=>Module::t('app', 'created at'),
+            'updated_at'=>Module::t('app', 'updated at'),
         ];
     }
 

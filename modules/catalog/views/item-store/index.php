@@ -24,15 +24,25 @@ use yii\web\View;
     'filterModel' => $searchModel,
     'columns'=>[
         'id',
-        'title',
-        'alias',
-        'uid',
         [
-            'class'=>'reketaka\helps\common\widgets\enableColumn\EnableColumn',
-            'enableAttributeName' => 'default',
-            'attributeToggle'=>true,
+            'attribute'=>'item_id',
+            'format'=>'raw',
+            'content'=>function($model){
+                if($item = $model->item){
+                    return Html::a($item->title, ['item/view', 'id'=>$item->id]);
+                }
+            }
         ],
-        'created_at',
+        [
+            'attribute'=>'store_id',
+            'format'=>'raw',
+            'content'=>function($model){
+                if($store = $model->store){
+                    return Html::a($store->title, ['store/view', 'id'=>$store->id]);
+                }
+            }
+        ],
+        'amount',
         [
             'class' => 'yii\grid\ActionColumn',
             'options'=>[

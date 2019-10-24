@@ -25,13 +25,7 @@ use yii\web\View;
     'columns'=>[
         'id',
         'title',
-        'alias',
         'uid',
-        [
-            'class'=>'reketaka\helps\common\widgets\enableColumn\EnableColumn',
-            'enableAttributeName' => 'default',
-            'attributeToggle'=>true,
-        ],
         'created_at',
         [
             'class' => 'yii\grid\ActionColumn',

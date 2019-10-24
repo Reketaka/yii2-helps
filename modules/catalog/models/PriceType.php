@@ -36,10 +36,13 @@ class PriceType extends BaseModel {
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
-            'alias'=>\Yii::t('app','alias'),
-            'description'=>\Yii::t('app', 'description'),
-            'uid'=>\Yii::t('app', 'uid')
+            'title'=>Module::t('app', 'title'),
+            'alias'=>Module::t('app','alias'),
+            'description'=>Module::t('app', 'description'),
+            'uid'=>Module::t('app', 'uid'),
+            'default'=>Module::t('app', 'default'),
+            'created_at'=>Module::t('app', 'created at'),
+            'updated_at'=>Module::t('app', 'updated at'),
         ];
     }
 

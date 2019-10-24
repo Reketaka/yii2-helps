@@ -1,0 +1,46 @@
+<?php
+namespace reketaka\helps\modules\catalog\bootstrap;
+
+use reketaka\helps\modules\catalog\models\PriceType;
+use reketaka\helps\modules\catalog\models\Store;
+use reketaka\helps\modules\catalog\models\Item;
+use reketaka\helps\modules\catalog\models\ItemStore;
+use yii\base\BootstrapInterface;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+
+class Bootstrap implements BootstrapInterface
+{
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+
+        Event::on(Item::class, Item::EVENT_AFTER_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\ItemCallbackEvent', 'changeAttribute']);
+        Event::on(Item::class, Item::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\ItemCallbackEvent', 'changeAttribute']);
+
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_DELETE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+    }
+}
+
+
+
+//Event::on(Item::class, Item::EVENT_CHANGE_PRICE, []);
+//Event::on(Item::class, Item::EVENT_CHANGE_AMOUNT, []):
+
+//$store = Store::getOrCreate([
+//    'uid'=>'32323',
+//    'title'=>'Склад №1'
+//]);
+//
+//
+//$item = Item::getByUid("34234324-23432432")
+//    ->setAmountStore([
+//        'uid'=>4,
+//        'uid2'=>6
+//    ]);
+
+?>

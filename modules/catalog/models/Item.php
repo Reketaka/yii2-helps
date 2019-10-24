@@ -23,7 +23,6 @@ class Item extends BaseModel {
             [['total_amount'], 'integer'],
             [['total_amount'], 'default', 'value'=>0],
             [['title', 'uid'], 'string'],
-            [['price'], 'double'],
             [['uid'], 'unique']
         ];
     }

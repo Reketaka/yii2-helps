@@ -7,6 +7,14 @@ use common\helpers\BaseHelper;
 use reketaka\helps\common\models\CommonRecord;
 use reketaka\helps\modules\catalog\Module;
 
+/**
+ * Class Store
+ * @package reketaka\helps\modules\catalog\models
+ *
+ * @property $title
+ * @property $uid
+ * @property $comment
+ */
 class Store extends CommonRecord{
 
     public $behaviorTimestamp = true;
@@ -19,6 +27,7 @@ class Store extends CommonRecord{
     public function rules(){
         return [
             [['title', 'uid', 'comment'], 'string'],
+            [['uid', 'comment'], 'default', 'value'=>null],
             [['uid'], 'unique']
         ];
     }
@@ -26,11 +35,11 @@ class Store extends CommonRecord{
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
-            'uid'=>\Yii::t('app','uid'),
-            'comment'=>\Yii::t('app', 'comment'),
-            'created_at'=>\Yii::t('app','created_at'),
-            'updated_at'=>\Yii::t('app', 'updated_at')
+            'title'=>Module::t('app', 'title'),
+            'uid'=>Module::t('app','uid'),
+            'comment'=>Module::t('app', 'comment'),
+            'created_at'=>Module::t('app','created at'),
+            'updated_at'=>Module::t('app', 'updated at')
         ];
     }
 
