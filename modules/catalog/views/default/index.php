@@ -14,9 +14,11 @@ use yii\web\View;use yii\widgets\Menu;
 
     <?=Menu::widget([
         'items' => [
-            ['label'=>'Типы цен', 'url'=>['/catalog/price-type/index']],
-            ['label'=>'Товары', 'url'=>['/catalog/item/index']],
-            ['label'=>'Склады', 'url'=>['/catalog/store/index']]
+            ['label'=>'Типы цен', 'url'=>['price-type/index']],
+            ['label'=>'Товары', 'url'=>['item/index']],
+            ['label'=>'Склады', 'url'=>['store/index']],
+            ['label'=>'Количество товаров на складах', 'url'=>['item-store/index']],
+            ['label'=>'Цены товаров', 'url'=>['item-price/index']]
         ],
     ])?>
 </div>
