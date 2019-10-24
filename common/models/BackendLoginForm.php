@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * Форма авторизации в админке
  *
  */
-class LoginForm extends Model
+class BackendLoginForm extends Model
 {
     public $username;
     public $password;

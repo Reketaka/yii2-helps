@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\helpers;
 
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
 use yii\helpers\Html;
@@ -316,5 +317,54 @@ class Bh{
 
 
         return $resultMax;
+    }
+
+    public static function sendMessageToTelegramAdmin($message, $type = 'HTML'){
+        $bot = Yii::$app->bot;
+        $chatId = \Yii::$app->params['telegramChatId'];
+
+        try {
+            $bot->sendMessage($chatId, $message, $type);
+        }catch(\Exception $exception){
+            Yii::error($exception->getMessage(), __METHOD__);
+        }
+    }
+
+    public static function generateSchema($d){
+        $text = Html::beginTag('script', ['type'=>'application/ld+json']).PHP_EOL;
+        $text .= json_encode($d, JSON_UNESCAPED_SLASHES+JSON_UNESCAPED_UNICODE+JSON_PRETTY_PRINT).PHP_EOL;
+        $text .= Html::endTag('script');
+        return $text;
+    }
+
+    /**
+     * Удаляет временную таблицу если таковая существует
+     * @param $tableName
+     * @throws \yii\db\Exception
+     */
+    public static function dropTemporaryTable($tableName){
+        Yii::$app->db->createCommand("DROP TEMPORARY TABLE IF EXISTS $tableName;")->execute();
+    }
+
+    /**
+     * @param $tableName
+     * @param Query $query
+     * @throws \yii\db\Exception
+     */
+    public static function selectQueryIntoTemporary($tableName, $query)
+    {
+        self::selectRawIntoTemporary($tableName, $query->createCommand()->getRawSql());
+    }
+
+    /**
+     * @param $tableName
+     * @param string $rawSqlQuery
+     * @throws \yii\db\Exception
+     */
+    public static function selectRawIntoTemporary($tableName, $rawSqlQuery)
+    {
+        $q = (new Query())->createCommand()->setRawSql('CREATE TEMPORARY TABLE ' . $tableName . ' '
+            . $rawSqlQuery);
+        $q->execute();
     }
 }
