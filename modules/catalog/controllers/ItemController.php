@@ -37,8 +37,41 @@ class ItemController extends Controller{
 
         $this->view->title = "Item Create";
 
+        $fields = Yii::$app->getModule('catalog')->getFields();
+
         return $this->render('create', [
-            'model'=>$model
+            'model'=>$model,
+            'fields'=>$fields
+        ]);
+    }
+
+    public function actionUpdate($id){
+        $model = $this->findModel($id);
+
+        $this->view->title = "Item Update";
+
+        if($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['view', 'id'=>$model->id]);
+        }
+
+        $fields = Yii::$app->getModule('catalog')->getFields();
+
+        return $this->render('update', [
+            'model'=>$model,
+            'fields'=>$fields
+        ]);
+    }
+
+    public function actionView($id){
+        $model = $this->findModel($id);
+
+        $this->view->title = "Item View";
+
+        $fields = Yii::$app->getModule('catalog')->getFields();
+
+        return $this->render('view', [
+            'model'=>$model,
+            'fields'=>$fields
         ]);
     }
 
@@ -48,7 +81,9 @@ class ItemController extends Controller{
      * @throws NotFoundHttpException
      */
     public function findModel($id){
-        if(!$model = Item::findOne($id)){
+
+        $itemClass = Yii::$app->getModule('catalog')->itemClass;
+        if(!$model = $itemClass::findOne($id)){
             throw new NotFoundHttpException('Item not found');
         }
 

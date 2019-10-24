@@ -46,12 +46,12 @@ class ItemStore extends CommonRecord{
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
-            'item_id'=>\Yii::t('app', 'item_id'),
-            'store_id'=>\Yii::t('app', 'store_id'),
-            'amount'=>\Yii::t('app','amount'),
-            'created_at'=>\Yii::t('app','created_at'),
-            'updated_at'=>\Yii::t('app', 'updated_at')
+            'title'=>Module::t('app', 'title'),
+            'item_id'=>Module::t('app', 'item_id'),
+            'store_id'=>Module::t('app', 'store_id'),
+            'amount'=>Module::t('app','amount'),
+            'created_at'=>Module::t('app','created_at'),
+            'updated_at'=>Module::t('app', 'updated_at')
         ];
     }
 

@@ -65,6 +65,14 @@ class ItemStoreController extends Controller{
         ]);
     }
 
+    public function actionDelete($id){
+        $model = $this->findModel($id);
+
+        $model->delete();
+
+        return $this->redirect(['index']);
+    }
+
     public function actionView($id){
         $model = $this->findModel($id);
 

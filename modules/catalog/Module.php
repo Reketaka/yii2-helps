@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\catalog;
 
+use function array_keys;
 use common\helpers\BaseHelper;
 use yii\db\Schema;
 
@@ -12,6 +13,7 @@ class Module extends \yii\base\Module{
     public static $tablePrefix = '';
 
     public $tableItemFields = [];
+    public $itemClass = null;
     public $defaultRoute = 'default/index';
 
     public function init(){
@@ -22,6 +24,14 @@ class Module extends \yii\base\Module{
         }
 
         $this->registerTranslations();
+    }
+
+    public function getFields(){
+        if(!$this->tableItemFields){
+            return [];
+        }
+
+        return array_keys($this->tableItemFields);
     }
 
     public function getItemsFields(){

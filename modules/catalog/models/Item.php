@@ -2,10 +2,24 @@
 
 namespace reketaka\helps\modules\catalog\models;
 
-use common\helpers\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Class Item
+ * @package reketaka\helps\modules\catalog\models
+ *
+ * @property $id
+ * @property $title
+ * @property $uid
+ * @property $total_amount
+ * @property $created_at
+ * @property $updated_at
+ *
+ * @property $itemStores ItemStore[]
+ * @property $prices ItemPrice[]
+ */
 class Item extends BaseModel {
 
     CONST EVENT_CHANGE_PRICE = 'eventChangePrice';
@@ -30,11 +44,11 @@ class Item extends BaseModel {
     public function attributeLabels()
     {
         return [
-            'title'=>\Yii::t('app', 'title'),
-            'uid'=>\Yii::t('app','uid'),
-            'total_amount'=>\Yii::t('app', 'total_amount'),
-            'created_at'=>\Yii::t('app','created_at'),
-            'updated_at'=>\Yii::t('app', 'updated_at')
+            'title'=>Module::t('app', 'title'),
+            'uid'=>Module::t('app','uid'),
+            'total_amount'=>Module::t('app', 'total_amount'),
+            'created_at'=>Module::t('app','created at'),
+            'updated_at'=>Module::t('app', 'updated at')
         ];
     }
 
@@ -58,7 +72,7 @@ class Item extends BaseModel {
      * @return int
      */
     public function getAmountStoreById($id){
-        $itemStores = ArrayHelper::index($this->itemsStores, 'id');
+        $itemStores = ArrayHelper::index($this->itemStores, 'store_id');
 
         return isset($itemStores[$id])?$itemStores[$id]->amount:0;
     }
@@ -98,7 +112,9 @@ class Item extends BaseModel {
             return false;
         }
 
-        BaseHelper::deleteAll(ItemStore::class, ['item_id'=>$this->id]);
+        Bh::deleteAll(ItemStore::class, ['item_id'=>$this->id]);
+        Bh::deleteAll(ItemPrice::class, ['item_id'=>$this->id]);
+
 
         return true;
     }

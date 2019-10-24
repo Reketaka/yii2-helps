@@ -2,7 +2,6 @@
 
 namespace reketaka\helps\modules\catalog\eventCallback;
 
-use common\helpers\BaseHelper;
 use reketaka\helps\modules\catalog\models\PriceType;
 use yii\base\Event;
 use yii\base\Model;

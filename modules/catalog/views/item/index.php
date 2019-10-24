@@ -1,5 +1,6 @@
 <?php
 
+use common\models\BaseHelper;
 use yii\web\View;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
@@ -8,6 +9,7 @@ use yii\helpers\Html;
 use reketaka\helps\modules\catalog\models\Item;
 use reketaka\helps\modules\catalog\models\Store;
 use yii\helpers\ArrayHelper;
+use reketaka\helps\modules\catalog\Module;
 
 /**
  * @var $this View
@@ -16,9 +18,10 @@ use yii\helpers\ArrayHelper;
  * @var $stores Store[]
  */
 
+
 ?>
 
-<?=Html::a(Yii::t('app','create'), ['create'], ['class'=>'btn btn-success'])?>
+<?=Html::a(Module::t('app','create'), ['create'], ['class'=>'btn btn-success'])?>
 
 <div>
 
@@ -37,12 +40,13 @@ use yii\helpers\ArrayHelper;
                     $text = [];
                     $text[] = $model->getAttributeLabel('id')." ".Html::tag('b', $model->id);
                     $text[] = $model->getAttributeLabel('uid')." ".Html::tag('b', $model->uid);
+                    $text[] = $model->getAttributeLabel('title')." ".Html::tag('b', $model->title);
                     return implode("<BR>", $text);
                 }
             ],
             'total_amount',
             [
-                'label' => Yii::t('app', 'amount_in_stores'),
+                'label' => Module::t('app', 'amount_in_stores'),
                 'format'=>'raw',
                 'content' => function($model)use($stores){
                     /**
@@ -50,7 +54,7 @@ use yii\helpers\ArrayHelper;
                      */
                     $text = [];
                     foreach($stores as $store){
-                        $text[] = Html::tag('b', $store->title).":".$model->getAmountStoreById($store->id);
+                        $text[] = Html::tag('b', $store->title).": ".$model->getAmountStoreById($store->id);
                     }
 
                     return implode("<BR>", $text);

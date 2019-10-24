@@ -23,6 +23,10 @@ class Bootstrap implements BootstrapInterface
         Event::on(PriceType::class, PriceType::EVENT_AFTER_DELETE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
         Event::on(PriceType::class, PriceType::EVENT_AFTER_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
         Event::on(PriceType::class, PriceType::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+
+        Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
+        Event::on(ItemStore::class, ItemStore::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'addTotalAmount']);
+        Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
     }
 }
 
