@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\catalog\controllers;
 
 use reketaka\helps\modules\catalog\models\Item;
 use reketaka\helps\modules\catalog\models\ItemSearch;
+use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\Store;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -18,11 +19,13 @@ class ItemController extends Controller{
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $stores = Store::find()->all();
+        $priceTypes = PriceType::find()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'stores'=>$stores
+            'stores'=>$stores,
+            'priceTypes'=>$priceTypes
         ]);
 
     }

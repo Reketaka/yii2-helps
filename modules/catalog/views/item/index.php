@@ -1,6 +1,7 @@
 <?php
 
 use common\models\BaseHelper;
+use reketaka\helps\modules\catalog\models\PriceType;
 use yii\web\View;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
@@ -16,6 +17,7 @@ use reketaka\helps\modules\catalog\Module;
  * @var $dataProvider ActiveDataProvider
  * @var $searchModel ItemSearch
  * @var $stores Store[]
+ * @var $priceTypes PriceType[]
  */
 
 
@@ -55,6 +57,22 @@ use reketaka\helps\modules\catalog\Module;
                     $text = [];
                     foreach($stores as $store){
                         $text[] = Html::tag('b', $store->title).": ".$model->getAmountStoreById($store->id);
+                    }
+
+                    return implode("<BR>", $text);
+                }
+            ],
+            [
+                'label' => Module::t('app', 'amount_in_prices'),
+                'format'=>'raw',
+                'content' => function($model)use($priceTypes){
+                    /**
+                     * @var $model Item
+                     */
+                    $text = [];
+                    foreach($model->prices as $price){
+
+                        $text[] = Html::tag('b', $price->priceType->title).": ".Yii::$app->formatter->asDecimal($price->price);
                     }
 
                     return implode("<BR>", $text);

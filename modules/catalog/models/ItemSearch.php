@@ -42,7 +42,8 @@ class ItemSearch extends Item
     {
         $query = Item::find()
             ->with([
-                'itemStores'
+                'itemStores',
+                'prices.priceType'
             ])
             ->orderBy(['id'=>SORT_DESC]);
 
