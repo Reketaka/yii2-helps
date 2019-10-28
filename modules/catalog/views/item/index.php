@@ -31,7 +31,12 @@ use reketaka\helps\modules\catalog\Module;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id',
+            [
+                'attribute'=>'id',
+                'options'=>[
+                    'style'=>'width:75px;'
+                ],
+            ],
             [
                 'attribute' => 'title',
                 'format'=>'raw',

@@ -13,7 +13,7 @@ class Module extends \yii\base\Module{
     public static $tablePrefix = '';
 
     public $tableItemFields = [];
-    public $itemClass = null;
+    public $itemClass = 'reketaka\helps\modules\catalog\models\Item';
     public $defaultRoute = 'default/index';
 
     public function init(){
