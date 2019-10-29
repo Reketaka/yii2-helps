@@ -1,15 +1,16 @@
 <?php
 
-use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\web\View;
+use kartik\select2\Select2;
 
 /**
  * @var $this View
  * @var $searchModel \reketaka\helps\modules\catalog\models\ItemPriceSearch
  * @var $dataProvider ActiveDataProvider
+ * @var $typePrices[]
  */
 
 
@@ -38,7 +39,12 @@ use yii\web\View;
                 if($priceType = $model->priceType){
                     return Html::a($priceType->title, ['price-type/view', 'id'=>$priceType->id]);
                 }
-            }
+            },
+            'filter'=>Select2::widget([
+                'data'=>$typePrices,
+                'attribute'=>'price_type_id',
+                'model'=>$searchModel
+            ])
         ],
         [
             'attribute'=>'price',

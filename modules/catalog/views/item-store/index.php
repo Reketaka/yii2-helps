@@ -6,11 +6,13 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\web\View;
 use reketaka\helps\modules\catalog\Module;
+use kartik\select2\Select2;
 
 /**
  * @var $this View
  * @var $searchModel PriceTypeSearch
  * @var $dataProvider ActiveDataProvider
+ * @var $stores[]
  */
 
 
@@ -41,7 +43,12 @@ use reketaka\helps\modules\catalog\Module;
                 if($store = $model->store){
                     return Html::a($store->title, ['store/view', 'id'=>$store->id]);
                 }
-            }
+            },
+            'filter'=>Select2::widget([
+                'data'=>$stores,
+                'attribute'=>'store_id',
+                'model'=>$searchModel
+            ])
         ],
         'amount',
         [

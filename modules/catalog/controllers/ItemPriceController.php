@@ -8,6 +8,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
 use reketaka\helps\modules\catalog\models\ItemStoreSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -29,9 +30,12 @@ class ItemPriceController extends Controller{
 
         $this->view->title = "Item Price List";
 
+        $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'typePrices'=>$typePrices
         ]);
 
     }
@@ -45,9 +49,11 @@ class ItemPriceController extends Controller{
 
 
         $this->view->title = 'Create new ItemPrice';
+        $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
         return $this->render('create', [
-            'model'=>$model
+            'model'=>$model,
+            'typePrices'=>$typePrices
         ]);
     }
 
@@ -60,8 +66,11 @@ class ItemPriceController extends Controller{
 
         $this->view->title = "Update ItemPrice #{$model->id}";
 
+        $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
+
         return $this->render('update', [
-            'model'=>$model
+            'model'=>$model,
+            'typePrices'=>$typePrices
         ]);
     }
 

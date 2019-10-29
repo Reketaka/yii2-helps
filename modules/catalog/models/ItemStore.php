@@ -34,6 +34,7 @@ class ItemStore extends CommonRecord{
      */
     public function rules(){
         return [
+            [['item_id', 'store_id', 'amount'], 'required'],
             [['item_id'], 'exist', 'targetRelation'=>'item', 'skipOnEmpty'=>false, 'skipOnError'=>false],
             [['store_id'], 'exist', 'targetRelation'=>'store', 'skipOnEmpty'=>false, 'skipOnError'=>false],
             [['item_id', 'store_id', 'amount'], 'integer'],
