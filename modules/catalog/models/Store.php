@@ -13,6 +13,7 @@ use reketaka\helps\modules\catalog\Module;
  *
  * @property $title
  * @property $uid
+ * @property $alias
  * @property $comment
  */
 class Store extends CommonRecord{
@@ -26,8 +27,8 @@ class Store extends CommonRecord{
 
     public function rules(){
         return [
-            [['title', 'uid', 'comment'], 'string'],
-            [['uid', 'comment'], 'default', 'value'=>null],
+            [['title', 'uid', 'comment', 'alias'], 'string'],
+            [['uid', 'comment', 'alias'], 'default', 'value'=>null],
             [['uid'], 'unique']
         ];
     }

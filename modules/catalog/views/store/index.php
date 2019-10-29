@@ -26,6 +26,7 @@ use reketaka\helps\modules\catalog\Module;
     'columns'=>[
         'id',
         'title',
+        'alias',
         'uid',
         'created_at',
         [

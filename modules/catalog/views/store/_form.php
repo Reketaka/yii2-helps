@@ -16,12 +16,16 @@ use reketaka\helps\modules\catalog\Module;
 
 <div class="row">
 
-    <div class="col-md-6">
+    <div class="col-md-4">
         <?=$form->field($model, 'title')->textInput()?>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
         <?=$form->field($model, 'uid')->textInput()?>
+    </div>
+
+    <div class="col-md-4">
+        <?=$form->field($model, 'alias')->textInput()?>
     </div>
 
 </div>
