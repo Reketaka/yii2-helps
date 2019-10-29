@@ -26,6 +26,7 @@ use kartik\detail\DetailView;
         'attributes'=>[
             'id',
             'title',
+            'alias',
             'uid',
             'comment',
             'created_at',
