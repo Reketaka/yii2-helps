@@ -74,7 +74,8 @@ class Module extends \yii\base\Module{
             'sourceLanguage' => 'en-US',
             'basePath'       => \Yii::getAlias('@reketaka/helps/modules/catalog/messages'),
             'fileMap'=>[
-                'modules/catalog/app'=>'app.php'
+                'modules/catalog/app'=>'app.php',
+                'modules/catalog/title'=>'title.php',
             ]
         ];
     }

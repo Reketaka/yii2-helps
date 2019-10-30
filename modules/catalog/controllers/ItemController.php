@@ -6,6 +6,7 @@ use reketaka\helps\modules\catalog\models\Item;
 use reketaka\helps\modules\catalog\models\ItemSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\Store;
+use reketaka\helps\modules\catalog\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -20,6 +21,8 @@ class ItemController extends Controller{
 
         $stores = Store::find()->all();
         $priceTypes = PriceType::find()->all();
+
+        $this->view->title = Module::t('title', 'item-index');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -38,7 +41,7 @@ class ItemController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = "Item Create";
+        $this->view->title = Module::t('title', 'item-create');
 
         $fields = Yii::$app->getModule('catalog')->getFields();
 
@@ -51,7 +54,7 @@ class ItemController extends Controller{
     public function actionUpdate($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "Item Update";
+        $this->view->title = Module::t('title', 'item-update', ['id'=>$model->id]);
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['view', 'id'=>$model->id]);
@@ -68,13 +71,18 @@ class ItemController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "Item View";
+        $this->view->title = Module::t('title', 'item-view', ['id'=>$model->id]);
 
         $fields = Yii::$app->getModule('catalog')->getFields();
 
+        $itemPrices = $model->getPrices()->with(['priceType'])->all();
+        $itemStores = $model->getItemStores()->with(['store'])->all();
+
         return $this->render('view', [
             'model'=>$model,
-            'fields'=>$fields
+            'fields'=>$fields,
+            'itemPrices'=>$itemPrices,
+            'itemStores'=>$itemStores
         ]);
     }
 

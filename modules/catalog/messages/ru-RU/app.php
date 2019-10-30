@@ -16,5 +16,7 @@ return [
     'update'=>'Изменить',
     'store_id'=>'Склад',
     'amount'=>'Количество',
-    'total_amount'=>'Общее количество'
+    'total_amount'=>'Общее количество',
+    'item_prices'=>'Цены товара',
+    'item_stores'=>'Количество товара'
 ];
