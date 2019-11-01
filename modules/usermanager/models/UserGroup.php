@@ -66,7 +66,7 @@ class UserGroup extends ActiveRecord{
         }
 
         if(!self::findOne(['id'=>$this->id])){
-            return true;
+            return false;
         }
 
         if(!$userInGroup = $user->getUserInGroups()->andWhere(['group_id'=>$this->id])->one()){
