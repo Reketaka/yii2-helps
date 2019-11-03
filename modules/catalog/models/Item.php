@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\catalog\models;
 
+use common\models\BaseHelper;
 use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
@@ -14,11 +15,14 @@ use yii\helpers\ArrayHelper;
  * @property $title
  * @property $uid
  * @property $total_amount
+ * @property $active
+ * @property $catalog_id
  * @property $created_at
  * @property $updated_at
  *
  * @property $itemStores ItemStore[]
  * @property $prices ItemPrice[]
+ * @property $catalog
  */
 class Item extends BaseModel {
 
@@ -34,10 +38,13 @@ class Item extends BaseModel {
 
     public function rules(){
         return [
-            [['total_amount'], 'integer'],
+            [['total_amount', 'catalog_id'], 'integer'],
             [['total_amount'], 'default', 'value'=>0],
             [['title', 'uid'], 'string'],
-            [['uid'], 'unique']
+            [['uid'], 'unique'],
+            [['active'], 'integer'],
+            [['active'], 'default', 'value'=>1],
+            [['catalog_id'], 'default', 'value'=>null]
         ];
     }
 
@@ -46,10 +53,19 @@ class Item extends BaseModel {
         return [
             'title'=>Module::t('app', 'title'),
             'uid'=>Module::t('app','uid'),
+            'active'=>Module::t('app', 'active'),
             'total_amount'=>Module::t('app', 'total_amount'),
+            'catalog_id'=>Module::t('app', 'catalog'),
             'created_at'=>Module::t('app','created at'),
             'updated_at'=>Module::t('app', 'updated at')
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCatalog(){
+        return $this->hasOne(Catalog::class, ['id'=>'catalog_id']);
     }
 
     /**
@@ -71,39 +87,57 @@ class Item extends BaseModel {
      * @param $id
      * @return int
      */
-    public function getAmountStoreById($id){
+    public function getAmountStoreById($id)
+    {
         $itemStores = ArrayHelper::index($this->itemStores, 'store_id');
 
-        return isset($itemStores[$id])?$itemStores[$id]->amount:0;
+        return isset($itemStores[$id]) ? $itemStores[$id]->amount : 0;
     }
 
     /**
-     * Изменяет количество товара на определенных складах ['uid_store'=>34, 'uid_store2'=>54]
-     * @param $storeData
+     * Устанавливает цену для определенного товара по типу цены $uid
+     * @param $uid
+     * @param $price
+     * @return bool
      * @throws \yii\base\Exception
      */
-    public function setAmountStore($storeData){
-
-        foreach($storeData as $storeUid=>$amount){
-            if(!$store = Store::findOne(['uid'=>$storeData])){
-                continue;
-            }
-
-            $itemStore = ItemStore::getOrCreate([
-                'item_id'=>$this->id,
-                'store_id'=>$store->id
-            ]);
-
-            $itemStore->amount = $amount;
-            $itemStore->save();
+    public function setPrice($uid, $price){
+        if(!$priceType = PriceType::getByUid($uid)){
+            return false;
         }
 
-        $allAmount = array_sum($storeData);
+        $itemPrice = ItemPrice::getOrCreate([
+            'price_type_id'=>$priceType->id,
+            'item_id'=>$this->id
+        ]);
 
-        $this->total_amount = $allAmount;
-        $this->save();
+        $itemPrice->price = $price;
+        $itemPrice->save();
 
-        return $this;
+        return true;
+    }
+
+    /**
+     * Изменяет количество товара на определенном складе по UID
+     * @param $uid
+     * @param $amount
+     * @throws \yii\base\Exception
+     */
+    public function setAmountStore($uid, $amount){
+
+        if(!$store = Store::getByUid($uid)){
+            return false;
+        }
+
+        $itemStore = ItemStore::getOrCreate([
+            'store_id'=>$store->id,
+            'item_id'=>$this->id
+        ]);
+
+        $itemStore->amount = $amount;
+        $itemStore->save();
+
+        return true;
     }
 
     public function beforeDelete()

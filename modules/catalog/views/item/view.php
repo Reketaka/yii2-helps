@@ -1,5 +1,6 @@
 <?php
 
+use common\models\BaseHelper;
 use reketaka\helps\modules\catalog\models\PriceType;
 use yii\web\View;
 use kartik\detail\DetailView;
@@ -31,12 +32,25 @@ use reketaka\helps\modules\catalog\models\ItemStore;
         $attributes = [
             'id',
             'title',
+            [
+                'attribute'=>'catalog_id',
+                'format'=>'raw',
+                'value'=>function()use($model){
+                    if($catalog = $model->catalog){
+                        return Html::a($catalog->title, ['catalog/view', 'id'=>$catalog->id]);
+                    }
+                }
+            ],
+            BaseHelper::getCommonModelBooleanView('active', $model->active),
             'total_amount',
-            'created_at',
-            'updated_at'
         ];
 
         $attributes = array_merge($attributes, $fields);
+
+        $attributes = array_merge($attributes, [
+            'created_at',
+            'updated_at'
+        ])
 
     ?>
 

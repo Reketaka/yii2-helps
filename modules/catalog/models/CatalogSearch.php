@@ -9,16 +9,19 @@ use yii\data\ActiveDataProvider;
 /**
  * MenuItemSearch represents the model behind the search form of `backend\models\menu\MenuItem`.
  */
-class ItemSearch extends Item
+class CatalogSearch extends Catalog
 {
+    public $behaviorTimestamp = false;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['title', 'uid'], 'string'],
-            [['id', 'total_amount'], 'integer']
+            [['parent_id'], 'integer'],
+            [['description'], 'string'],
+            [['title', 'alias', 'uid'], 'string'],
         ];
     }
 
@@ -40,11 +43,7 @@ class ItemSearch extends Item
      */
     public function search($params)
     {
-        $query = Item::find()
-            ->with([
-                'itemStores',
-                'prices.priceType'
-            ])
+        $query = Catalog::find()
             ->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
@@ -65,10 +64,10 @@ class ItemSearch extends Item
         $query->andFilterWhere([
             'id'=>$this->id,
             'uid'=>$this->uid,
-            'total_amount'=>$this->total_amount
+            'parent_id'=>$this->parent_id,
+            'title'=>$this->title,
+            'alias'=>$this->alias
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

@@ -21,18 +21,28 @@ use reketaka\helps\modules\catalog\Module;
 
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?=$form->field($model, 'title')->textInput()?>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?=$form->field($model, 'uid')->textInput()?>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?=$form->field($model, 'total_amount')->textInput()?>
         </div>
 
+        <div class="col-md-3">
+            <?=$form->field($model, 'catalog_id')->textInput()?>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <?=$form->field($model, 'active')->checkbox()?>
+        </div>
     </div>
 
     <?php if($fields):?>
