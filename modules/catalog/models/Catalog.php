@@ -41,6 +41,7 @@ class Catalog extends BaseModel
             [['description'], 'string'],
             [['title', 'alias', 'uid'], 'string', 'max' => 255],
             [['description', 'uid'], 'default', 'value'=>null],
+            [['uid'], 'unique'],
             [['parent_id'], 'default', 'value'=>self::ROOT_CATALOG_ID]
         ];
     }

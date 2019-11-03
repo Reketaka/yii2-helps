@@ -5,6 +5,7 @@ namespace reketaka\helps\modules\catalog\controllers;
 use reketaka\helps\common\interfaces\ISetAttribute;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
+use reketaka\helps\modules\catalog\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -24,7 +25,7 @@ class PriceTypeController extends Controller{
         $searchModel = new PriceTypeSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = "Price Type List";
+        $this->view->title = Module::t('title', 'price-type-index');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -40,8 +41,7 @@ class PriceTypeController extends Controller{
             return $this->redirect(['index']);
         }
 
-
-        $this->view->title = 'Create new PriceType';
+        $this->view->title = Module::t('title', 'price-type-create');
 
         return $this->render('create', [
             'model'=>$model
@@ -51,13 +51,12 @@ class PriceTypeController extends Controller{
     public function actionUpdate($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "Update PriceType #{$model->id}";
 
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
         }
 
-        $this->view->title = "Update PriceType #{$model->id}";
+        $this->view->title = Module::t('title', 'price-type-update', ['id'=>$model->id]);
 
         return $this->render('update', [
             'model'=>$model
@@ -67,7 +66,7 @@ class PriceTypeController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "View Price Type #{$model->id}";
+        $this->view->title = Module::t('title', 'price-type-view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

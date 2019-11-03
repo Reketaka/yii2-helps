@@ -5,6 +5,7 @@ namespace reketaka\helps\modules\catalog\controllers;
 use reketaka\helps\modules\catalog\models\Catalog;
 use reketaka\helps\modules\catalog\models\CatalogSearch;
 use reketaka\helps\modules\catalog\models\Store;
+use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -25,7 +26,7 @@ class CatalogController extends Controller{
         $searchModel = new CatalogSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = "Catalog List";
+        $this->view->title = Module::t('title', 'catalog-index');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -41,7 +42,7 @@ class CatalogController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = 'Create new Catalog';
+        $this->view->title = Module::t('title', 'catalog-create');
 
         return $this->render('create', [
             'model'=>$model,
@@ -55,7 +56,7 @@ class CatalogController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = "Update Catalog #{$model->id}";
+        $this->view->title = Module::t('title', 'catalog-update', ['id'=>$model->id]);
 
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
@@ -76,7 +77,7 @@ class CatalogController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "View Catalog #{$model->id}";
+        $this->view->title = Module::t('title', 'catalog-view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model
