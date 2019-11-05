@@ -1,7 +1,6 @@
 <?php
 namespace reketaka\helps\modules\usermanager\models;
 
-use common\helpers\BaseHelper;
 use Yii;
 use yii\base\Model;
 

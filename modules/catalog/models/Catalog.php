@@ -3,7 +3,6 @@
 namespace reketaka\helps\modules\catalog\models;
 
 use Yii;
-use common\models\CommonRecord;
 
 /**
  * This is the model class for table "catalog".

@@ -33,6 +33,10 @@ use kartik\select2\Select2;
             'content'=>function($model){
                 if($model->parent_id == Catalog::ROOT_CATALOG_ID){
                     return Html::tag('label', Module::t('app', 'root_catalog'), ['class'=>'label label-default']);
+                }else{
+                    if($catalog = $model->parent) {
+                        return Html::a($catalog->title, ['view', 'id' => $catalog->id]);
+                    }
                 }
             }
         ],
