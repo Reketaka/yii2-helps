@@ -7,6 +7,7 @@ use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\models\StoreSearch;
+use reketaka\helps\modules\catalog\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -26,7 +27,7 @@ class StoreController extends Controller{
         $searchModel = new StoreSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = "Store List";
+        $this->view->title = Module::t('title', 'store-index');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -42,8 +43,7 @@ class StoreController extends Controller{
             return $this->redirect(['index']);
         }
 
-
-        $this->view->title = 'Create new Store';
+        $this->view->title = Module::t('title', 'store-create');
 
         return $this->render('create', [
             'model'=>$model
@@ -59,7 +59,7 @@ class StoreController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = "Update Store #{$model->id}";
+        $this->view->title = Module::t('title', 'store-update', ['id'=>$model->id]);
 
         return $this->render('update', [
             'model'=>$model
@@ -69,7 +69,7 @@ class StoreController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "View Store #{$model->id}";
+        $this->view->title = Module::t('title', 'store-view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

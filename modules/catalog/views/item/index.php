@@ -30,6 +30,12 @@ use reketaka\helps\modules\catalog\Module;
     <?=GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function($model){
+
+            if(!$model->active){
+                return ['class'=>'danger'];
+            }
+        },
         'columns' => [
             [
                 'attribute'=>'id',

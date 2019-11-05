@@ -16,9 +16,10 @@ use reketaka\helps\modules\catalog\Module;
  * @property $alias
  * @property $comment
  */
-class Store extends CommonRecord{
+class Store extends BaseModel {
 
     public $behaviorTimestamp = true;
+    public $behaviorAlias = true;
 
     public static function tableName()
     {

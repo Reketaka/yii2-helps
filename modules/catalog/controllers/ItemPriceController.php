@@ -8,6 +8,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
 use reketaka\helps\modules\catalog\models\ItemStoreSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
+use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -28,7 +29,7 @@ class ItemPriceController extends Controller{
         $searchModel = new ItemPriceSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = "Item Price List";
+        $this->view->title = Module::t('title', 'item-price-index');
 
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
@@ -47,8 +48,8 @@ class ItemPriceController extends Controller{
             return $this->redirect(['index']);
         }
 
+        $this->view->title = Module::t('title', 'item-price-create');
 
-        $this->view->title = 'Create new ItemPrice';
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
         return $this->render('create', [
@@ -64,7 +65,7 @@ class ItemPriceController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = "Update ItemPrice #{$model->id}";
+        $this->view->title = Module::t('title', 'item-price-update', ['id'=>$model->id]);
 
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
@@ -77,7 +78,7 @@ class ItemPriceController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "View ItemPrice #{$model->id}";
+        $this->view->title = Module::t('title', 'item-price-view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

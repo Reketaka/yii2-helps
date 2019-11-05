@@ -10,6 +10,16 @@ class BaseModel extends CommonRecord{
         return static::findOne(['uid'=>$uid]);
     }
 
+    public static function createByUid($uid){
+        if(!$elem = self::getByUid($uid)){
+            $elem = new static([
+                'uid'=>$uid
+            ]);
+        }
+
+        return $elem;
+    }
+
 
 
 

@@ -50,6 +50,9 @@ class Module extends \yii\base\Module{
             'total_amount'=>[
                 self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_INTEGER)->defaultValue(0)
             ],
+            'active'=>[
+                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_SMALLINT)->defaultValue(1),
+            ],
             'created_at'=>[
                 self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_DATETIME)->asIndex()
             ],
