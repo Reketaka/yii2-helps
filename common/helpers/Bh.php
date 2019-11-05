@@ -367,4 +367,28 @@ class Bh{
             . $rawSqlQuery);
         $q->execute();
     }
+
+    /**
+     * Удаляет файл если его размер больше указанного в мегабайтах
+     * @param $filePath
+     * @param $size
+     * @return bool
+     */
+    public static function deleteFileIfSizeMore($filePath, $size){
+        $filePath = Yii::getAlias($filePath);
+
+        if(!file_exists($filePath)){
+            return false;
+        }
+
+
+        $filesize = filesize($filePath);
+        $sizeMb = $filesize/pow(1024, 2);
+
+        if($sizeMb > $size){
+            @unlink($filePath);
+        }
+
+        return true;
+    }
 }
