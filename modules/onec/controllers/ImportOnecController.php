@@ -143,7 +143,8 @@ class ImportOnecController extends Controller{
             $zip = false;
         }
 
-        FileHelper::removeDirectory($this->getSaveDirPath());
+        $this->removeNewFiles();
+
 
         return [
             'zip'=>$zip?'yes':'no',
@@ -210,7 +211,7 @@ class ImportOnecController extends Controller{
     }
 
     private function getProgressDirPath(){
-        $path = Yii::getAlias($this->module->saveDirPath.'/progress/'.date('d_m_y_h_i_s', time()).'/'.$this->uid.'/');
+        $path = Yii::getAlias($this->module->saveDirPath.'/progress/'.md5(implode('', microtime())).'/');
         FileHelper::createDirectory($path);
         return $path;
     }
@@ -239,7 +240,7 @@ class ImportOnecController extends Controller{
      * @return bool
      */
     private function unZipFiles(){
-        $progressDirPath = $this->getProgressDirPath();
+        $progressDirPath = Yii::getAlias($this->module->saveDirPath.'/progress/');
 
         if(!$this->module->enableZip){
             return false;
@@ -249,7 +250,10 @@ class ImportOnecController extends Controller{
             return false;
         }
 
-        $files = glob($progressDirPath . '*.zip');
+        $files = FileHelper::findFiles($progressDirPath, [
+            'only'=>"*.zip",
+        ]);
+
 
         foreach($files as $file) {
             $zip = new \ZipArchive;
