@@ -1,6 +1,6 @@
 <?php
 
-use common\models\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\models\PriceType;
 use yii\web\View;
 use kartik\detail\DetailView;
@@ -41,7 +41,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
                     }
                 }
             ],
-            BaseHelper::getCommonModelBooleanView('active', $model->active),
+            Bh::getCommonModelBooleanView('active', $model->active),
             'total_amount',
         ];
 

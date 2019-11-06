@@ -67,4 +67,11 @@ class Catalog extends BaseModel
     public function getParent(){
         return $this->hasOne(self::class, ['id'=>'parent_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChilds(){
+        return $this->hasMany(self::class, ['parent_id'=>'id']);
+    }
 }

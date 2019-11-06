@@ -28,6 +28,10 @@ class CatalogController extends Controller{
 
         $this->view->title = Module::t('title', 'catalog-index');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = 'Товары';
+
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

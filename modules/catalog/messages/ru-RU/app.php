@@ -20,5 +20,15 @@ return [
     'item_prices'=>'Цены товара',
     'item_stores'=>'Количество товара',
     'root_catalog'=>'Корневой каталог',
-    'active'=>'Активность'
+    'active'=>'Активность',
+    'catalog id'=>'Каталог',
+    'amount_in_stores'=>'Количество на складах',
+    'amount_in_prices'=>'Все цены',
+    'bc.main'=>'Модуль "Каталог"',
+    'bc.price-type'=>'Типы цен',
+    'bc.item'=>'Товары',
+    'bc.item-price'=>'Цены товаров',
+    'bc.item-store'=>'Количество товара на складах',
+    'bc.store'=>'Склады',
+    'bc.catalog'=>'Каталоги'
 ];

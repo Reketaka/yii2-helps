@@ -57,7 +57,12 @@ use reketaka\helps\modules\catalog\Module;
                     return implode("<BR>", $text);
                 }
             ],
-            'total_amount',
+            [
+                'attribute'=>'total_amount',
+                'options'=>[
+                    'style'=>'width:75px;'
+                ],
+            ],
             [
                 'label' => Module::t('app', 'amount_in_stores'),
                 'format'=>'raw',

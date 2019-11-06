@@ -55,7 +55,7 @@ class Item extends BaseModel {
             'uid'=>Module::t('app','uid'),
             'active'=>Module::t('app', 'active'),
             'total_amount'=>Module::t('app', 'total_amount'),
-            'catalog_id'=>Module::t('app', 'catalog'),
+            'catalog_id'=>Module::t('app', 'catalog id'),
             'created_at'=>Module::t('app','created at'),
             'updated_at'=>Module::t('app', 'updated at')
         ];
