@@ -24,11 +24,15 @@ return [
     'catalog id'=>'Каталог',
     'amount_in_stores'=>'Количество на складах',
     'amount_in_prices'=>'Все цены',
+    'not_set_catalog'=>'Не установлен',
     'bc.main'=>'Модуль "Каталог"',
     'bc.price-type'=>'Типы цен',
     'bc.item'=>'Товары',
     'bc.item-price'=>'Цены товаров',
     'bc.item-store'=>'Количество товара на складах',
     'bc.store'=>'Склады',
-    'bc.catalog'=>'Каталоги'
+    'bc.catalog'=>'Каталоги',
+    'bc._create'=>'Создать',
+    'bc._update'=>'Изменить #{id}',
+    'bc._view'=>'Просмотр #{id}'
 ];

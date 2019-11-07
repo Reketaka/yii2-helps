@@ -29,7 +29,7 @@ class CatalogController extends Controller{
         $this->view->title = Module::t('title', 'catalog-index');
 
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
-        $this->view->params['breadcrumbs'][] = 'Товары';
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.catalog');
 
 
         return $this->render('index', [
@@ -48,6 +48,10 @@ class CatalogController extends Controller{
 
         $this->view->title = Module::t('title', 'catalog-create');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
+
         return $this->render('create', [
             'model'=>$model,
         ]);
@@ -61,6 +65,10 @@ class CatalogController extends Controller{
         }
 
         $this->view->title = Module::t('title', 'catalog-update', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
 
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
@@ -82,6 +90,10 @@ class CatalogController extends Controller{
         $model = $this->findModel($id);
 
         $this->view->title = Module::t('title', 'catalog-view', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

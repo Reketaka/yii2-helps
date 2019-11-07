@@ -54,6 +54,8 @@ use reketaka\helps\modules\catalog\Module;
                     $text[] = $model->getAttributeLabel('id')." ".Html::tag('b', $model->id);
                     $text[] = $model->getAttributeLabel('uid')." ".Html::tag('b', $model->uid);
                     $text[] = $model->getAttributeLabel('title')." ".Html::tag('b', $model->title);
+
+                    $text[] = $model->getAttributeLabel('catalog_id')." ".Html::tag('b', (($catalog = $model->catalog)?Html::a($catalog->title, ['catalog/view', 'id'=>$catalog->id]):Html::tag('label', Module::t('app', 'not_set_catalog'), ['class'=>'label label-danger'])));
                     return implode("<BR>", $text);
                 }
             ],

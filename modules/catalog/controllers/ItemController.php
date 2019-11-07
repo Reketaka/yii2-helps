@@ -24,6 +24,9 @@ class ItemController extends Controller{
 
         $this->view->title = Module::t('title', 'item-index');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.item');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -43,6 +46,10 @@ class ItemController extends Controller{
 
         $this->view->title = Module::t('title', 'item-create');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
+
         $fields = Yii::$app->getModule('catalog')->getFields();
 
         return $this->render('create', [
@@ -55,6 +62,10 @@ class ItemController extends Controller{
         $model = $this->findModel($id);
 
         $this->view->title = Module::t('title', 'item-update', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['view', 'id'=>$model->id]);
@@ -72,6 +83,10 @@ class ItemController extends Controller{
         $model = $this->findModel($id);
 
         $this->view->title = Module::t('title', 'item-view', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
 
         $fields = Yii::$app->getModule('catalog')->getFields();
 

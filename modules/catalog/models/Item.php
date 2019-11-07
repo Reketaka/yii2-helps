@@ -44,6 +44,7 @@ class Item extends BaseModel {
             [['uid'], 'unique'],
             [['active'], 'integer'],
             [['active'], 'default', 'value'=>1],
+            [['catalog_id'], 'exist', 'targetRelation'=>'catalog', 'skipOnError'=>false, 'skipOnEmpty'=>true],
             [['catalog_id'], 'default', 'value'=>null]
         ];
     }

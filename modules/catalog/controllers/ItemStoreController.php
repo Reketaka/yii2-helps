@@ -28,6 +28,9 @@ class ItemStoreController extends Controller{
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
         $this->view->title = "Item Store List";
+
+
+
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
         return $this->render('index', [

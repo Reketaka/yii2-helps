@@ -31,6 +31,9 @@ class ItemPriceController extends Controller{
 
         $this->view->title = Module::t('title', 'item-price-index');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.item-price');
+
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
         return $this->render('index', [
@@ -50,6 +53,10 @@ class ItemPriceController extends Controller{
 
         $this->view->title = Module::t('title', 'item-price-create');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-price'), 'url'=>['item-price/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
+
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
         return $this->render('create', [
@@ -67,6 +74,10 @@ class ItemPriceController extends Controller{
 
         $this->view->title = Module::t('title', 'item-price-update', ['id'=>$model->id]);
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-price'), 'url'=>['item-price/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
+
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
         return $this->render('update', [
@@ -79,6 +90,10 @@ class ItemPriceController extends Controller{
         $model = $this->findModel($id);
 
         $this->view->title = Module::t('title', 'item-price-view', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-price'), 'url'=>['item-price/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

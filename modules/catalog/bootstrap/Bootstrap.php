@@ -1,6 +1,7 @@
 <?php
 namespace reketaka\helps\modules\catalog\bootstrap;
 
+use reketaka\helps\modules\catalog\models\Catalog;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\models\Item;
@@ -27,6 +28,8 @@ class Bootstrap implements BootstrapInterface
         Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
         Event::on(ItemStore::class, ItemStore::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'addTotalAmount']);
         Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
+
+        Event::on(Catalog::class, Catalog::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\CatalogCallbackEvent', 'onDelete']);
     }
 }
 
