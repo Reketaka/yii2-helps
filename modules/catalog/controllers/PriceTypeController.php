@@ -27,6 +27,9 @@ class PriceTypeController extends Controller{
 
         $this->view->title = Module::t('title', 'price-type-index');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.price-type');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -43,6 +46,10 @@ class PriceTypeController extends Controller{
 
         $this->view->title = Module::t('title', 'price-type-create');
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
+
         return $this->render('create', [
             'model'=>$model
         ]);
@@ -58,6 +65,10 @@ class PriceTypeController extends Controller{
 
         $this->view->title = Module::t('title', 'price-type-update', ['id'=>$model->id]);
 
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
+
         return $this->render('update', [
             'model'=>$model
         ]);
@@ -67,6 +78,10 @@ class PriceTypeController extends Controller{
         $model = $this->findModel($id);
 
         $this->view->title = Module::t('title', 'price-type-view', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model

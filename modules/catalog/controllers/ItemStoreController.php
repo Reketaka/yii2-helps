@@ -7,6 +7,7 @@ use reketaka\helps\modules\catalog\models\ItemStoreSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use reketaka\helps\modules\catalog\models\Store;
+use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -27,9 +28,10 @@ class ItemStoreController extends Controller{
         $searchModel = new ItemStoreSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = "Item Store List";
+        $this->view->title = Module::t('title', 'item-store-index');
 
-
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.item-store');
 
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
@@ -48,7 +50,12 @@ class ItemStoreController extends Controller{
             return $this->redirect(['index']);
         }
 
-        $this->view->title = 'Create new ItemStore';
+        $this->view->title = Module::t('title', 'item-store-create');
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-store'), 'url'=>['item-store/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
+
 
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
@@ -61,7 +68,11 @@ class ItemStoreController extends Controller{
     public function actionUpdate($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "Update PriceType #{$model->id}";
+        $this->view->title = Module::t('title', 'item-store-update', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-store'), 'url'=>['item-store/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
 
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
@@ -88,7 +99,12 @@ class ItemStoreController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = "View ItemStore #{$model->id}";
+
+        $this->view->title = Module::t('title', 'item-store-view', ['id'=>$model->id]);
+
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item-store'), 'url'=>['item-store/index']];
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
 
         return $this->render('view', [
             'model'=>$model
