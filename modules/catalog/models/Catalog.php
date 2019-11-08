@@ -80,4 +80,11 @@ class Catalog extends BaseModel
     public function getChilds(){
         return $this->hasMany(self::class, ['parent_id'=>'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItems(){
+        return $this->hasMany(Item::class, ['catalog_id'=>'id']);
+    }
 }
