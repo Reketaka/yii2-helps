@@ -3,7 +3,6 @@
 namespace reketaka\helps\modules\usermanager\models;
 
 
-use common\helpers\BaseHelper;
 use yii\db\ActiveRecord;
 use Yii;
 

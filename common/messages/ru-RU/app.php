@@ -38,11 +38,15 @@ return [
     'add'=>'Добавить',
     'print'=>'Печать',
     'main_page'=>'Главная страница',
+    'main_page_short'=>'Главная',
     'sitemap'=>'Карта сайта',
     'news'=>'Новости',
     'delivery'=>'Доставка',
     'city'=>'Город',
     'street'=>'Улица',
     'passport_data'=>'Паспортные данные',
+    'rememberMe'=>'Запомнить меня',
+    'categories'=>'Категории',
+    'menu'=>'Меню'
 
 ];
