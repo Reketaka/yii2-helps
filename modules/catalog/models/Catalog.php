@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\catalog\models;
 
 use Yii;
+use reketaka\helps\modules\catalog\Module;
 
 /**
  * This is the model class for table "catalog".
@@ -12,6 +13,7 @@ use Yii;
  * @property string $alias
  * @property string $uid
  * @property string $description
+ * @property integer $active
  * @property integer $parent_id
  * @property string $created_at
  * @property string $updated_at
@@ -19,6 +21,8 @@ use Yii;
 class Catalog extends BaseModel
 {
     CONST ROOT_CATALOG_ID = 0;
+    CONST ACTIVE = 1;
+    CONST DEACTIVE = 0;
 
     public $behaviorTimestamp = true;
     public $behaviorAlias = true;
@@ -27,7 +31,7 @@ class Catalog extends BaseModel
      */
     public static function tableName()
     {
-        return 'catalog';
+        return Module::$tablePrefix.'catalog';
     }
 
     /**
@@ -41,7 +45,9 @@ class Catalog extends BaseModel
             [['title', 'alias', 'uid'], 'string', 'max' => 255],
             [['description', 'uid'], 'default', 'value'=>null],
             [['uid'], 'unique'],
-            [['parent_id'], 'default', 'value'=>self::ROOT_CATALOG_ID]
+            [['parent_id'], 'default', 'value'=>self::ROOT_CATALOG_ID],
+            [['active'], 'integer'],
+            [['active'], 'default', 'value'=>self::ACTIVE]
         ];
     }
 

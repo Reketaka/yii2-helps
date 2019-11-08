@@ -22,6 +22,12 @@ use kartik\select2\Select2;
 <?=GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'rowOptions' => function($model){
+
+        if(!$model->active){
+            return ['class'=>'danger'];
+        }
+    },
     'columns'=>[
         'id',
         'title',

@@ -6,6 +6,7 @@ use reketaka\helps\modules\catalog\Module;
 use yii\web\View;
 use kartik\detail\DetailView;
 use yii\helpers\Html;
+use reketaka\helps\common\helpers\Bh;
 
 /**
  * @var $this View
@@ -31,6 +32,7 @@ use yii\helpers\Html;
                 'title',
                 'alias',
                 'uid',
+                Bh::getCommonModelBooleanView('active', $model->active),
                 [
                     'attribute' => 'parent_id',
                     'format'=>'raw',

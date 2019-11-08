@@ -33,8 +33,11 @@ use kartik\select2\Select2;
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <?=$form->field($model, 'parent_id')->textInput()?>
+        </div>
+        <div class="col-md-4">
+            <?=$form->field($model, 'active')->checkbox()?>
         </div>
     </div>
 
