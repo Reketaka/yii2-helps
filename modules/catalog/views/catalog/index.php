@@ -22,17 +22,16 @@ use kartik\select2\Select2;
 <?=GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'rowOptions' => function($model){
-
-        if(!$model->active){
-            return ['class'=>'danger'];
-        }
-    },
     'columns'=>[
         'id',
         'title',
         'alias',
         'uid',
+        [
+            'class'=>'reketaka\helps\common\widgets\enableColumn\EnableColumn',
+            'enableAttributeName' => 'active',
+            'attributeToggle'=>true,
+        ],
         [
             'attribute' => 'parent_id',
             'format'=>'raw',
@@ -46,6 +45,7 @@ use kartik\select2\Select2;
                 }
             }
         ],
+
         'created_at',
         [
             'class' => 'yii\grid\ActionColumn',

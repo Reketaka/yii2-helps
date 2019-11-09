@@ -36,6 +36,7 @@ return [
     'total_price'=>'Сумма',
     'payment_status'=>'Статус оплаты',
     'add'=>'Добавить',
+    'add_to_basket'=>'Добавить в корзину',
     'print'=>'Печать',
     'main_page'=>'Главная страница',
     'main_page_short'=>'Главная',
@@ -47,6 +48,7 @@ return [
     'passport_data'=>'Паспортные данные',
     'rememberMe'=>'Запомнить меня',
     'categories'=>'Категории',
-    'menu'=>'Меню'
+    'menu'=>'Меню',
+    'total_amount'=>'Общее количество'
 
 ];

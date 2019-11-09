@@ -96,6 +96,18 @@ class Item extends BaseModel {
     }
 
     /**
+     * Возвращает количество товара на определенном складе
+     * @param $id
+     * @return int
+     */
+    public function getAmountStoreByUid($uid)
+    {
+        $itemStores = ArrayHelper::index($this->itemStores, 'store.uid');
+
+        return isset($itemStores[$uid]) ? $itemStores[$uid]->amount : 0;
+    }
+
+    /**
      * Устанавливает цену для определенного товара по типу цены $uid
      * @param $uid
      * @param $price
