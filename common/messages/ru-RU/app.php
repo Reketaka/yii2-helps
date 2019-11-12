@@ -36,13 +36,19 @@ return [
     'total_price'=>'Сумма',
     'payment_status'=>'Статус оплаты',
     'add'=>'Добавить',
+    'add_to_basket'=>'Добавить в корзину',
     'print'=>'Печать',
     'main_page'=>'Главная страница',
+    'main_page_short'=>'Главная',
     'sitemap'=>'Карта сайта',
     'news'=>'Новости',
     'delivery'=>'Доставка',
     'city'=>'Город',
     'street'=>'Улица',
     'passport_data'=>'Паспортные данные',
+    'rememberMe'=>'Запомнить меня',
+    'categories'=>'Категории',
+    'menu'=>'Меню',
+    'total_amount'=>'Общее количество'
 
 ];
