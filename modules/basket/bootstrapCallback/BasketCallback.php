@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\basket\bootstrapCallback;
 
 use common\helpers\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\basket\models\Basket;
 use reketaka\helps\modules\basket\models\BasketItem;
 use yii\base\Event;
@@ -41,6 +42,15 @@ class BasketCallback extends Model{
 
 
         return true;
+    }
+
+    public static function onFullDeleteBasket(Event $event){
+        /**
+         * @var $basket Basket
+         */
+        $basket = $event->sender;
+
+        BasketItem::deleteAll(['basket_id'=>$basket->id]);
     }
 
 }

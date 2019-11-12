@@ -2,7 +2,6 @@
 
 namespace reketaka\helps\modules\basket\models;
 
-use reketaka\helps\common\models\CommonRecord;
 use yii\base\Model;
 
 /**
@@ -11,6 +10,9 @@ use yii\base\Model;
  */
 class BasketComponent extends Model
 {
+    /**
+     * @var $basket Basket
+     */
     private $basket;
 
     public function init()
@@ -54,6 +56,9 @@ class BasketComponent extends Model
         $this->basket->modify($item, $amount);
     }
 
+    /**
+     * Обновляет модель корзины
+     */
     public function refresh()
     {
         $this->basket->refresh();
@@ -76,10 +81,20 @@ class BasketComponent extends Model
     }
 
     /**
+     * Очищает всю корзину пользователя
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function removeAll(){
+        $this->basket->delete();
+        $this->init();
+    }
+
+    /**
      * Возвращает непосредственно модель текущей корзины
      * @return Basket
      */
-    public function getBasketModel(){
+    public function getModel(){
         return $this->basket;
     }
 }

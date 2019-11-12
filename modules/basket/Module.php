@@ -6,6 +6,8 @@ class Module extends \yii\base\Module{
 
     public $defaultRoute = 'default/index';
 
+    public $productClass = null;
+
     public $basketItemFields = [
 
     ];
@@ -24,7 +26,7 @@ class Module extends \yii\base\Module{
 
     public function registerTranslations()
     {
-        \Yii::$app->i18n->translations['modules/catalog/*'] = [
+        \Yii::$app->i18n->translations['modules/basket/*'] = [
             'class'          => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
             'basePath'       => \Yii::getAlias('@reketaka/helps/modules/basket/messages'),

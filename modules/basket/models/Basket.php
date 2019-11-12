@@ -2,10 +2,9 @@
 
 namespace reketaka\helps\modules\basket\models;
 
-use common\helpers\BaseHelper;
-use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\common\models\CommonRecord;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Basket
@@ -163,6 +162,27 @@ class Basket extends CommonRecord {
         $basketItem->save();
 
         return true;
+    }
+
+    /**
+     * Возвращает все найденые модели продуктов
+     * @return array
+     */
+    public function getProducts(){
+        if(!$productClass = \Yii::$app->getModule('basket')->productClass){
+            return [];
+        }
+
+        $basketItemsId = $this->getItems()
+            ->select('item_id')->asArray()->all();
+
+        if(!$basketItemsId = ArrayHelper::getColumn($basketItemsId, 'item_id')){
+            return [];
+        }
+
+        $products = $productClass::find()->where(['id'=>$basketItemsId])->all();
+
+        return $products;
     }
 
 }

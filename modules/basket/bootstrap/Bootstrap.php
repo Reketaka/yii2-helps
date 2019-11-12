@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\basket\bootstrap;
 
+use reketaka\helps\modules\basket\models\Basket;
 use reketaka\helps\modules\basket\models\BasketItem;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
@@ -20,6 +21,8 @@ class Bootstrap implements BootstrapInterface{
         Event::on(BasketItem::class, BasketItem::EVENT_BEFORE_UPDATE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onModifyItem']);
         Event::on(BasketItem::class, BasketItem::EVENT_BEFORE_INSERT, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onModifyItem']);
         Event::on(BasketItem::class, BasketItem::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onModifyItem']);
+
+        Event::on(Basket::class, BasketItem::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onFullDeleteBasket']);
 
 
 

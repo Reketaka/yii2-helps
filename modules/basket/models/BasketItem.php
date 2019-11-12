@@ -44,6 +44,14 @@ class BasketItem extends CommonRecord{
         return $this->hasOne(Basket::class, ['id'=>'basket_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProduct(){
+        $productClass = \Yii::$app->getModule('basket')->productClass;
+        return $this->hasOne($productClass, ['id'=>'item_id']);
+    }
+
 
 
 
