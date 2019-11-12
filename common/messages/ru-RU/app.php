@@ -38,6 +38,7 @@ return [
     'add'=>'Добавить',
     'add_to_basket'=>'Добавить в корзину',
     'print'=>'Печать',
+    'information'=>'Информация',
     'main_page'=>'Главная страница',
     'main_page_short'=>'Главная',
     'sitemap'=>'Карта сайта',
@@ -49,6 +50,9 @@ return [
     'rememberMe'=>'Запомнить меня',
     'categories'=>'Категории',
     'menu'=>'Меню',
-    'total_amount'=>'Общее количество'
+    'total_amount'=>'Общее количество',
+    'quantity'=>'Количество',
+    'image'=>'Изображение',
+    'refresh'=>'Обновить'
 
 ];

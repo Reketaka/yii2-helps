@@ -52,6 +52,13 @@ class BasketItem extends CommonRecord{
         return $this->hasOne($productClass, ['id'=>'item_id']);
     }
 
+    /**
+     * Возвращает итоговую стоимость товарной позиции
+     * @return float|int
+     */
+    public function getTotalPrice(){
+        return $this->amount*$this->price;
+    }
 
 
 
