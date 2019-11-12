@@ -156,6 +156,15 @@ class CommonRecord extends ActiveRecord{
         return implode($delemiter, $text);
     }
 
+    public static function findOneForUpdate($whereData) {
+        $sql = self::find()
+            ->where($whereData)
+            ->createCommand()
+            ->getRawSql();
+
+        return self::findBySql($sql . ' FOR UPDATE')->one();
+    }
+
 
 
 }
