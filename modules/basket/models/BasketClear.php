@@ -14,7 +14,9 @@ class BasketClear extends Model{
      */
     public static function clearOld(){
 
-        $date = (new \DateTime())->modify("-1 month")->format("Y-m-d");
+        $dayToDelete = \Yii::$app->getModule('basket')->deleteBasketDay;
+
+        $date = (new \DateTime())->modify("-$dayToDelete day")->format("Y-m-d");
 
 
         Basket::deleteAll(['<=', new Expression("DATE(updated_at)"), $date]);
