@@ -6,6 +6,12 @@ class Module extends \yii\base\Module{
 
     public $defaultRoute = 'default/index';
 
+    /**
+     * Время через которое не используемые корзины удалятся
+     * @var int
+     */
+    public $deleteBasketDay = 30;
+
     public $productClass = null;
 
     public $basketItemFields = [
