@@ -7,6 +7,7 @@ use reketaka\helps\modules\basket\models\BasketItem;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\web\User;
 
 class Bootstrap implements BootstrapInterface{
 
@@ -22,9 +23,9 @@ class Bootstrap implements BootstrapInterface{
         Event::on(BasketItem::class, BasketItem::EVENT_BEFORE_INSERT, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onModifyItem']);
         Event::on(BasketItem::class, BasketItem::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onModifyItem']);
 
-        Event::on(Basket::class, BasketItem::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onFullDeleteBasket']);
+        Event::on(Basket::class, Basket::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onFullDeleteBasket']);
 
-
+        Event::on(User::class, User::EVENT_BEFORE_LOGIN, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onLoginUser']);
 
 
 

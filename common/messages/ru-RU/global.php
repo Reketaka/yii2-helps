@@ -32,6 +32,7 @@ return [
     'list'=>'Список',
     'total'=>'Итого',
     'amount'=>'Количество',
+    'amount_short'=>'Кол.',
     'price'=>'Цена',
     'total_price'=>'Сумма',
     'payment_status'=>'Статус оплаты',
@@ -53,6 +54,14 @@ return [
     'total_amount'=>'Общее количество',
     'quantity'=>'Количество',
     'image'=>'Изображение',
-    'refresh'=>'Обновить'
+    'refresh'=>'Обновить',
+    'store'=>'Склад',
+    'item_success_add_to_basket'=>'Товар успешно добавлен в корзину',
+    'notification'=>'Уведомление',
+    'item_delete_from_basket'=>'Товар удален из корзины',
+    'checkout'=>'Оформить заказ',
+    'empty_basket'=>'Нету товаров в корзине',
+    'availability'=>'Наличие',
+    'return_to_main'=>'Вернуться на главную'
 
 ];

@@ -2,8 +2,12 @@
 
 namespace reketaka\helps\modules\basket\models;
 
+use common\models\BaseHelper;
 use reketaka\helps\common\models\CommonRecord;
+use function session_id;
+use Yii;
 use yii\base\Model;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -50,6 +54,7 @@ class Basket extends CommonRecord {
      */
     public static function getBasketUser(){
 
+        Yii::$app->session->open();
         $transaction = \Yii::$app->db->beginTransaction();
 
         try{
@@ -183,6 +188,23 @@ class Basket extends CommonRecord {
         $products = $productClass::find()->where(['id'=>$basketItemsId])->all();
 
         return $products;
+    }
+
+    public function refreshTotals(){
+
+        $attributes = [
+            'total_amount'=>0,
+            'total_price'=>0
+        ];
+
+
+        $price = $this->getItems()->select(new Expression("SUM(amount*price) as 'price'"))->asArray()->one();
+        $attributes['total_price'] = $price['price'];
+
+        $amount = $this->getItems()->select(new Expression("SUM(amount) as 'amount'"))->asArray()->one();
+        $attributes['total_amount'] = $amount['amount'];
+
+        $this->updateAttributes($attributes);
     }
 
 }
