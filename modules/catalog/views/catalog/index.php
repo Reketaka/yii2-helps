@@ -17,7 +17,7 @@ use kartik\select2\Select2;
 
 ?>
 
-<?=Html::a(Yii::t('app', 'create'), ['create'], ['class'=>'btn btn-success'])?>
+<?=Html::a(Module::t('app', 'create'), ['create'], ['class'=>'btn btn-success'])?>
 
 <?=GridView::widget([
     'dataProvider' => $dataProvider,

@@ -25,4 +25,7 @@ return [
     'item-price-view'=>'Просмотр цены товара #{id}',
     'item-price-index'=>'Список товарных цен',
     'item-price-create'=>'Создать цену товара',
+    'discount-index'=>'Скидки',
+    'discount-update'=>'Изменить скидку #{id}',
+    'discount-view'=>'Просмотр скидки #{id}'
 ];

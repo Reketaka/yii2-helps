@@ -14,6 +14,7 @@ return [
     'price'=>'Цена',
     'create'=>'Создать',
     'update'=>'Изменить',
+    'value'=>'Значение',
     'store_id'=>'Склад',
     'amount'=>'Количество',
     'total_amount'=>'Общее количество',
@@ -32,6 +33,7 @@ return [
     'bc.item-store'=>'Количество товара на складах',
     'bc.store'=>'Склады',
     'bc.catalog'=>'Каталоги',
+    'bc.discount'=>'Скидки',
     'bc._create'=>'Создать',
     'bc._update'=>'Изменить #{id}',
     'bc._view'=>'Просмотр #{id}'
