@@ -5,8 +5,12 @@ namespace reketaka\helps\modules\usermanager\models;
 
 use yii\db\ActiveRecord;
 use Yii;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 
 abstract class UserCommon extends ActiveRecord{
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
 
     CONST SESSION_KEY_USER_ROLES = 'userRoles';
 
@@ -53,9 +57,7 @@ abstract class UserCommon extends ActiveRecord{
         return !($userRoles = Yii::$app->authManager->getAssignments($userId))?[]:$userRoles;
     }
 
-
-
-    abstract public function getUserStatuses();
+    abstract public static function getUserStatuses();
 
     public function getUserInGroups(){
         return $this->hasMany(UserInGroup::class, ['user_id'=>'id']);
@@ -93,5 +95,133 @@ abstract class UserCommon extends ActiveRecord{
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        if($type == HttpBearerAuth::class) {
+            list($username, $password) = explode(":", base64_decode($token));
+            if(!$user = static::findOne(['username'=>$username])){
+                return null;
+            }
+
+            if(!$user->validatePassword($password)){
+                return null;
+            }
+
+            return $user;
+        }
+
+        if($type == QueryParamAuth::class){
+            if(!$user = static::findOne(['access_token'=>$token])){
+                return null;
+            }
+
+            return $user;
+        }
+    }
+
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
     }
 }

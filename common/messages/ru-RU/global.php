@@ -62,6 +62,7 @@ return [
     'checkout'=>'Оформить заказ',
     'empty_basket'=>'Нету товаров в корзине',
     'availability'=>'Наличие',
-    'return_to_main'=>'Вернуться на главную'
+    'return_to_main'=>'Вернуться на главную',
+    'personal_information'=>'Персональная информация'
 
 ];

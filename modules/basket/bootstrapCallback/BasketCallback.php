@@ -68,8 +68,7 @@ class BasketCallback extends Model{
             return false;
         }
 
-
-        $itemsId = Yii::$app->basket->model->getItems()->select('id')->asArray()->all();
+        $itemsId = BasketItem::find()->innerJoinWith(['basket b'])->where(['b.user_id'=>$user->id])->all();
         $itemsId = ArrayHelper::getColumn($itemsId, 'id');
 
         if(!$itemsId){

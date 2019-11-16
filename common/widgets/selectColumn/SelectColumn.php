@@ -3,7 +3,6 @@
 namespace reketaka\helps\common\widgets\selectColumn;
 
 
-use common\helpers\BaseHelper;
 use kartik\select2\Select2;
 use reketaka\helps\common\assets\BootstrapNotificationAsset;
 use yii\grid\Column;
