@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\usermanager\models;
 
 
+use User;
 use yii\db\ActiveRecord;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
@@ -215,6 +216,22 @@ abstract class UserCommon extends ActiveRecord{
     public function generatePasswordResetToken()
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    public function generateAccessToken(){
+        $this->access_token = Yii::$app->security->generateRandomString();
+
+        while(true){
+            $accessToken = Yii::$app->security->generateRandomString(32);
+
+            if(!static::findOne(['access_token'=>$accessToken])){
+                $this->access_token = $accessToken;
+                break;
+                return true;
+            }
+        }
+
+        return true;
     }
 
     /**

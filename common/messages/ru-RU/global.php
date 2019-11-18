@@ -36,6 +36,7 @@ return [
     'price'=>'Цена',
     'total_price'=>'Сумма',
     'payment_status'=>'Статус оплаты',
+    'status'=>'Статус',
     'add'=>'Добавить',
     'add_to_basket'=>'Добавить в корзину',
     'print'=>'Печать',
@@ -63,6 +64,15 @@ return [
     'empty_basket'=>'Нету товаров в корзине',
     'availability'=>'Наличие',
     'return_to_main'=>'Вернуться на главную',
-    'personal_information'=>'Персональная информация'
+    'personal_information'=>'Персональная информация',
+    'access_token'=>'Ключ доступа',
+    'link'=>'Ссылка',
+    'format'=>'Формат',
+    'download'=>'Скачать',
+    'alias'=>'Алиас',
+    'default'=>'По умолчанию',
+    'created at'=>'Дата создания',
+    'updated at'=>'Дата изменения',
+    'comment'=>'Комментарий'
 
 ];

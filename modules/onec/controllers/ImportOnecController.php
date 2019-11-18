@@ -2,7 +2,8 @@
 
 namespace reketaka\helps\modules\onec\controllers;
 
-use common\helpers\BaseHelper;
+use common\models\BaseHelper;
+use function md5;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use Yii;
@@ -17,6 +18,8 @@ class ImportOnecController extends Controller{
 
     private $uid = '000';
 
+    private $uniqId = null;
+
     public function actionAuto($uid=false){
         /**
          * @var $type
@@ -26,7 +29,7 @@ class ImportOnecController extends Controller{
         $queryParams = Yii::$app->request->getQueryParams();
         extract($queryParams, EXTR_OVERWRITE);
 
-        $this->uid = (int)$uid;
+        $this->uid = $uid;
 
         if(!isset($type) || !isset($mode)){
             return [
@@ -93,10 +96,14 @@ class ImportOnecController extends Controller{
         }
 
         if($authKeyCallback instanceof \Closure){
-            $authKey = $authKeyCallback();
+            $authKey = $authKeyCallback($authKey);
         }
 
+        list($authKey, $uniqId) = explode("_", $authKey);
+        $this->uniqId = $uniqId;
+
         Yii::info('Ключ авторизациии '.$authKey, __METHOD__);
+
         if($authKey != $this->module->authKeyVal){
             throw new Exception('Not correct auth key');
         }
@@ -128,11 +135,11 @@ class ImportOnecController extends Controller{
 
         Yii::info('Пользователь найден и пароль верный', __METHOD__);
 
-        return [
+        return array(
             self::SUCCESS_STATUS,
             $this->module->authKeyName,
-            $this->module->authKeyVal
-        ];
+            $this->module->authKeyVal."_".md5(Yii::$app->security->generateRandomString())
+        );
     }
 
     private function catalogInit($args){
@@ -143,7 +150,7 @@ class ImportOnecController extends Controller{
             $zip = false;
         }
 
-        $this->removeNewFiles();
+//        $this->removeNewFiles();
 
 
         return [
@@ -195,7 +202,7 @@ class ImportOnecController extends Controller{
         Yii::info('Начало загрузки файла импорта', __METHOD__);
 
         $this->progressNewFiles();
-        $this->removeNewFiles();
+//        $this->removeNewFiles();
         $this->unZipFiles();
 
 
@@ -207,11 +214,11 @@ class ImportOnecController extends Controller{
     }
 
     private function getSaveDirPath(){
-        return Yii::getAlias($this->module->saveDirPath.'/new/'.$this->uid.'/');
+        return Yii::getAlias($this->module->saveDirPath.'/new/'.$this->uid.'/'.$this->uniqId.'/');
     }
 
     private function getProgressDirPath(){
-        $path = Yii::getAlias($this->module->saveDirPath.'/progress/'.md5(implode('', microtime())).'/');
+        $path = Yii::getAlias($this->module->saveDirPath.'/progress/');
         FileHelper::createDirectory($path);
         return $path;
     }
@@ -232,7 +239,7 @@ class ImportOnecController extends Controller{
      * Перемещает новые принятые файлы в папку progress Для обраотки
      */
     private function progressNewFiles(){
-        FileHelper::copyDirectory($this->getSaveDirPath(), $this->getProgressDirPath());
+        FileHelper::copyDirectory(Yii::getAlias($this->module->saveDirPath.'/new/'.$this->uid.'/'), $this->getProgressDirPath());
     }
 
     /**
@@ -251,9 +258,10 @@ class ImportOnecController extends Controller{
         }
 
         $files = FileHelper::findFiles($progressDirPath, [
-            'only'=>"*.zip",
+            'only'=>[
+                "*.zip"
+            ],
         ]);
-
 
         foreach($files as $file) {
             $zip = new \ZipArchive;

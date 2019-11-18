@@ -2,7 +2,6 @@
 
 namespace reketaka\helps\modules\onec;
 
-use common\helpers\BaseHelper;
 use Yii;
 use yii\helpers\FileHelper;
 
@@ -14,7 +13,7 @@ class Module extends \yii\base\Module{
     public $authKeyVal = 'pzshkmm0VzIZru65cB1Zsr6o47xZYqpR';
     public $maxFileSize = 102400;
     public $enableZip = true;
-    public $saveDirPath = '@backend/runtime/temp';
+    public $saveDirPath = '@console/runtime/onec';
     public $authKeyCallback = false;
 
     public function init(){
