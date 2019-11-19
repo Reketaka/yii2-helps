@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\onec\controllers;
 
 use common\models\BaseHelper;
+use function dirname;
 use function md5;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -269,7 +270,7 @@ class ImportOnecController extends Controller{
                 continue;
             }
 
-            $zip->extractTo($progressDirPath);
+            $zip->extractTo(dirname($file));
             $zip->close();
 
             unlink($file);

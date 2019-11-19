@@ -2,6 +2,8 @@
 
 namespace reketaka\helps\common\helpers;
 
+use function mb_strlen;
+use function substr;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -390,5 +392,16 @@ class Bh{
         }
 
         return true;
+    }
+
+    public static function formatMobileTelephone($telephone, $country = 'ru'){
+        if(($country == 'ru') && (mb_strlen($telephone) != 11)){
+            return $telephone;
+        }
+
+        if(($country == 'ru') && (mb_strlen($telephone) == 11)){
+            return substr($telephone, 0, 1)." (".substr($telephone, 1, 3).") ".substr($telephone, 4, 3)."-".substr($telephone, 7, 2)."-".substr($telephone, 9, 2);
+        }
+
     }
 }

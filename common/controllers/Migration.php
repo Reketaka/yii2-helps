@@ -3,6 +3,9 @@
 
 namespace reketaka\helps\common\controllers;
 
+use function array_key_exists;
+use common\models\BaseHelper;
+use Yii;
 use yii\db\ColumnSchemaBuilder;
 use yii\db\Query;
 use yii\db\Schema;
@@ -82,6 +85,15 @@ class Migration extends \yii\db\Migration{
         return ($cnt != 0);
     }
 
+    public function hasColumn($table, $columnName){
+        $query = Yii::$app->db->createCommand("SHOW COLUMNS FROM `$table` LIKE '$columnName'")->queryOne();
+
+        if(!array_key_exists('Field', $query)){
+            return false;
+        }
+
+        return true;
+    }
 
 
 }

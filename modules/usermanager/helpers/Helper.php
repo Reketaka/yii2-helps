@@ -3,7 +3,6 @@
 namespace reketaka\helps\modules\usermanager\helpers;
 
 
-use common\helpers\BaseHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\rbac\Permission;

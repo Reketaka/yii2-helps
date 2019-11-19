@@ -51,6 +51,7 @@ return [
     'passport_data'=>'Паспортные данные',
     'rememberMe'=>'Запомнить меня',
     'categories'=>'Категории',
+    'captcha'=>'Капча',
     'menu'=>'Меню',
     'total_amount'=>'Общее количество',
     'quantity'=>'Количество',
@@ -73,6 +74,8 @@ return [
     'default'=>'По умолчанию',
     'created at'=>'Дата создания',
     'updated at'=>'Дата изменения',
-    'comment'=>'Комментарий'
+    'comment'=>'Комментарий',
+    'restore_password'=>'Восстановление пароля',
+    'restore'=>'Восстановить'
 
 ];
