@@ -48,4 +48,34 @@ class Module extends \yii\base\Module{
         return $this->saveDirPath.'/backup/';
     }
 
+    public function unZipFiles(){
+        $progressDirPath = Yii::getAlias($this->getProgressDirPath());
+
+        if(!$this->enableZip){
+            return false;
+        }
+
+        if($this->enableZip && !extension_loaded('zip')){
+            return false;
+        }
+
+        $files = FileHelper::findFiles($progressDirPath, [
+            'only'=>[
+                "*.zip"
+            ],
+        ]);
+
+        foreach($files as $file) {
+            $zip = new \ZipArchive;
+            if($zip->open($file) !== TRUE){
+                continue;
+            }
+
+            $zip->extractTo(dirname($file));
+            $zip->close();
+
+            unlink($file);
+        }
+    }
+
 }

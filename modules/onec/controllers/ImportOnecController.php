@@ -197,8 +197,6 @@ class ImportOnecController extends Controller{
 
         $this->progressNewFiles();
         $this->removeNewFiles();
-        $this->unZipFiles();
-
 
         Yii::info('Все файлы распакованы', __METHOD__);
 
@@ -265,7 +263,6 @@ class ImportOnecController extends Controller{
 
         $this->progressNewFiles();
         $this->removeNewFiles();
-        $this->unZipFiles();
 
         return [
             'success'
@@ -301,37 +298,4 @@ class ImportOnecController extends Controller{
         FileHelper::copyDirectory(Yii::getAlias($this->module->getNewDirPath()), $this->getProgressDirPath());
     }
 
-    /**
-     * Распоковывает все zip файлы найдены в папке загрузки
-     * @return bool
-     */
-    private function unZipFiles(){
-        $progressDirPath = Yii::getAlias($this->module->getProgressDirPath());
-
-        if(!$this->module->enableZip){
-            return false;
-        }
-
-        if($this->module->enableZip && !extension_loaded('zip')){
-            return false;
-        }
-
-        $files = FileHelper::findFiles($progressDirPath, [
-            'only'=>[
-                "*.zip"
-            ],
-        ]);
-
-        foreach($files as $file) {
-            $zip = new \ZipArchive;
-            if($zip->open($file) !== TRUE){
-                continue;
-            }
-
-            $zip->extractTo(dirname($file));
-            $zip->close();
-
-            unlink($file);
-        }
-    }
 }
