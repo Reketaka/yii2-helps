@@ -17,7 +17,11 @@ use yii\helpers\ArrayHelper;
 <?=Html::beginTag('table', $tableAttributes)?>
     <thead>
         <tr>
-            <?php foreach($columns as $column):?>
+            <?php foreach($columns as $column):
+                if(!array_key_exists('thead', $column)){
+                    continue;
+                }
+            ?>
                 <?=Html::beginTag('th', ArrayHelper::getValue($column, 'thead.attributes', []))?>
                     <?=$column['thead']['value']?>
                 <?=Html::endTag('th')?>
