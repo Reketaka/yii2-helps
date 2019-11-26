@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'login_enter'=>'Вход',
     'authorization'=>'Авторизация',
@@ -81,6 +80,8 @@ return [
     'request'=>'Запрос',
     'errors'=>'Ошибки',
     'value'=>'Значение',
-    'notify'=>'Уведомление'
+    'notify'=>'Уведомление',
+    'yes'=>'Да',
+    'no'=>'Нет'
 
 ];

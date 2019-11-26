@@ -23,7 +23,7 @@ class Module extends \yii\base\Module{
             $this->controllerNamespace = 'reketaka\helps\modules\catalog\commands';
         }
 
-        $this->registerTranslations();
+        #$this->registerTranslations();
     }
 
     public function getFields(){

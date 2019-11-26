@@ -67,6 +67,19 @@ class MoneyCourse extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает в рублях единицу указанной валюты
+     * @param $c
+     * @return float|int
+     */
+    public static function getVal($c){
+        if(!$r = self::findOne(['char'=>$c])){
+            return 0;
+        }
+
+        return $r->val;
+    }
+
+    /**
      * Конвентирует рубли в указанную валюту
      */
     public static function convertIn($t = "UAH", $a = 1){

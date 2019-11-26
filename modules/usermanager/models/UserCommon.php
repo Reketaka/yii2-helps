@@ -58,8 +58,6 @@ abstract class UserCommon extends ActiveRecord{
         return !($userRoles = Yii::$app->authManager->getAssignments($userId))?[]:$userRoles;
     }
 
-    abstract public static function getUserStatuses();
-
     public function getUserInGroups(){
         return $this->hasMany(UserInGroup::class, ['user_id'=>'id']);
     }

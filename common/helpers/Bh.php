@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\helpers;
 
 use function mb_strlen;
+use reketaka\helps\common\jobs\SendTelegramTextJob;
 use function substr;
 use yii\db\ActiveRecord;
 use yii\db\Query;
@@ -319,6 +320,14 @@ class Bh{
 
 
         return $resultMax;
+    }
+
+    public static function sendMessageToTelegramJob($message, $type = 'HTML'){
+
+        Yii::$app->queue->push(new SendTelegramTextJob([
+            'message' => $message,
+            'type'=>$type
+        ]));
     }
 
     public static function sendMessageToTelegramAdmin($message, $type = 'HTML'){

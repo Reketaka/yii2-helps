@@ -30,6 +30,20 @@ class Bootstrap implements BootstrapInterface
         Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
 
         Event::on(Catalog::class, Catalog::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\CatalogCallbackEvent', 'onDelete']);
+
+        self::registerTranslations();
+    }
+
+    public static function registerTranslations(){
+        \Yii::$app->i18n->translations['modules/catalog/*'] = [
+            'class'          => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath'       => \Yii::getAlias('@reketaka/helps/modules/catalog/messages'),
+            'fileMap'=>[
+                'modules/catalog/app'=>'app.php',
+                'modules/catalog/title'=>'title.php',
+            ]
+        ];
     }
 }
 

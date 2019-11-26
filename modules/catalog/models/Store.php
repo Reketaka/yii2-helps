@@ -3,7 +3,7 @@
 namespace reketaka\helps\modules\catalog\models;
 
 
-use common\helpers\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\common\models\CommonRecord;
 use reketaka\helps\modules\catalog\Module;
 
@@ -51,7 +51,7 @@ class Store extends BaseModel {
             return false;
         }
 
-        BaseHelper::deleteAll(ItemStore::class, ['store_id'=>$this->id]);
+        Bh::deleteAll(ItemStore::class, ['store_id'=>$this->id]);
 
         return true;
     }
