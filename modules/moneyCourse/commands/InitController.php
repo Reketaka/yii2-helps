@@ -2,7 +2,6 @@
 
 namespace reketaka\helps\modules\moneyCourse\commands;
 
-use common\helpers\BaseHelper;
 use reketaka\helps\modules\moneyCourse\models\MoneyCourse;
 use yii\console\Controller;
 use yii\helpers\Console;
