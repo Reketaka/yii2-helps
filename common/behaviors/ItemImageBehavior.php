@@ -4,6 +4,7 @@ namespace reketaka\helps\common\behaviors;
 
 use common\models\BaseHelper;
 use function file_exists;
+use Imagine\Image\ManipulatorInterface;
 use function pathinfo;
 use yii\base\Behavior;
 use Yii;
@@ -16,6 +17,7 @@ class ItemImageBehavior extends Behavior{
     public $imageAttribute = 'image';
     public $webRoot = null;
     public $serverRoot = "@frontend/web/";
+    public $mode = ManipulatorInterface::THUMBNAIL_INSET;
 
     public function events()
     {
@@ -50,7 +52,7 @@ class ItemImageBehavior extends Behavior{
             return $newFilePath;
         }
 
-        Image::thumbnail($this->getImagePath(), $width, $height)
+        Image::thumbnail($this->getImagePath(), $width, $height, $this->model)
             ->save($newFilePath, ['quality' => 80]);
 
         if($web){
