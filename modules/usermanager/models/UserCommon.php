@@ -3,7 +3,7 @@
 namespace reketaka\helps\modules\usermanager\models;
 
 
-use User;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
@@ -11,11 +11,41 @@ use yii\filters\auth\QueryParamAuth;
 
 abstract class UserCommon extends ActiveRecord{
     const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
     CONST SESSION_KEY_USER_ROLES = 'userRoles';
 
     public $password;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+        ];
+    }
 
     /**
      * Используется для записи в сессию текущих ролей пользователя
