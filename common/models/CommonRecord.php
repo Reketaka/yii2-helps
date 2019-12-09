@@ -6,6 +6,7 @@ use reketaka\helps\common\behaviors\AliasBehavior;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 use yii\log\Logger;
 
@@ -165,6 +166,14 @@ class CommonRecord extends ActiveRecord{
         return self::findBySql($sql . ' FOR UPDATE')->one();
     }
 
+
+    /**
+     * @return array
+     */
+    public static function getArrayMap($key = 'id', $value = 'title'){
+        $items = static::find()->select([$key, $value])->asArray()->all();
+        return ArrayHelper::map($items, $key, $value);
+    }
 
 
 }
