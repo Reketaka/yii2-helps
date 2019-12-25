@@ -29,45 +29,47 @@ use yii\widgets\DetailView;
         </div>
     </div>
 
-    <div class="col-md-3">
-        <h3>User information</h3>
-        <?php
+    <div class="row">
+        <div class="col-md-3">
+            <h3>User information</h3>
+            <?php
 
-            $attributes = [];
-            foreach($userViewAttributes as $userViewAttribute){
-                $attributes[] = $userViewAttribute;
-            }
-
-
-            echo DetailView::widget([
-                'model'=>$model,
-                'attributes' => $attributes
-            ]);
+                $attributes = [];
+                foreach($userViewAttributes as $userViewAttribute){
+                    $attributes[] = $userViewAttribute;
+                }
 
 
-        ?>
-    </div>
+                echo DetailView::widget([
+                    'model'=>$model,
+                    'attributes' => $attributes
+                ]);
 
-    <?=$this->render('_include/roles', [
-        'userRoles'=>$userRoles,
-        'user'=>$model
-    ])?>
 
-    <?=$this->render('_include/availableRoles', [
-        'allRolesHeirarchy'=>$allRolesHeirarchy,
-        'user'=>$model
-    ])?>
+            ?>
+        </div>
 
-    <div class="col-md-3">
-        <?=$this->render('_include/availableGroups', [
-            'allGroups'=>$allGroups,
-            'user'=>$model,
-            'userGroups'=>$userGroups
+        <?=$this->render('_include/roles', [
+            'userRoles'=>$userRoles,
+            'user'=>$model
         ])?>
 
-        <?=$this->render('_include/groups', [
-            'user'=>$model,
-            'userGroups'=>$userGroups
+        <?=$this->render('_include/availableRoles', [
+            'allRolesHeirarchy'=>$allRolesHeirarchy,
+            'user'=>$model
         ])?>
+
+        <div class="col-md-3">
+            <?=$this->render('_include/availableGroups', [
+                'allGroups'=>$allGroups,
+                'user'=>$model,
+                'userGroups'=>$userGroups
+            ])?>
+
+            <?=$this->render('_include/groups', [
+                'user'=>$model,
+                'userGroups'=>$userGroups
+            ])?>
+        </div>
     </div>
 </div>

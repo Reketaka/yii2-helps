@@ -5,6 +5,8 @@ namespace reketaka\helps\common\controllers;
 
 use function array_key_exists;
 use common\models\BaseHelper;
+use function implode;
+use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\db\ColumnSchemaBuilder;
 use yii\db\Query;
@@ -25,12 +27,46 @@ class Migration extends \yii\db\Migration{
             $unique = $type->getUniqIndex();
 
             $time = $this->beginCommand('create' . ($unique ? ' unique' : '') . " index $name on $table (" . $column . ')');
+
             $this->db->createCommand()->createIndex($name, $table, $column, $unique)->execute();
             $this->endCommand($time);
         }
 
 
         $this->endCommand($time);
+    }
+
+    public function createTableFromSelect($tableName, Query $query){
+        $this->execute("CREATE TABLE $tableName ".$query->createCommand()->getRawSql());
+        return true;
+    }
+
+    public function dropView($name){
+        $this->execute("DROP VIEW $name");
+        return true;
+    }
+
+//    CREATE ALGORITHM = MERGE VIEW city2  AS SELECT * FROM tableName;
+    public function createView($name, Query $query, $viewColumns = [], $algoritm = "MERGE"){
+        $sql = [];
+        $sql[] = "CREATE";
+        if($algoritm){
+            $sql[] = "ALGORITHM = $algoritm";
+        }
+
+        $sql[] = "VIEW $name";
+        if($viewColumns){
+            $sql[] = "(".implode(", ", $viewColumns).")";
+        }
+
+        $sql[] = "AS";
+        $sql[] = $query->createCommand()->getRawSql();
+
+        $sql = implode(' ' , $sql);
+
+
+        $this->execute($sql);
+        return true;
     }
 
     public function createTable($table, $columns, $options = null)
@@ -43,6 +79,7 @@ class Migration extends \yii\db\Migration{
 
         
         $this->db->createCommand()->createTable($table, $columns, $options)->execute();
+        echo PHP_EOL;
         foreach ($columns as $column => $type) {
             if ($type instanceof ColumnSchemaBuilder && $type->comment !== null) {
                 $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();

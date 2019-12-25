@@ -4,6 +4,8 @@ namespace reketaka\helps\modules\adminMenu\models;
 
 use common\helpers\BaseHelper;
 use common\models\User;
+use reketaka\helps\common\helpers\Bh;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -25,6 +27,39 @@ class MenuDynamic{
         \Yii::$app->cache->delete(self::CACHE_KEY.self::CACHE_KEY_ALL);
     }
 
+    public function markActiveElements($result){
+
+        $controllerUniqId = Yii::$app->controller->uniqueId;
+
+        foreach($result as $key=>&$menuSectionData){
+
+            $menuSectionData['active'] = false;
+
+            if(!$menuSectionData['items']){
+                continue;
+            }
+
+            foreach($menuSectionData['items'] as &$itemData){
+
+                $itemData['active'] = false;
+
+                if(!$itemData['controller_uniq_id']){
+                    continue;
+                }
+
+                $controllers = explode(":", $itemData['controller_uniq_id']);
+                $itemData['active'] = in_array($controllerUniqId, $controllers);
+                if($itemData['active']) {
+                    $menuSectionData['active'] = true;
+                }
+
+            }
+
+        }
+
+        return $result;
+    }
+
     public function generate($generateAll = false){
         if(\Yii::$app->user->isGuest){
             return [];
@@ -34,7 +69,7 @@ class MenuDynamic{
         $cacheKey = self::CACHE_KEY . \Yii::$app->user->getId().($generateAll?self::CACHE_KEY_ALL:null);
 
         if ($d = $cache->get($cacheKey)) {
-            return $d;
+            return $this->markActiveElements($d);
         }
 
         $sections = null;
@@ -65,7 +100,7 @@ class MenuDynamic{
 
             $t = [
                 'label'=>$section->title,
-                'icon'=>'align-left',
+                'icon'=>$section->icon?$section->icon:'align-left',
                 'url'=>'#',
                 'items'=>$this->getItemsSection($section, $userRoles)
             ];
@@ -79,7 +114,7 @@ class MenuDynamic{
 
         $cache->set($cacheKey, $r);
 
-        return $r;
+        return $this->markActiveElements($r);
     }
 
     public function getItemsSection($section, $userRoles){
@@ -91,6 +126,7 @@ class MenuDynamic{
             return $r;
         }
 
+
         foreach($items as $item){
             /**
              * @var $item MenuItem
@@ -99,7 +135,9 @@ class MenuDynamic{
             $t = [
                 'label'=>$item->title,
                 'url'=>Url::to($item->url),
-                'id'=>$item->id
+                'id'=>$item->id,
+                'icon'=>$item->icon,
+                'controller_uniq_id'=>$item->controller_uniq_id
             ];
 
             if(!$this->checkAccessToMenuItem($userRoles, $item->menuItemRoles)){

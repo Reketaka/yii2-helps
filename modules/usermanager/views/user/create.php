@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?php endforeach; ?>
 
-    <?=Html::submitButton(Yii::t('app', 'save'))?>
+    <?=Html::submitButton(Yii::t('app', 'save'), ['class'=>'btn btn-success'])?>
 
     <?php ActiveForm::end()?>
 

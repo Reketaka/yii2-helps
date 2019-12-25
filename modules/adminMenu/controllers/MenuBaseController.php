@@ -2,8 +2,11 @@
 
 namespace reketaka\helps\modules\adminMenu\controllers;
 
-use common\helpers\BaseHelper;
+use function mb_strtolower;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\adminMenu\models\MenuDynamic;
+use function strpos;
+use function strtolower;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -20,6 +23,32 @@ class MenuBaseController extends Controller {
         return $this->render('index', [
             'menuItems'=>$menuItems
         ]);
+    }
+
+    public function actionGetItemByQuery($q){
+
+        $menuItems = (new MenuDynamic)->generate(true);
+
+
+        $items = [];
+        foreach($menuItems as $sectionData){
+            foreach($sectionData['items'] as $itemData){
+
+                $title = $sectionData['label']." - ".$itemData['label'];
+
+                if(strpos(mb_strtolower($title), $q) === FALSE){
+                    continue;
+                }
+
+                $items[] = [
+                    'label'=>$title,
+                    'url'=>$itemData['url'],
+                    'icon'=>$sectionData['icon']
+                ];
+            }
+        }
+
+        return $this->asJson($items);
     }
 
     public function actionGetSystemUser($q){

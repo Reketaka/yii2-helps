@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property string $alias
  * @property string $title
  * @property int $order
+ * @property string $icon
  *
  * @property MenuItem[] $menuItems
  */
@@ -35,7 +36,8 @@ class MenuSection extends ActiveRecord
             [['order'], 'integer'],
             [['alias'], 'unique'],
             [['order'], 'default', 'value' => 0],
-            [['alias', 'title'], 'string'],
+            [['alias', 'title', 'icon'], 'string'],
+            [['icon'], 'default', 'value'=>null]
         ];
     }
 
@@ -48,6 +50,7 @@ class MenuSection extends ActiveRecord
             'id' => yii::t('app', 'id'),
             'alias' => yii::t('app', 'alias'),
             'title' => yii::t('app', 'title'),
+            'icon'=>Yii::t('app', 'icon'),
             'order' => yii::t('app', 'order'),
         ];
     }

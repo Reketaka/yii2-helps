@@ -30,6 +30,15 @@ class BackendLoginForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'username'=>Yii::t('app', 'username'),
+            'rememberMe'=>Yii::t('app', 'rememberMe'),
+            'password'=>Yii::t('app', 'password')
+        ];
+    }
+
     /**
      * Validates the password.
      * This method serves as the inline validation for password.

@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\usermanager\models;
 
 use common\helpers\BaseHelper;
 use reketaka\helps\common\behaviors\AliasBehavior;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -49,6 +50,16 @@ class UserGroup extends ActiveRecord{
         return [
             [['alias'], 'unique'],
             [['title', 'alias'], 'string', 'max'=>250],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'title'=>Yii::t('app', 'title'),
+            'alias'=>Yii::t('app', 'alias'),
+            'created_at'=>Yii::t('app', 'created at'),
+            'updated_at'=>Yii::t('app', 'updated at')
         ];
     }
 

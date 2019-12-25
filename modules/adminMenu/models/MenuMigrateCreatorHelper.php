@@ -12,11 +12,14 @@ class MenuMigrateCreatorHelper extends Model{
      *      [
      *          'label'=>'Лиды',
      *          'alias'=>'lead',
+     *          'icon'=>'fa fa-user',
      *          'items'=>[
      *              [
      *                  'label'=>'История авторизации телефона в лк',
      *                  'url'=>['/history-authorized-lk/index'],
-     *                  'roles' => ['viewStatisticLead']
+     *                  'roles' => ['viewStatisticLead'],
+     *                  'icon'=>'fa fa-user',
+     *                  'controller_uniqId'=>''
      *              ],
      *          ]
      *      ],
@@ -32,7 +35,8 @@ class MenuMigrateCreatorHelper extends Model{
             ])){
                 $section = new MenuSection([
                     'title'=>$sectionData['label'],
-                    'alias'=>$sectionData['alias']
+                    'alias'=>$sectionData['alias'],
+                    'icon' => $sectionData['icon']??null
                 ]);
                 $section->save();
             }
@@ -46,7 +50,9 @@ class MenuMigrateCreatorHelper extends Model{
                     $menuItem = new MenuItem([
                         'title'=>$menuItemData['label'],
                         'url'=>$menuItemData['url'][0],
-                        'section_id'=>$section->id
+                        'section_id'=>$section->id,
+                        'icon'=>$menuItemData['icon']??null,
+                        'controller_uniq_id'=>$menuItemData['controller_uniq_id']??null
                     ]);
                     $menuItem->save();
                 }

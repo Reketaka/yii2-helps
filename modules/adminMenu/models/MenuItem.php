@@ -12,6 +12,8 @@ use yii\db\ActiveRecord;
  * @property string $title
  * @property string $alias
  * @property string $url
+ * @property string $icon
+ * @property string $controller_uniq_id
  * @property int $section_id
  * @property int $order
  *
@@ -37,7 +39,8 @@ class MenuItem extends ActiveRecord
         return [
             [['section_id', 'order'], 'integer'],
             [['order'], 'default', 'value' => 0],
-            [['title', 'alias', 'url'], 'string'],
+            [['title', 'alias', 'url', 'icon', 'controller_uniq_id'], 'string'],
+            [['icon', 'controller_uniq_id'], 'default', 'value'=>null],
             [['section_id'], 'exist', 'targetRelation' => 'section', 'skipOnEmpty' => false, 'skipOnError' => false],
         ];
     }
@@ -52,6 +55,8 @@ class MenuItem extends ActiveRecord
             'title' => yii::t('app', 'title'),
             'alias' => yii::t('app', 'alias'),
             'url' => yii::t('app', 'url'),
+            'icon'=>Yii::t('app', 'icon'),
+            'controller_uniq_id'=>Yii::t('app', 'controller_uniq_id'),
             'section_id' => yii::t('app', 'section id'),
             'order' => yii::t('app', 'order'),
         ];
