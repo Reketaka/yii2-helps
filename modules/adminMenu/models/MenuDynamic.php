@@ -2,8 +2,10 @@
 
 namespace reketaka\helps\modules\adminMenu\models;
 
+use function array_keys;
 use common\helpers\BaseHelper;
 use common\models\User;
+use function method_exists;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -92,7 +94,13 @@ class MenuDynamic{
         }
 
         $user = \Yii::$app->user->identity;
-        $userRoles = $user->getRoles();
+
+        if(method_exists($user, 'getRoles')) {
+            $userRoles = $user->getRoles();
+        }else{
+            $userRoles = Yii::$app->authManager->getAssignments($user->getId());
+            $userRoles = array_keys($userRoles);
+        }
 
         $r = [];
 
@@ -112,7 +120,9 @@ class MenuDynamic{
             $r[] = $t;
         }
 
+
         $cache->set($cacheKey, $r);
+
 
         return $this->markActiveElements($r);
     }
