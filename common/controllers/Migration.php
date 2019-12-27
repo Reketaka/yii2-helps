@@ -5,6 +5,7 @@ namespace reketaka\helps\common\controllers;
 
 use function array_key_exists;
 use common\models\BaseHelper;
+use DateTime;
 use function implode;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
@@ -41,9 +42,26 @@ class Migration extends \yii\db\Migration{
         return true;
     }
 
+    public function insert($table, $columns)
+    {
+        $time = $this->beginCommand("insert into $table");
+        $this->db->createCommand()->insert($table, $columns)->execute();
+        $this->endCommand($time);
+
+        return $this->getLastId();
+    }
+
     public function dropView($name){
         $this->execute("DROP VIEW $name");
         return true;
+    }
+
+    public function getLastId(){
+        return $this->db->getLastInsertID();
+    }
+
+    public function getCurrentDateTime(){
+        return (new DateTime())->format("Y-m-d H:i:s");
     }
 
 //    CREATE ALGORITHM = MERGE VIEW city2  AS SELECT * FROM tableName;

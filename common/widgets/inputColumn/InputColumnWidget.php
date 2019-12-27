@@ -94,7 +94,9 @@ class InputColumnWidget extends Column
   </div>
 </div>';
 
-        Yii::$app->view->registerAssetBundle($this->assetClass, View::POS_END);
+        if($this->assetClass) {
+            Yii::$app->view->registerAssetBundle($this->assetClass, View::POS_END);
+        }
 
         $jsText = <<<JS
     $('.inputWidgetInputColumn').keyup(function(e){

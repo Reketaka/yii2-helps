@@ -10,6 +10,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use Yii;
 
@@ -292,6 +293,30 @@ class Bh{
                 return Yii::$app->formatter->asDecimal($value);
             }
         ];
+    }
+
+    /**
+     * @param $attribute
+     * @param $model ActiveRecord
+     * @param $relName
+     * @param $url
+     * @param string $urlKey
+     * @return array
+     */
+    public static function getCommonModelAsLinkRel($attribute, $model, $relName, $url, $linkKey = 'title', $urlKey = 'id'){
+
+        $d = [
+            'attribute' => $attribute,
+            'format' => 'raw',
+            'value' => function () use ($model, $relName, $linkKey, $urlKey, $url) {
+                if($model->getRelation($relName) && ($r = $model->$relName)){
+                    $url[$urlKey] = $r->$urlKey;
+                    return Html::a($r->$linkKey, Url::to($url));
+                }
+            }
+        ];
+
+        return $d;
     }
 
     public static function getMaxValueColumn($array, $column, $toMax=false, $returnElem = false){
