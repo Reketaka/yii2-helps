@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'dashboard'=>'Сводка',
     'login_enter'=>'Вход',
     'authorization'=>'Авторизация',
     'registration'=>'Регистрация',

@@ -36,7 +36,7 @@ class MenuBaseController extends Controller {
 
                 $title = $sectionData['label']." - ".$itemData['label'];
 
-                if(strpos(mb_strtolower($title), $q) === FALSE){
+                if(strpos(mb_strtolower($title), mb_strtolower($q)) === FALSE){
                     continue;
                 }
 
