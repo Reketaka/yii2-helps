@@ -86,6 +86,6 @@ return [
     'no'=>'Нет',
     'main_menu'=>'Главное меню',
     'delivery_date'=>'Дата доставки',
-    'order id'=>'Заказ'
-
+    'order id'=>'Заказ',
+    'Are you sure you want to delete this item?'=>'Вы уверены что хотите удалить этот элемент'
 ];
