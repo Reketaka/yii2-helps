@@ -13,6 +13,24 @@ use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
 
+/**
+ * Class IndexAction
+ *
+ * ```php
+ * public function actions()
+ * {
+ *  return [
+ *       'index' => [
+ *           'class' => 'reketaka\helps\common\actions\crudReset\index\IndexAction',
+ *           'searchModel'=>new SiteSearch()
+ *       ]
+ *    ];
+ *  }
+ *```php
+ *
+ * @package reketaka\helps\common\actions\crudReset\index
+ *
+ */
 class IndexAction extends BaseAction {
 
     public $columns = [];

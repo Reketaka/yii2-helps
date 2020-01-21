@@ -13,6 +13,23 @@ use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
 
+/**
+ * Class ViewAction
+ *
+ * ```php
+ * public function actions()
+ * {
+ *  return [
+ *       'view' => [
+ *           'class' => 'reketaka\helps\common\actions\crudReset\delete\ViewAction',
+ *       ]
+ *    ];
+ *  }
+ *```php
+ *
+ * @package reketaka\helps\common\actions\crudReset\view
+ *
+ */
 class ViewAction extends BaseAction {
 
     public $columns = [];
