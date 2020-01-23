@@ -2,6 +2,12 @@
 
 namespace reketaka\helps\common\helpers;
 
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function array_search;
+use function array_slice;
+use function array_values;
 use function mb_strlen;
 use reketaka\helps\common\jobs\SendTelegramTextJob;
 use function substr;
@@ -437,5 +443,21 @@ class Bh{
             return substr($telephone, 0, 1)." (".substr($telephone, 1, 3).") ".substr($telephone, 4, 3)."-".substr($telephone, 7, 2)."-".substr($telephone, 9, 2);
         }
 
+    }
+
+    public static function insertArrayAfter(&$array, $index, $key, $val)
+    {
+        if(!$searchKey = array_key_exists($index, $array)){
+            return false;
+        }
+
+        $searchNumber = array_search($index, array_keys($array));
+
+        $partStart = array_slice($array, 0, $searchNumber+1);
+
+        $partEnd = array_slice($array, $searchNumber+1, count($array));
+
+        $array = array_merge($partStart, [$key=>$val], $partEnd);
+        return $array;
     }
 }
