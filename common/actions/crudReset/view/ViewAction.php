@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  * {
  *  return [
  *       'view' => [
- *           'class' => 'reketaka\helps\common\actions\crudReset\delete\ViewAction',
+ *           'class' => 'reketaka\helps\common\actions\crudReset\view\ViewAction',
  *       ]
  *    ];
  *  }

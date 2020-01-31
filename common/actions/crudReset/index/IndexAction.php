@@ -84,12 +84,13 @@ class IndexAction extends BaseAction {
 
         $this->formatColumns();
 
-
+        $this->metaCall();
 
         return $this->controller->render($this->renderView, [
             'searchModel' => $this->searchModel,
             'dataProvider' => $this->searchModel->search(Yii::$app->request->queryParams),
-            'columns'=>$this->columns
+            'columns'=>$this->columns,
+            'addActions'=>$this->addActions
         ]);
     }
 

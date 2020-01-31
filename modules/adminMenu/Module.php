@@ -9,6 +9,9 @@ class Module extends \yii\base\Module{
     public $superAdminRole = 'superadmin';
     public $superAdminLogin = 'superadmin';
 
+    public $i18nUse = false;
+    public $i18nSection = 'mainMenu';
+
     public function init(){
         parent::init();
 

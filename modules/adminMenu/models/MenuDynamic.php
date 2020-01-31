@@ -104,6 +104,8 @@ class MenuDynamic{
 
         $r = [];
 
+        $module = Yii::$app->getModule('adminmenu');
+
         foreach($sections as $section){
 
             $t = [
@@ -112,6 +114,11 @@ class MenuDynamic{
                 'url'=>'#',
                 'items'=>$this->getItemsSection($section, $userRoles)
             ];
+
+            if($module->i18nUse){
+                $t['label'] = Yii::t($module->i18nSection, $section->title);
+            }
+
 
             if(!$t['items']){
                 continue;
@@ -136,6 +143,7 @@ class MenuDynamic{
             return $r;
         }
 
+        $module = Yii::$app->getModule('adminmenu');
 
         foreach($items as $item){
             /**
@@ -149,6 +157,10 @@ class MenuDynamic{
                 'icon'=>$item->icon,
                 'controller_uniq_id'=>$item->controller_uniq_id
             ];
+
+            if($module->i18nUse){
+                $t['label'] = Yii::t($module->i18nSection, $item->title);
+            }
 
             if(!$this->checkAccessToMenuItem($userRoles, $item->menuItemRoles)){
                 continue;

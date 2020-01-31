@@ -8,6 +8,8 @@ use common\models\BaseHelper;
 use DateTime;
 use function implode;
 use reketaka\helps\common\helpers\Bh;
+use reketaka\helps\modules\dictionaries\models\DictionariesHelper;
+use reketaka\helps\modules\dictionaries\models\DictionariesName;
 use Yii;
 use yii\db\ColumnSchemaBuilder;
 use yii\db\Query;
@@ -150,5 +152,33 @@ class Migration extends \yii\db\Migration{
         return true;
     }
 
+    /**
+     * Создает справочник
+     * @param $alias
+     * @param $title
+     * @param $values
+     * @return bool
+     */
+    public function createDictionary($alias, $title, $values){
+        $dictionary = DictionariesHelper::create($alias, $values, $title, true);
 
+        return $dictionary;
+    }
+
+    /**
+     * Удаляет справочник
+     * @param $alias
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function deleteDictionary($alias){
+        if(!$dictionary = DictionariesName::findOne(['alias'=>$alias])){
+            return true;
+        }
+
+        $dictionary->delete();
+
+        return true;
+    }
 }

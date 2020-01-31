@@ -10,6 +10,9 @@ use reketaka\helps\common\helpers\Bh as BaseHelper;
 
 class BackendController extends Controller{
 
+    public $generateDescription = false;
+    public $generateH1 = false;
+
     /**
      * @return User|\yii\web\IdentityInterface|null
      */

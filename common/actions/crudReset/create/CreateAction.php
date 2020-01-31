@@ -1,6 +1,6 @@
 <?php
 
-namespace reketaka\helps\common\actions\crudReset\update;
+namespace reketaka\helps\common\actions\crudReset\create;
 
 
 use reketaka\helps\common\actions\crudReset\BaseAction;
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * {
  *  return [
  *       'update' => [
- *           'class' => 'reketaka\helps\common\actions\crudReset\delete\UpdateAction',
+ *           'class' => 'reketaka\helps\common\actions\crudReset\create\CreateAction',
  *       ]
  *    ];
  *  }
@@ -26,7 +26,7 @@ use yii\db\ActiveRecord;
  * @package reketaka\helps\common\actions\crudReset\update
  *
  */
-class UpdateAction extends BaseAction {
+class CreateAction extends BaseAction {
 
     public $columns = [];
 
@@ -34,9 +34,9 @@ class UpdateAction extends BaseAction {
      * Шаблон вывода render
      * @var string
      */
-    public $renderView = '@reketaka/helps/common/actions/crudReset/update/views/index';
+    public $renderView = '@reketaka/helps/common/actions/crudReset/create/views/index';
 
-    public $redirect = 'view';
+    public $redirect = 'index';
 
     /**
      * @var $model ActiveRecord
@@ -56,9 +56,7 @@ class UpdateAction extends BaseAction {
 
     }
 
-    public function run($id){
-
-        $this->model = $this->controller->findModel($id);
+    public function run(){
 
         $this->formatColumns();
         $this->metaCall();

@@ -28,7 +28,7 @@ use yii\bootstrap4\Html;
             <?php endforeach; ?>
 
             <div class="form-group">
-                <?=Html::submitButton(Yii::t('app', $model->isNewRecord?'insert':'update'), ['class'=>'btn btn-success'])?>
+                <?=Html::submitButton(Yii::t('app', $model->isNewRecord?'create':'update'), ['class'=>'btn btn-success'])?>
             </div>
 
 
