@@ -1,6 +1,6 @@
 <?php
 
-return [
+$config = [
     'dashboard'=>'Сводка',
     'login_enter'=>'Вход',
     'authorization'=>'Авторизация',
@@ -87,5 +87,16 @@ return [
     'main_menu'=>'Главное меню',
     'delivery_date'=>'Дата доставки',
     'order id'=>'Заказ',
-    'Are you sure you want to delete this item?'=>'Вы уверены что хотите удалить этот элемент'
+    'Are you sure you want to delete this item?'=>'Вы уверены что хотите удалить этот элемент',
+    'second_name'=>'Фамилия',
+    'father_name'=>'Отчество',
+    'sex'=>'Пол',
+    'birthday_date'=>'Дата рождения'
 ];
+
+
+$config['second name'] = $config['second_name'];
+$config['father name'] = $config['father_name'];
+$config['birthday date'] = $config['birthday_date'];
+
+return $config;

@@ -2,11 +2,14 @@
 
 namespace reketaka\helps\common\behaviors;
 
+use reketaka\helps\common\helpers\Bh;
+use Yii;
 use yii\base\Behavior;
 use yii\base\Event;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\db\Query;
+use const YII2_PATH;
 
 /**
  * Class ZipFieldBehavior
@@ -31,6 +34,7 @@ class ZipFieldBehavior extends Behavior{
     public $tableName;
     public $fieldName;
     public $findFieldOnLoad = false;
+    public $useCompress = true;
 
     public function events()
     {
@@ -49,7 +53,7 @@ class ZipFieldBehavior extends Behavior{
 
         $valueQuery = (new Query)
             ->select([
-                new Expression("UNCOMPRESS(value) as 'value'")
+                $this->useCompress?new Expression("UNCOMPRESS(value) as 'value'"):new Expression("value as value")
             ])
             ->from($this->tableName)
             ->where(['model_id'=>$event->sender->id])
@@ -87,10 +91,11 @@ class ZipFieldBehavior extends Behavior{
 
         \Yii::$app->db->createCommand()->upsert($this->tableName, [
             'model_id'=>$sender->id,
-            'value'=>new Expression("COMPRESS($value)")
+            'value'=>$this->useCompress?new Expression("COMPRESS($value)"):new Expression("$value")
         ], [
-            'value'=>new Expression("COMPRESS($value)")
+            'value'=>$this->useCompress?new Expression("COMPRESS($value)"):new Expression("$value")
         ])->execute();
+
 
         return true;
     }

@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\actions\crudReset\view;
 
 use function array_key_exists;
+use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_unshift;
@@ -12,6 +13,7 @@ use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class ViewAction
@@ -47,9 +49,29 @@ class ViewAction extends BaseAction {
 
     private function formatColumns(){
 
+        if($this->columns){
+            $this->columns = array_map(function($v){
+                if(!is_array($v)){
+                    return $v;
+                }
+
+                if(!$value = ArrayHelper::getValue($v, 'value', false)){
+                    return $v;
+                }
+
+                $resultValue = $value($this->model);
+                $v['value'] = $resultValue;
+                return $v;
+
+
+            }, $this->columns);
+
+        }
+
         if(!$this->columns){
             $this->columns = array_keys($this->model->attributes);
         }
+
 
     }
 

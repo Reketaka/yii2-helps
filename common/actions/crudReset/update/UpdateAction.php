@@ -48,11 +48,13 @@ class UpdateAction extends BaseAction {
             $this->columns = array_merge($this->columns, array_keys($this->model->attributes));
         }
 
+        foreach(['id', 'created_at', 'updated_at'] as $column):
+            if(in_array($column, $this->columns)){
+                $key = array_search($column, $this->columns);
+                unset($this->columns[$key]);
+            }
+        endforeach;
 
-        if(in_array('id', $this->columns)){
-            $key = array_search('id', $this->columns);
-            unset($this->columns[$key]);
-        }
 
     }
 

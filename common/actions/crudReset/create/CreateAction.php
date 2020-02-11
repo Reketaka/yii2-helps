@@ -49,10 +49,12 @@ class CreateAction extends BaseAction {
         }
 
 
-        if(in_array('id', $this->columns)){
-            $key = array_search('id', $this->columns);
-            unset($this->columns[$key]);
-        }
+        foreach(['id', 'created_at', 'updated_at'] as $column):
+            if(in_array($column, $this->columns)){
+                $key = array_search($column, $this->columns);
+                unset($this->columns[$key]);
+            }
+        endforeach;
 
     }
 
