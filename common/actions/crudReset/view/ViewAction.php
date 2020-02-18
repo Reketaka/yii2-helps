@@ -49,6 +49,11 @@ class ViewAction extends BaseAction {
 
     private function formatColumns(){
 
+        if($this->columns instanceof \Closure){
+            $columnFunction = $this->columns;
+            $this->columns = $columnFunction($this->model);
+        }
+
         if($this->columns){
             $this->columns = array_map(function($v){
                 if(!is_array($v)){

@@ -10,6 +10,7 @@ use yii\bootstrap4\Html;
  * @var $this View
  * @var $model ActiveRecord
  * @var $columns
+ * @var $optionals
  */
 
 

@@ -12,6 +12,7 @@ use yii\grid\GridView;
  * @var $dataProvider ActiveDataProvider
  * @var $columns[]
  * @var $addActions
+ * @var $optionals
  */
 
 ?>

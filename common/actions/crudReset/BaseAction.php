@@ -36,6 +36,12 @@ class BaseAction extends Action{
      */
     public $model;
 
+    /**
+     * Для передачи дополнительных параметров
+     * @var array
+     */
+    public $optionals = [];
+
     protected function generateMeta($variable){
 
         if(!$this->$variable){

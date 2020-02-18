@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\actions\crudReset\index;
 
 use function array_key_exists;
+use function array_keys;
 use function array_merge;
 use function array_shift;
 use function array_unshift;
@@ -52,7 +53,12 @@ class IndexAction extends BaseAction {
 
     private function formatColumns(){
         if(!$this->columns){
-            $this->columns = array_merge($this->columns, array_keys($this->searchModel->attributes));
+            $this->columns = array_keys($this->searchModel->attributes);
+        }
+
+        if($this->columns instanceof \Closure){
+            $columnFunction = $this->columns;
+            $this->columns = $columnFunction($this->searchModel);
         }
 
         if(in_array('id', $this->columns)){
@@ -82,15 +88,18 @@ class IndexAction extends BaseAction {
 
     public function run(){
 
+        $dataProvider = $this->searchModel->search(Yii::$app->request->queryParams);
         $this->formatColumns();
 
         $this->metaCall();
 
+
         return $this->controller->render($this->renderView, [
             'searchModel' => $this->searchModel,
-            'dataProvider' => $this->searchModel->search(Yii::$app->request->queryParams),
+            'dataProvider' => $dataProvider,
             'columns'=>$this->columns,
-            'addActions'=>$this->addActions
+            'addActions'=>$this->addActions,
+            'optionals'=>$this->optionals
         ]);
     }
 
