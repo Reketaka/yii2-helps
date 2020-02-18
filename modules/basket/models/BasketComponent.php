@@ -4,13 +4,14 @@ namespace reketaka\helps\modules\basket\models;
 
 use common\models\BaseHelper;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Model;
 
 /**
  * Class Basket
  * @package reketaka\helps\modules\basket\models
  */
-class BasketComponent extends Model
+class BasketComponent extends BaseObject
 {
     /**
      * @var $basket Basket
