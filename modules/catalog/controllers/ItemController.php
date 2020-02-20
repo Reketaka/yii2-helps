@@ -38,7 +38,8 @@ class ItemController extends Controller{
 
     public function actionCreate(){
 
-        $model = new Item();
+        $modelClass = $this->module->itemClass;
+        $model = new $modelClass();
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
@@ -77,6 +78,12 @@ class ItemController extends Controller{
             'model'=>$model,
             'fields'=>$fields
         ]);
+    }
+
+    public function actionDelete($id){
+        $model = $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
 
     public function actionView($id){
