@@ -2,10 +2,12 @@
 
 namespace reketaka\helps\modules\catalog\controllers;
 
+use reketaka\azia\models\View;
 use reketaka\helps\modules\catalog\models\Catalog;
 use reketaka\helps\modules\catalog\models\CatalogSearch;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\Module;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -31,6 +33,9 @@ class CatalogController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.catalog');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'catalog-view');
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -52,6 +57,10 @@ class CatalogController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'catalog-create');
+        }
+
         return $this->render('create', [
             'model'=>$model,
         ]);
@@ -69,6 +78,10 @@ class CatalogController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'catalog-update');
+        }
 
         $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
 
@@ -94,6 +107,10 @@ class CatalogController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.catalog'), 'url'=>['catalog/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'catalog-view');
+        }
 
         return $this->render('view', [
             'model'=>$model

@@ -42,6 +42,8 @@ class Bootstrap implements BootstrapInterface
             'fileMap'=>[
                 'modules/catalog/app'=>'app.php',
                 'modules/catalog/title'=>'title.php',
+                'modules/catalog/description'=>'description.php',
+                'modules/catalog/h1'=>'h1.php',
             ]
         ];
     }

@@ -26,6 +26,8 @@ return [
     'amount_in_stores'=>'Количество на складах',
     'amount_in_prices'=>'Все цены',
     'not_set_catalog'=>'Не установлен',
+    'parent_id_catalog'=>'Родительский каталог',
+
     'bc.main'=>'Модуль "Каталог"',
     'bc.price-type'=>'Типы цен',
     'bc.item'=>'Товары',
@@ -36,5 +38,5 @@ return [
     'bc.discount'=>'Скидки',
     'bc._create'=>'Создать',
     'bc._update'=>'Изменить #{id}',
-    'bc._view'=>'Просмотр #{id}'
+    'bc._view'=>'Просмотр #{id}',
 ];

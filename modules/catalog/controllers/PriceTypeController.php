@@ -2,10 +2,12 @@
 
 namespace reketaka\helps\modules\catalog\controllers;
 
+use reketaka\azia\models\View;
 use reketaka\helps\common\interfaces\ISetAttribute;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use reketaka\helps\modules\catalog\Module;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -30,6 +32,11 @@ class PriceTypeController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.price-type');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'price-type-index');
+            $this->view->description = Module::t('description', 'price-type-index');
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -50,6 +57,10 @@ class PriceTypeController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'price-type-create');
+        }
+
         return $this->render('create', [
             'model'=>$model
         ]);
@@ -69,6 +80,10 @@ class PriceTypeController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'price-type-update');
+        }
+
         return $this->render('update', [
             'model'=>$model
         ]);
@@ -82,6 +97,10 @@ class PriceTypeController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'price-type-view');
+        }
 
         return $this->render('view', [
             'model'=>$model

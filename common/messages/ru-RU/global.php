@@ -91,7 +91,8 @@ $config = [
     'second_name'=>'Фамилия',
     'father_name'=>'Отчество',
     'sex'=>'Пол',
-    'birthday_date'=>'Дата рождения'
+    'birthday_date'=>'Дата рождения',
+    'save'=>'Сохранить'
 ];
 
 

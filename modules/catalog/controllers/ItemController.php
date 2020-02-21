@@ -2,6 +2,8 @@
 
 namespace reketaka\helps\modules\catalog\controllers;
 
+use reketaka\azia\models\View;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\models\Item;
 use reketaka\helps\modules\catalog\models\ItemSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
@@ -27,6 +29,11 @@ class ItemController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.item');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->description = Module::t('description', 'item-index');
+            $this->view->h1 = Module::t('h1', 'item-index');
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -51,6 +58,10 @@ class ItemController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'item-create');
+        }
+
         $fields = Yii::$app->getModule('catalog')->getFields();
 
         return $this->render('create', [
@@ -67,6 +78,10 @@ class ItemController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'item-update');
+        }
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['view', 'id'=>$model->id]);
@@ -94,6 +109,10 @@ class ItemController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.item'), 'url'=>['item/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'item-view');
+        }
 
         $fields = Yii::$app->getModule('catalog')->getFields();
 

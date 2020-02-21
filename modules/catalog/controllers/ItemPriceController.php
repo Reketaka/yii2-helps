@@ -36,6 +36,7 @@ class ItemPriceController extends Controller{
 
         $typePrices = ArrayHelper::map(PriceType::find()->all(), 'id', 'title');
 
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

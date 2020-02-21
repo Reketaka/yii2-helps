@@ -3,8 +3,10 @@
 namespace reketaka\helps\modules\catalog\controllers;
 
 
+use reketaka\azia\models\View;
 use reketaka\helps\modules\catalog\models\Discount;
 use reketaka\helps\modules\catalog\models\DiscountSearch;
+use Yii;
 use yii\web\Controller;
 use reketaka\helps\modules\catalog\Module;
 
@@ -28,6 +30,9 @@ class DiscountController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.discount');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'discount-index');
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -48,6 +53,10 @@ class DiscountController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.discount'), 'url'=>['discount/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'discount-create');
+        }
+
         return $this->render('create', [
             'model'=>$model,
         ]);
@@ -66,6 +75,10 @@ class DiscountController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.discount'), 'url'=>['discount/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
 
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'discount-update');
+        }
+
         return $this->render('update', [
             'model'=>$model,
         ]);
@@ -79,6 +92,10 @@ class DiscountController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.discount'), 'url'=>['discount/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
+
+        if(Yii::$app->view instanceof View){
+            $this->view->h1 = Module::t('h1', 'discount-view');
+        }
 
         return $this->render('view', [
             'model'=>$model

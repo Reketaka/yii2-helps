@@ -61,6 +61,7 @@ class Catalog extends BaseModel
             'title' => yii::t('app', 'title'),
             'alias' => yii::t('app', 'alias'),
             'uid' => yii::t('app', 'uid'),
+            'parent_id'=>Module::t('app', 'parent_id_catalog'),
             'description' => yii::t('app', 'description'),
             'created_at' => yii::t('app', 'created at'),
             'updated_at' => yii::t('app', 'updated at'),

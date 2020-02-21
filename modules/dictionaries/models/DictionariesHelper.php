@@ -65,6 +65,16 @@ class DictionariesHelper extends Model{
     }
 
     /**
+     * Возвращает id Значения справочника
+     * @param $dictionaryAlias
+     * @param $valueAlias
+     * @return array|bool
+     */
+    public static function getId($dictionaryAlias, $valueAlias){
+        return self::findInValues($dictionaryAlias, $valueAlias, 'alias', 'id');
+    }
+
+    /**
      * Производит поиск в значениях справочника указанное значение по указанному полю $whereSearch
      * возвращает массив искомого значения ['id'=>'', 'value'=>'', 'alias'=>'']
      * @param $alias
