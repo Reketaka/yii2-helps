@@ -27,6 +27,15 @@ return [
     'amount_in_prices'=>'Все цены',
     'not_set_catalog'=>'Не установлен',
     'parent_id_catalog'=>'Родительский каталог',
+    'active'=>'Активность',
+    'round price'=>'Округление цен',
+    'file_path'=>'Путь до файла прайса',
+    'last_send_date'=>'Последняя дата отправки прайса',
+    'with active'=>'Включить активные товары',
+    'emails'=>'Email-ы',
+    'discount id'=>'Скидка',
+    'email_header'=>'Заголовок письма',
+    'email_content'=>'Содержание письма',
 
     'bc.main'=>'Модуль "Каталог"',
     'bc.price-type'=>'Типы цен',
@@ -39,4 +48,5 @@ return [
     'bc._create'=>'Создать',
     'bc._update'=>'Изменить #{id}',
     'bc._view'=>'Просмотр #{id}',
+    'bc.send-price'=>'Рассылка прайсов'
 ];

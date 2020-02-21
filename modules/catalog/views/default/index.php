@@ -23,7 +23,8 @@ use reketaka\helps\modules\basket\models\Basket;
             ['label'=>'Каталоги', 'url'=>['catalog/index']],
             ['label'=>'Количество товаров на складах', 'url'=>['item-store/index']],
             ['label'=>'Цены товаров', 'url'=>['item-price/index']],
-            ['label'=>'Скидки', 'url'=>['discount/index']]
+            ['label'=>'Скидки', 'url'=>['discount/index']],
+            ['label'=>'Рассылка прайсов', 'url'=>['send-price/index']]
         ],
     ])?>
 </div>

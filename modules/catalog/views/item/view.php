@@ -43,6 +43,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
             ],
             Bh::getCommonModelBooleanView('active', $model->active),
             'total_amount',
+            'uid',
         ];
 
         $attributes = array_merge($attributes, $fields);

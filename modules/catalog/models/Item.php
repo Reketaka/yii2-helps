@@ -2,10 +2,11 @@
 
 namespace reketaka\helps\modules\catalog\models;
 
-use common\models\BaseHelper;
 use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\Module;
 use yii\helpers\ArrayHelper;
+use function get_called_class;
+use function round;
 
 /**
  * Class Item
@@ -30,6 +31,8 @@ class Item extends BaseModel {
     CONST EVENT_CHANGE_AMOUNT = 'eventChangeAmount';
 
     public $behaviorTimestamp = true;
+
+    public $_price = null;
 
     public static function tableName()
     {
@@ -58,8 +61,21 @@ class Item extends BaseModel {
             'total_amount'=>Module::t('app', 'total_amount'),
             'catalog_id'=>Module::t('app', 'catalog id'),
             'created_at'=>Module::t('app','created at'),
-            'updated_at'=>Module::t('app', 'updated at')
+            'updated_at'=>Module::t('app', 'updated at'),
+            'price'=>Module::t('app', 'price')
         ];
+    }
+
+    public function getPrice()
+    {
+        return $this->_price;
+    }
+
+    /**
+     * @return ItemQuery|\yii\db\ActiveQuery
+     */
+    public static function find(){
+        return new ItemQuery(get_called_class());
     }
 
     /**

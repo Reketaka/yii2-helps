@@ -16,7 +16,8 @@
         "2amigos/yii2-transliterator-helper": "*",
         "yiisoft/yii2-httpclient": "^2.0",
         "npm-asset/bootstrap-notify": "*",
-        "kotchuprik/yii2-sortable-widgets":"*"
+        "kotchuprik/yii2-sortable-widgets":"*",
+        "unclead/yii2-multiple-input": "*"
     },
     "autoload": {
         "psr-4": {

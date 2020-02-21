@@ -15,6 +15,7 @@ class Module extends \yii\base\Module{
     public $tableItemFields = [];
     public $itemClass = 'reketaka\helps\modules\catalog\models\Item';
     public $defaultRoute = 'default/index';
+    public $attributesSendPrice = [];
 
     public function init(){
         parent::init();
