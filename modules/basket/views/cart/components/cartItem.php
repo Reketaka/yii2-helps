@@ -17,6 +17,30 @@ use yii\widgets\ActiveForm;
  */
 
 
+$jsText = <<<JS
+
+    $(".itemBasketOptions.btn-plus, .itemBasketOptions.btn-minus").click(function(e){
+        e.preventDefault();
+        
+        var amounElemnt = $(this).hasClass('btn-plus')?$(this).prev():$(this).next();
+        var value = amounElemnt.val();
+        value = parseInt(value, 10);
+        value = value <= 0?1:value;
+        
+        value = $(this).hasClass('btn-plus')?value+1:value-1;
+        
+        value = value <= 0?1:value;
+        
+        amounElemnt.val(value);
+        
+        return false;
+    })
+
+JS;
+
+$this->registerJs($jsText, View::POS_END);
+
+
 
 
 ?>
@@ -67,7 +91,7 @@ use yii\widgets\ActiveForm;
             <span><?=Yii::$app->formatter->asCurrency($basketItem->price)?></span>
         </div>
         <div class="buttons">
-            <button type="button" class="btn btn-sm btn-minus" onclick="app.basket.countChange({param:'-', basketId:'23', elem:this});return false;"><span class="glyphicon glyphicon-minus"></span></button>
+            <button type="button" class="btn btn-sm btn-minus itemBasketOptions"><span class="glyphicon glyphicon-minus"></span></button>
 <!--            <input type="number" name="count" class="form-control" min="1" value="--><?//=$basketItem->amount?><!--">-->
 
             <?=Html::activeTextInput($model, "items[{$basketItem->id}]", [
@@ -77,7 +101,7 @@ use yii\widgets\ActiveForm;
                 'min'=>1,
             ])?>
 
-            <button type="button" class="btn btn-sm btn-plus"  onclick="app.basket.countChange({param:'+', basketId:'23', elem:this});return false;"><span class="glyphicon glyphicon-plus"></span></button>
+            <button type="button" class="btn btn-sm btn-plus itemBasketOptions"><span class="glyphicon glyphicon-plus"></span></button>
             <div class="clearfix"></div>
         </div>
 

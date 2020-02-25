@@ -4,6 +4,8 @@
 .basket .item .image a:hover, .basket .item .image a:focus, .basket .item .image a:target{text-decoration:none;outline:none;}
 .basket .item .caption{width:300px;float:left;}
 .basket .item .caption .item-name{font-size:18px;font-weight:bold;color:#333;}
+.basket .item .summary-block{width:235px;float:left;text-align:left;}
+.basket .item .summary-block span{font-size: 18px;font-weight: bold;color: #333;}
 .basket .item .price-block{width:235px;float:right;text-align:left;}
 .basket .item .price-block .itemPrice{font-size:18px;font-weight: bold;}
 .basket .item .deleteItem{position:absolute;top:0%;right:0%;margin-right:16px;margin-top:10px;}

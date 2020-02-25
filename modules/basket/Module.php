@@ -20,6 +20,12 @@ class Module extends \yii\base\Module{
     ];
 
     /**
+     * Разрешить добавлять в корзину товаров больше чем есть в наличии
+     * @var bool
+     */
+    public $canAddMoreThenHas = false;
+
+    /**
      * Использовать ссылки до продуктов
      * @var bool
      */

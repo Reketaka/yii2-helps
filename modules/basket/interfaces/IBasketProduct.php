@@ -12,4 +12,6 @@ interface IBasketProduct{
 
     public function getBasketField($fieldName);
 
+    public function getTotalAmount();
+
 }

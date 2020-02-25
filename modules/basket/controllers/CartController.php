@@ -7,6 +7,7 @@ use reketaka\helps\modules\basket\assets\basket\BasketAsset;
 use reketaka\helps\modules\basket\models\BasketComponent;
 use reketaka\helps\modules\basket\models\CartRefresh;
 use reketaka\helps\modules\basket\Module;
+use reketaka\helps\modules\basket\traits\ModuleTrait;
 use reketaka\helps\modules\catalog\models\Item;
 use reketaka\helps\modules\catalog\models\Store;
 use Yii;
@@ -18,6 +19,8 @@ use yii\web\Controller;
 
 class CartController extends Controller {
 
+    use ModuleTrait;
+
     public function actionIndex(){
         /**
          * @var $basket BasketComponent
@@ -26,7 +29,7 @@ class CartController extends Controller {
         /**
          * @var $module Module
          */
-        $module = Yii::$app->getModule('basket');
+        $module = $this->getModule();
         
         $this->view->registerAssetBundle(BasketAsset::class);
 
@@ -89,7 +92,10 @@ class CartController extends Controller {
 
     public function actionPut($id, $amount = 1){
 
-        $module = Yii::$app->getModule('basket');
+        $amount = (int)$amount;
+        $amount = $amount <= 0?1:$amount;
+
+        $module = $this->getModule();
         /**
          * @var $itemClass Item
          */
@@ -97,6 +103,10 @@ class CartController extends Controller {
 
         if(!$item = $itemClass::find()->withPrice()->andWhere(['catalog_item.id'=>$id, 'catalog_item.active'=>1])->one()){
             return $this->asJson(['success'=>false, 'message'=>Yii::t('errors', 'item_not_found')]);
+        }
+
+        if(!$module->canAddMoreThenHas && ($item->getTotalAmount() < $amount)){
+            return $this->asJson(['success'=>false, 'message'=>Module::t('app', 'item_not_have_amount')]);
         }
 
         /**

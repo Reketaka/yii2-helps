@@ -4,10 +4,14 @@ namespace reketaka\helps\modules\basket\models;
 
 use reketaka\helps\modules\basket\models\BasketComponent;
 use reketaka\helps\modules\basket\models\BasketItem;
+use reketaka\helps\modules\basket\traits\ModuleTrait;
+use reketaka\helps\modules\catalog\models\Item;
 use Yii;
 use yii\base\Model;
 
 class CartRefresh extends Model{
+
+    use ModuleTrait;
 
     public $items;
     /**
@@ -30,11 +34,14 @@ class CartRefresh extends Model{
 
     public function validateAmounts($attribute){
 
+        $module = $this->getModule();
+        $basketItemClass = $module->basketItemClass;
+
         $dataItems = $this->$attribute;
 
         foreach($dataItems as $basketItemId=>$amount){
 
-            if(!$basketItem = BasketItem::findOne($basketItemId)){
+            if(!$basketItem = $basketItemClass::findOne($basketItemId)){
                 continue;
             }
 
@@ -45,9 +52,11 @@ class CartRefresh extends Model{
                 continue;
             }
 
-            if($amount > $product->total_amount){
-                $this->basket->modify($product, $product->total_amount);
-                continue;
+            if(!$module->canAddMoreThenHas) {
+                if ($amount > $product->getTotalAmount()) {
+                    $this->basket->modify($product, $product->total_amount);
+                    continue;
+                }
             }
 
             if($amount <= 1){
