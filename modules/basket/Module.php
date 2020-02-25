@@ -13,10 +13,17 @@ class Module extends \yii\base\Module{
     public $deleteBasketDay = 30;
 
     public $productClass = null;
+    public $basketItemClass = 'reketaka\helps\modules\basket\models\BasketItem';
 
     public $basketItemFields = [
 
     ];
+
+    /**
+     * Использовать ссылки до продуктов
+     * @var bool
+     */
+    public $useProductLink = false;
 
 
 

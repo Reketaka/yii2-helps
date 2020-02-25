@@ -5,6 +5,9 @@
 
 **config.php**
 ```
+'bootstrap' => [
+        'reketaka\helps\modules\basket\bootstrap\Bootstrap'
+],
 'modules'=>[
         'basket'=>[
             'class'=>'reketaka\helps\modules\basket\Module',

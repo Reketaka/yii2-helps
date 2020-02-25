@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\basket\models;
 
 use common\models\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\common\models\CommonRecord;
 use function session_id;
 use Yii;
@@ -46,7 +47,9 @@ class Basket extends CommonRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getItems(){
-        return $this->hasMany(BasketItem::class, ['basket_id'=>'id']);
+        $basketItemClass = Yii::$app->getModule('basket')->basketItemClass;
+//
+        return $this->hasMany($basketItemClass, ['basket_id'=>'id']);
     }
 
     /**

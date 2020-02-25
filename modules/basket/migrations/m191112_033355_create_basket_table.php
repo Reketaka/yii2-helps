@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\basket\migrations;
 
 use reketaka\helps\common\controllers\Migration;
+use reketaka\helps\common\helpers\Bh;
 
 /**
  * Handles the creation of table `basket`.
@@ -37,6 +38,7 @@ class m191112_033355_create_basket_table extends Migration
             'created_at'=>$this->dateTime(),
             'updated_at'=>$this->dateTime()
         ];
+
 
         foreach($basketModule->basketItemFields as $fieldName){
             $attributes[$fieldName] = $this->string();
