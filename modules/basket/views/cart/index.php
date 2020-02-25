@@ -3,6 +3,7 @@
 use reketaka\helps\modules\basket\models\CartRefresh;
 use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\basket\models\BasketComponent;
+use yii\helpers\Url;
 use yii\web\View;
 use reketaka\helps\modules\basket\Module;
 use yii\widgets\ActiveForm;
@@ -15,6 +16,7 @@ use yii\widgets\ActiveForm;
  * @var $stores[]
  * @var $basketItemFields[]
  * @var $useProductLink
+ * @var $orderCreateLink
  */
 
 ?>
@@ -50,7 +52,7 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
 
-                <div class="summary-block">
+                <div class="summary-block hidden-xs hidden-sm">
                     <span><?=Module::t('app', 'summary')?></span>
                 </div>
             </div>
@@ -58,7 +60,7 @@ use yii\widgets\ActiveForm;
 
         <div class="row">
             <div class="col-md-12` col-sm-12 text-center mt10">
-                <a href="#" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-ok"></span> <?=Module::t('app', 'createOrder')?></a>
+                <a href="<?=Url::to($orderCreateLink)?>" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-ok"></span> <?=Module::t('app', 'createOrder')?></a>
             </div>
         </div>
 

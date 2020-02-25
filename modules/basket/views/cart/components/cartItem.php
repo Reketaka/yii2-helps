@@ -48,7 +48,7 @@ $this->registerJs($jsText, View::POS_END);
 
 <div class="item">
 
-    <button class="btn btn-default deleteItem" onclick="app.basket.deleteItem({url:'/emarket/basket/remove/item/23/', id:'23', elem:this});return false;">
+    <button class="btn btn-default basketOptions deleteItem" data-id="<?=$basketItem->id?>">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
 

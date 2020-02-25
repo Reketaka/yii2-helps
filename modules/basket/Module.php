@@ -31,6 +31,11 @@ class Module extends \yii\base\Module{
      */
     public $useProductLink = false;
 
+    /**
+     * Ссылка по которой будет создаваться заказ из текущей корзины
+     * @var array
+     */
+    public $orderLinkCreate = ['/order/create'];
 
 
     public function init(){

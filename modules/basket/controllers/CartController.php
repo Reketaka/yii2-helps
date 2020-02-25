@@ -49,27 +49,9 @@ class CartController extends Controller {
             'model'=>$model,
             'stores'=>$stores,
             'basketItemFields'=>$module->basketItemFields,
-            'useProductLink'=>$module->useProductLink
+            'useProductLink'=>$module->useProductLink,
+            'orderCreateLink'=>$module->orderLinkCreate
         ]);
-    }
-
-    public function actionCreate(){
-        /**
-         * @var $basket BasketComponent
-         */
-        $basket = Yii::$app->basket;
-
-        if(!$basket->model->getProducts()){
-            return $this->redirect(['cart/index']);
-        }
-
-        $order = Order::create(Yii::$app->request->post('store_id', null));
-
-        if(!$order){
-            return $this->redirect(['cart/index']);
-        }
-
-        return $this->redirect(['order/view', 'id'=>$order->id]);
     }
 
     public function actionRemove($id){
@@ -86,7 +68,7 @@ class CartController extends Controller {
             'message'=>Yii::t('global', 'item_delete_from_basket'),
             'total_amount'=>$basket->getTotalAmount(),
             'total_price'=>$basket->getTotalPrice(),
-            'total_price_format'=>Yii::t('app', 'price_with_currency', ['price'=>Yii::$app->formatter->asDecimal($basket->getTotalPrice())])
+            'total_price_format'=>Yii::$app->formatter->asCurrency($basket->getTotalPrice())
         ]);
     }
 

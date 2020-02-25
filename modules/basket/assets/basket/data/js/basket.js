@@ -19,7 +19,12 @@ var Basket = function(options){
 
     var _options = {
         'onAddItem':null,
-        'addToBasketClass':'.addToBasket'
+        /**
+         * В каллбек функцию передается два параметра response и элемент вызвавший действие
+         */
+        'onDeleteBasketItem':null,
+        'addToBasketClass':'.addToBasket',
+        'deleteBasketItemClass':'.basketOptions.deleteItem'
     };
 
     this.construct = function(options){
@@ -29,6 +34,31 @@ var Basket = function(options){
     this.construct(options);
 
     var _this = this;
+
+    this.deleteBasketItem = function(){
+
+        $("body").on("click", _options.deleteBasketItemClass, function(e){
+            e.preventDefault();
+
+            var _this = $(this);
+            var itemId = $(this).data('id');
+
+            $.getJSON("/basket/cart/remove?id="+itemId, function(response){
+                notify(response.message, response.success?'success':'danger');
+
+                if(response.success) {
+                    if (typeof (_options.onDeleteBasketItem) == 'function') {
+                        _options.onDeleteBasketItem(response, _this);
+                    }
+                }
+            }).catch(function(response){
+                notify(response.responseText, 'danger');
+            })
+
+            return false;
+        })
+
+    }
 
     this.addItemClick = function(){
 
@@ -60,6 +90,7 @@ var Basket = function(options){
     }
 
     this.init = function(){
+        this.deleteBasketItem();
         this.addItemClick();
 
     }
