@@ -27,6 +27,12 @@ class Bootstrap implements BootstrapInterface{
 
         Event::on(User::class, User::EVENT_BEFORE_LOGIN, ['reketaka\helps\modules\basket\bootstrapCallback\BasketCallback', 'onLoginUser']);
 
+        if(!$app->has('basket')){
+            $app->set('basket', [
+                'class'=>'reketaka\helps\modules\basket\models\BasketComponent',
+                'authorization'=>true
+            ]);
+        }
 
 
     }
