@@ -97,7 +97,7 @@ class SendPriceWork extends BaseObject{
         }
 
         Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['mailFrom'])
+            ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($sendPrice->emails)
             ->setSubject($sendPrice->email_header)
             ->setTextBody($sendPrice->email_content)
