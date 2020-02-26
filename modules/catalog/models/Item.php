@@ -4,6 +4,7 @@ namespace reketaka\helps\modules\catalog\models;
 
 use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use yii\helpers\ArrayHelper;
 use function get_called_class;
 use function round;
@@ -26,6 +27,8 @@ use function round;
  * @property $catalog
  */
 class Item extends BaseModel {
+
+    use ModuleTrait;
 
     CONST EVENT_CHANGE_PRICE = 'eventChangePrice';
     CONST EVENT_CHANGE_AMOUNT = 'eventChangeAmount';
@@ -154,7 +157,7 @@ class Item extends BaseModel {
      */
     public function setAmountStore($uid, $amount){
 
-        if(!$store = Store::getByUid($uid)){
+        if(!$store = $this->getModule()->storeClass::getByUid($uid)){
             return false;
         }
 

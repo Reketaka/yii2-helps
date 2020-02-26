@@ -5,6 +5,7 @@ namespace reketaka\helps\modules\catalog\models;
 
 use reketaka\helps\common\models\CommonRecord;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 
 /**
  * Class ItemStore
@@ -21,6 +22,8 @@ use reketaka\helps\modules\catalog\Module;
  * @property $store Store
  */
 class ItemStore extends CommonRecord{
+
+    use ModuleTrait;
 
     public $behaviorTimestamp = true;
 
@@ -60,7 +63,7 @@ class ItemStore extends CommonRecord{
      * @return \yii\db\ActiveQuery
      */
     public function getStore(){
-        return $this->hasOne(Store::class, ['id'=>'store_id']);
+        return $this->hasOne($this->getModule()->storeClass, ['id'=>'store_id']);
     }
 
     /**

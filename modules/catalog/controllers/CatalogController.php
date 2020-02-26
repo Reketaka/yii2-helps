@@ -7,12 +7,15 @@ use reketaka\helps\modules\catalog\models\Catalog;
 use reketaka\helps\modules\catalog\models\CatalogSearch;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class CatalogController extends Controller{
+
+    use ModuleTrait;
 
     public function actions()
     {
@@ -83,7 +86,7 @@ class CatalogController extends Controller{
             $this->view->h1 = Module::t('h1', 'catalog-update');
         }
 
-        $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
+        $stores = ArrayHelper::map($this->getModule()->storeClass::find()->all(), 'id', 'title');
 
         return $this->render('update', [
             'model'=>$model,

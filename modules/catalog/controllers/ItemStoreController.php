@@ -8,11 +8,14 @@ use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class ItemStoreController extends Controller{
+
+    use ModuleTrait;
 
     public function actions()
     {
@@ -33,7 +36,7 @@ class ItemStoreController extends Controller{
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.item-store');
 
-        $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
+        $stores = ArrayHelper::map($this->getModule()->storeClass::find()->all(), 'id', 'title');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -57,7 +60,7 @@ class ItemStoreController extends Controller{
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
 
 
-        $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
+        $stores = ArrayHelper::map($this->getModule()->storeClass::find()->all(), 'id', 'title');
 
         return $this->render('create', [
             'model'=>$model,
@@ -80,7 +83,7 @@ class ItemStoreController extends Controller{
 
         $this->view->title = "Update ItemStore #{$model->id}";
 
-        $stores = ArrayHelper::map(Store::find()->all(), 'id', 'title');
+        $stores = ArrayHelper::map($this->getModule()->storeClass::find()->all(), 'id', 'title');
 
         return $this->render('update', [
             'model'=>$model,

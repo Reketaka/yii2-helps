@@ -3,6 +3,7 @@
 namespace reketaka\helps\modules\catalog\models;
 
 
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -11,6 +12,8 @@ use yii\data\ActiveDataProvider;
  */
 class StoreSearch extends Store
 {
+    use ModuleTrait;
+
     public $behaviorTimestamp = false;
     /**
      * @inheritdoc
@@ -40,7 +43,7 @@ class StoreSearch extends Store
      */
     public function search($params)
     {
-        $query = Store::find()
+        $query = $this->getModule()->storeClass::find()
             ->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here

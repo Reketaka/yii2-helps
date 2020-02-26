@@ -8,10 +8,13 @@ use reketaka\helps\modules\catalog\models\PriceTypeSearch;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\models\StoreSearch;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class StoreController extends Controller{
+
+    use ModuleTrait;
 
     public function actions()
     {
@@ -90,7 +93,7 @@ class StoreController extends Controller{
     }
 
     public function findModel($id){
-        if(!$model = Store::findOne($id)){
+        if(!$model = $this->getModule()->storeClass::findOne($id)){
             throw new NotFoundHttpException('Store Not Found');
         }
 

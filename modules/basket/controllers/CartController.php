@@ -40,14 +40,12 @@ class CartController extends Controller {
             return $this->redirect(['cart/index']);
         }
 
-        $stores = ArrayHelper::map(Store::find()->select(['id', new Expression("CONCAT(title, ' (', IFNULL(comment, ''), ')') as 'title'")])->asArray()->all(), 'id', 'title');
-
         return $this->render('index', [
             'basketItems'=>$basketItems,
             'basket'=>$basket,
             'h1'=>Yii::t('h1', 'cart-index'),
             'model'=>$model,
-            'stores'=>$stores,
+            'stores'=>[],
             'basketItemFields'=>$module->basketItemFields,
             'useProductLink'=>$module->useProductLink,
             'orderCreateLink'=>$module->orderLinkCreate

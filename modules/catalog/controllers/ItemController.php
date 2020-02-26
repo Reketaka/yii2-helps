@@ -9,6 +9,7 @@ use reketaka\helps\modules\catalog\models\ItemSearch;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\Module;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -16,12 +17,14 @@ use yii\web\NotFoundHttpException;
 
 class ItemController extends Controller{
 
+    use ModuleTrait;
+
     public function actionIndex(){
 
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $stores = Store::find()->all();
+        $stores = $this->getModule()->storeClass::find()->all();
         $priceTypes = PriceType::find()->all();
 
         $this->view->title = Module::t('title', 'item-index');
