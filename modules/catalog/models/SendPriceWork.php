@@ -111,7 +111,7 @@ class SendPriceWork extends BaseObject{
     }
 
     public function encodeLine($line){
-        return iconv("UTF-8", "CP1251", $line);
+        return iconv("CP1251", "UTF-8", $line);
     }
 
     private function formatLine($line){
