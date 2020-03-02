@@ -1,7 +1,10 @@
 
 var notify = function(message, type='info'){
     if(bsVersion == 3) {
-        $.notify(message, {type:type});
+        $.notify(message, {type:type, placement: {
+                from: "top",
+                align: "center"
+            }});
     }
 
     if(bsVersion >= 4){
