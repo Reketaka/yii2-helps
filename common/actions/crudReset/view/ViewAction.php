@@ -89,7 +89,8 @@ class ViewAction extends BaseAction {
 
         return $this->controller->render($this->renderView, [
             'model'=>$this->model,
-            'columns'=>$this->columns
+            'columns'=>$this->columns,
+            'optionals'=>$this->optionals
         ]);
     }
 
