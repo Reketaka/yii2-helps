@@ -66,7 +66,7 @@ class SendPriceWork extends BaseObject{
 
         $dataLine = [];
         foreach($attributesToSendPrice as $attribute){
-            $dataLine[] = $demoClass->getAttributeLabel($attribute);
+            $dataLine[] = $this->formatLine($demoClass->getAttributeLabel($attribute));
         }
 
         $dataLine = implode(';', $dataLine)."\r\n";
@@ -78,7 +78,7 @@ class SendPriceWork extends BaseObject{
 
             $dataLine = [];
             foreach($attributesToSendPrice as $attribute){
-                $dataLine[] = $item->$attribute;
+                $dataLine[] = $this->formatLine($item->$attribute);
             }
 
             $dataLine = implode(';', $dataLine)."\r\n";
@@ -111,7 +111,7 @@ class SendPriceWork extends BaseObject{
     }
 
     public function encodeLine($line){
-        return iconv("CP1251", "UTF-8", $line);
+        return iconv("UTF-8", "CP1251", $line);
     }
 
     private function formatLine($line){
