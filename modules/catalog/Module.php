@@ -17,6 +17,10 @@ class Module extends \yii\base\Module{
     public $storeClass = 'reketaka\helps\modules\catalog\models\Store';
     public $defaultRoute = 'default/index';
     public $attributesSendPrice = [];
+    
+    public $ymlPriceConfigObject = 'reketaka\helps\modules\catalog\models\YmlConfigBase';
+    public $ymlPriceProgresDir = '@console/runtime/prices/xml/progress/';
+    public $ymlPriceCompleteDir = '@console/runtime/prices/xml/complete/';
 
     public function init(){
         parent::init();
