@@ -20,9 +20,9 @@ class ItemQuery extends ActiveQuery{
             ->orderBy(['item_price.price'=>SORT_ASC]);
 
 
-//        if(Yii::$app->hasProperty('user') && !Yii::$app->user->isGuest && ($user = Yii::$app->user->identity) && ($discount = $user->discount)){
-//            $this->makeDiscount($discount->value);
-//        }
+        if(Yii::$app->hasProperty('user') && !Yii::$app->user->isGuest && ($user = Yii::$app->user->identity) && ($discount = $user->discount)){
+            $this->makeDiscount($discount->value);
+        }
 
         return $query;
     }

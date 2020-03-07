@@ -94,9 +94,11 @@ $config = [
     'birthday_date'=>'Дата рождения',
     'save'=>'Сохранить',
     'settings'=>'Настройки',
+    'response'=>'Ответ'
 ];
 
 
+$config['status id'] = $config['status'];
 $config['second name'] = $config['second_name'];
 $config['father name'] = $config['father_name'];
 $config['birthday date'] = $config['birthday_date'];

@@ -2,7 +2,7 @@
 
 namespace reketaka\helps\modules\dictionaries\models;
 
-use common\helpers\BaseHelper;
+use reketaka\helps\common\helpers\Bh;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;

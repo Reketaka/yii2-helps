@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\models;
 
 use reketaka\helps\common\behaviors\AliasBehavior;
+use Yii;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -146,6 +147,20 @@ class CommonRecord extends ActiveRecord{
         if($this->hasErrors()){
             \Yii::getLogger()->log($this->errors, Logger::LEVEL_TRACE);
         }
+    }
+
+    /**
+     * Проверяет есть ли ошибки в валидации если есть вешает список всех ошибок в session flash error
+     * @return bool
+     */
+    public function hasErrorsFlash(){
+
+        if(!$this->hasErrors()){
+            return false;
+        }
+
+        Yii::$app->session->setFlash('error', $this->getErrorsString('</br>'));
+        return true;
     }
 
     public function getErrorsString($delemiter = ', '){
