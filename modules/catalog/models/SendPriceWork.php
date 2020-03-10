@@ -58,6 +58,7 @@ class SendPriceWork extends BaseObject{
 
         $items = $items
             ->pricePositive()
+            ->andWhere(['>', 'catalog_item.total_amount', 0])
             ->andWhere(['active'=>$sendPrice->active])
             ->each(100);
 

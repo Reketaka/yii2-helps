@@ -35,6 +35,7 @@ class YmlConfigBase extends BaseObject{
         $items = $this->module->itemClass::find()
             ->withPrice()
             ->pricePositive()
+            ->andWhere(['>', 'catalog_item.total_amount', 0])
             ->andWhere(['catalog_item.active'=>1]);
 
         return $items;
