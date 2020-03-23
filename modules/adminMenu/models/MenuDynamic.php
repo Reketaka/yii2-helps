@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\adminMenu\models;
 
+use reketaka\helps\modules\adminMenu\traits\ModuleTrait;
 use function array_keys;
 use common\helpers\BaseHelper;
 use common\models\User;
@@ -12,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 class MenuDynamic{
+    use ModuleTrait;
 
     CONST CACHE_KEY = 'defaultMenuItemsUser';
     CONST CACHE_KEY_ALL = 'all';
@@ -27,6 +29,36 @@ class MenuDynamic{
 
     public static function clearCacheMenuAll(){
         \Yii::$app->cache->delete(self::CACHE_KEY.self::CACHE_KEY_ALL);
+    }
+    
+    public function generateBreadcrumbs($itemData){
+        if(!$this->getModule()->generateBreadcrumbs){
+            return false;
+        }
+
+        $controllerUniqId = Yii::$app->controller->uniqueId;
+        $method = Yii::$app->controller->action->id;
+
+
+        if($method == 'index') {
+            Yii::$app->view->params['breadcrumbs'][] = $itemData['label'];
+        }else{
+            Yii::$app->view->params['breadcrumbs'][] = ['label' => $itemData['label'], 'url' => $itemData['url']];
+        }
+
+        if($method == 'view' && ($paramId = Yii::$app->request->get('id', false))){
+            Yii::$app->view->params['breadcrumbs'][] = Yii::t('app', 'bc.view', ['id'=>$paramId]);
+        }
+
+        if($method == 'update' && ($paramId = Yii::$app->request->get('id', false))){
+            Yii::$app->view->params['breadcrumbs'][] = ['label'=>Yii::t('app', 'bc.view', ['id'=>$paramId]), 'url'=>["view", 'id'=>$paramId]];
+            Yii::$app->view->params['breadcrumbs'][] = Yii::t('app', 'bc.update', ['id'=>$paramId]);
+        }
+
+
+
+
+        return true;
     }
 
     public function markActiveElements($result){
@@ -52,6 +84,9 @@ class MenuDynamic{
                 $controllers = explode(":", $itemData['controller_uniq_id']);
                 $itemData['active'] = in_array($controllerUniqId, $controllers);
                 if($itemData['active']) {
+
+                    $this->generateBreadcrumbs($itemData);
+
                     $menuSectionData['active'] = true;
                 }
 

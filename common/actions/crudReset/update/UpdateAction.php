@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\actions\crudReset\update;
 
 
+use Closure;
 use reketaka\helps\common\actions\crudReset\BaseAction;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
@@ -61,6 +62,15 @@ class UpdateAction extends BaseAction {
     public function run($id){
 
         $this->model = $this->controller->findModel($id);
+
+        if($this->scenario){
+            $this->model->setScenario($this->scenario);
+        }
+
+        if($this->afterFindCallback instanceof Closure){
+            $func = $this->afterFindCallback;
+            $func($this->model);
+        }
 
         $this->formatColumns();
         $this->metaCall();

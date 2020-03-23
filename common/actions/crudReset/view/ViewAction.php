@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\actions\crudReset\view;
 
+use Closure;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
@@ -83,6 +84,15 @@ class ViewAction extends BaseAction {
     public function run($id){
 
         $this->model = $this->controller->findModel($id);
+
+        if($this->scenario){
+            $this->model->setScenario($this->scenario);
+        }
+
+        if($this->afterFindCallback instanceof Closure){
+            $func = $this->afterFindCallback;
+            $func($this->model);
+        }
 
         $this->formatColumns();
         $this->metaCall();

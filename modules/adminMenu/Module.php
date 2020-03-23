@@ -12,6 +12,8 @@ class Module extends \yii\base\Module{
     public $i18nUse = false;
     public $i18nSection = 'mainMenu';
 
+    public $generateBreadcrumbs = false;
+
     public function init(){
         parent::init();
 

@@ -52,7 +52,7 @@ class ItemImageBehavior extends Behavior{
             return $newFilePath;
         }
 
-        Image::thumbnail($this->getImagePath(), $width, $height, $this->model)
+        Image::thumbnail($this->getImagePath(), $width, $height, $this->mode)
             ->save($newFilePath, ['quality' => 80]);
 
         if($web){

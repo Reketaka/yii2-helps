@@ -2,7 +2,6 @@
 
 namespace reketaka\helps\common\actions;
 
-use common\helpers\BaseHelper;
 use yii\base\Action;
 use yii\base\Behavior;
 use yii\web\NotFoundHttpException;

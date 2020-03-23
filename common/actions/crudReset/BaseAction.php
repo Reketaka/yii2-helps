@@ -31,6 +31,10 @@ class BaseAction extends Action{
 
     public $breadcrumbs = null;
 
+    public $scenario = null;
+
+    public $afterFindCallback = null;
+
     /**
      * @var $model ActiveRecord
      */
