@@ -55,4 +55,10 @@ class FrontendController extends Controller{
 
     }
 
+    public function disableDebugLog(){
+        if(Yii::$app->has('log') && isset(Yii::$app->log->targets['debug'])) {
+            Yii::$app->log->targets['debug']->enabled = false;
+        }
+    }
+
 }

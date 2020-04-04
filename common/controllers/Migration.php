@@ -3,6 +3,7 @@
 
 namespace reketaka\helps\common\controllers;
 
+use reketaka\helps\modules\adminMenu\models\MenuSection;
 use function array_key_exists;
 use common\models\BaseHelper;
 use DateTime;
@@ -180,5 +181,24 @@ class Migration extends \yii\db\Migration{
         $dictionary->delete();
 
         return true;
+    }
+
+    /**
+     * Удаляет раздел меню по alias
+     * @param $alias
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function deleteMenuSection($alias){
+        if(!$menuSection = MenuSection::findOne(['alias'=>$alias])){
+            return true;
+        }
+
+        $menuSection->delete();
+
+        return true;
+
+
     }
 }

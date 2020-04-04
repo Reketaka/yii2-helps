@@ -97,7 +97,10 @@ $config = [
     'birthday_date'=>'Дата рождения',
     'save'=>'Сохранить',
     'settings'=>'Настройки',
-    'response'=>'Ответ'
+    'response'=>'Ответ',
+
+    'bc.view'=>'Просмотр {id}',
+    'bc.update'=>'Изменить {id}'
 ];
 
 

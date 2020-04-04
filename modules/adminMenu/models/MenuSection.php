@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\adminMenu\models;
 
+use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -61,5 +62,16 @@ class MenuSection extends ActiveRecord
     public function getMenuItems()
     {
         return $this->hasMany(MenuItem::className(), ['section_id' => 'id']);
+    }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        Bh::deleteAll(MenuItem::class,['section_id'=>$this->id]);
+
+        return true;
     }
 }

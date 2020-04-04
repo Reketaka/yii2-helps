@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\modules\adminMenu\models;
 
+use reketaka\azia\models\View;
 use reketaka\helps\modules\adminMenu\traits\ModuleTrait;
 use function array_keys;
 use common\helpers\BaseHelper;
@@ -34,6 +35,18 @@ class MenuDynamic{
     public function generateBreadcrumbs($itemData){
         if(!$this->getModule()->generateBreadcrumbs){
             return false;
+        }
+
+        if(ArrayHelper::getValue(Yii::$app->view->params, 'breadcrumbs')){
+            return false;
+        }
+
+        if(($view = Yii::$app->view) instanceof View){
+
+            if(!$view->h1){
+                $view->h1 = $itemData['label'];
+            }
+
         }
 
         $controllerUniqId = Yii::$app->controller->uniqueId;

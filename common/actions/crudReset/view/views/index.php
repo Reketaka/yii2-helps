@@ -6,8 +6,9 @@ use yii\bootstrap4\Html;
 
 /**
  * @var $this View
- * @va $model
+ * @var $model
  * @var $columns
+ * @var $optionals
  */
 
 ?>
