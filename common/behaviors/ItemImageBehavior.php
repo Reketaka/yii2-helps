@@ -17,7 +17,7 @@ class ItemImageBehavior extends Behavior{
     public $imageAttribute = 'image';
     public $webRoot = null;
     public $serverRoot = "@frontend/web/";
-    public $mode = ManipulatorInterface::THUMBNAIL_INSET;
+    public $mode = ManipulatorInterface::THUMBNAIL_OUTBOUND;
 
     public function events()
     {
@@ -43,7 +43,8 @@ class ItemImageBehavior extends Behavior{
             return false;
         }
 
-        $newFilePath = $pathInfo['dirname']."/".$pathInfo['filename']."_".$width."_".$height.".".$pathInfo['extension'];
+        FileHelper::createDirectory($pathInfo['dirname']."/thumb/");
+        $newFilePath = $pathInfo['dirname']."/thumb/".$pathInfo['filename']."_".$width."_".$height.".".$pathInfo['extension'];
 
         if(file_exists($newFilePath)){
             if($web){
@@ -78,6 +79,8 @@ class ItemImageBehavior extends Behavior{
         if($this->isImageExist()){
             @unlink($this->getImagePath());
         }
+
+
     }
 
 }
