@@ -104,6 +104,9 @@ class RolesCreateHelper extends Model {
             if($permission = $this->auth->getPermission($permissionName)){
                 echo "Разрешение ".Console::ansiFormat($permissionName, [Console::FG_GREEN])." было создано раньше".PHP_EOL;
                 $this->createRules($permissionData, $permission);
+
+                $this->auth->addChild($role, $permission);
+
                 continue;
             }
 
