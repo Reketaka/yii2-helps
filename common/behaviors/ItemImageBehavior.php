@@ -3,8 +3,10 @@
 namespace reketaka\helps\common\behaviors;
 
 use common\models\BaseHelper;
+use Imagine\Image\Box;
 use function file_exists;
 use Imagine\Image\ManipulatorInterface;
+use function getimagesize;
 use function pathinfo;
 use yii\base\Behavior;
 use Yii;
@@ -53,8 +55,19 @@ class ItemImageBehavior extends Behavior{
             return $newFilePath;
         }
 
-        Image::thumbnail($this->getImagePath(), $width, $height, $this->mode)
-            ->save($newFilePath, ['quality' => 80]);
+        if($height = 'auto') {
+            $imagine = Image::getImagine();
+            $imagine = $imagine->open($this->getImagePath());
+            $sizes = getimagesize($this->getImagePath());
+
+            $height = round($sizes[1] * $width / $sizes[0]);
+            $imagine = $imagine->resize(new Box($width, $height))->save($newFilePath, ['quality' => 100]);
+        }
+
+        if($height != 'auto') {
+            Image::thumbnail($this->getImagePath(), $width, $height, $this->mode)
+                ->save($newFilePath, ['quality' => 80]);
+        }
 
         if($web){
             return str_replace(Yii::getAlias("@frontend/web/"), '', $newFilePath);

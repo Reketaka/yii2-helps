@@ -38,6 +38,10 @@ class FileBehavior extends Behavior{
     }
     
     public function getFilePath($web = false){
+        if(!$this->isFileExist()){
+            return false;
+        }
+
         if($web){
             if($this->webRoot instanceof \Closure){
                 $f = $this->webRoot;
