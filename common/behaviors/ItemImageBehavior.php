@@ -13,6 +13,8 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
+use function round;
+use function str_replace;
 
 class ItemImageBehavior extends Behavior{
 
@@ -55,16 +57,35 @@ class ItemImageBehavior extends Behavior{
             return $newFilePath;
         }
 
-        if($height = 'auto') {
+        if($height == 'auto') {
             $imagine = Image::getImagine();
             $imagine = $imagine->open($this->getImagePath());
             $sizes = getimagesize($this->getImagePath());
 
             $height = round($sizes[1] * $width / $sizes[0]);
             $imagine = $imagine->resize(new Box($width, $height))->save($newFilePath, ['quality' => 100]);
+
+            if($web){
+                return str_replace(Yii::getAlias("@frontend/web/"), '', $newFilePath);
+            }
+
         }
 
-        if($height != 'auto') {
+        if($width == 'auto') {
+            $imagine = Image::getImagine();
+            $imagine = $imagine->open($this->getImagePath());
+            $sizes = getimagesize($this->getImagePath());
+
+            $width = round($sizes[0] * $height / $sizes[1]);
+            $imagine = $imagine->resize(new Box($width, $height))->save($newFilePath, ['quality' => 100]);
+
+            if($web){
+                return str_replace(Yii::getAlias("@frontend/web/"), '', $newFilePath);
+            }
+
+        }
+
+        if($height != 'auto' && $width != 'auto'){
             Image::thumbnail($this->getImagePath(), $width, $height, $this->mode)
                 ->save($newFilePath, ['quality' => 80]);
         }
