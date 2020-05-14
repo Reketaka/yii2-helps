@@ -8,8 +8,11 @@ use function array_merge;
 use function array_search;
 use function array_slice;
 use function array_values;
+use function implode;
 use function mb_strlen;
 use reketaka\helps\common\jobs\SendTelegramTextJob;
+use function strlen;
+use function strrpos;
 use function substr;
 use yii\db\ActiveRecord;
 use yii\db\Query;
@@ -442,7 +445,44 @@ class Bh{
         if(($country == 'ru') && (mb_strlen($telephone) == 11)){
             return substr($telephone, 0, 1)." (".substr($telephone, 1, 3).") ".substr($telephone, 4, 3)."-".substr($telephone, 7, 2)."-".substr($telephone, 9, 2);
         }
+    }
 
+    public static function formatSecretTelephone($telephone){
+
+        $text = [];
+        $text[] = substr($telephone, 0, 2);
+        for($a=0;$a!=strlen($telephone)-4;$a++){
+            $text[] = '*';
+        }
+        $text[] = substr($telephone, -2);
+
+        return implode("", $text);
+    }
+
+    public static function formatSecretEmail($email){
+
+        $text = [];
+        $text[] = substr($email, 0,1);
+        for($a=0;$a!=strrpos($email, '@')-1;$a++){
+            $text[] = '*';
+        }
+        $text[] = substr($email, strrpos($email, '@'), 1);
+        $text[] = substr($email, strrpos($email, '@')+1, strlen($email));
+
+        return implode("", $text);
+    }
+
+    public static function formatSecretAll($var){
+        $words = explode(" ", $var);
+        $text = [];
+        foreach($words as $word){
+            for($a=0;$a!=strlen($word);$a++){
+                $text[] = "*";
+            }
+            $text[] = " ";
+        }
+
+        return implode("", $text);
     }
 
     public static function insertArrayAfter(&$array, $index, $key, $val)
