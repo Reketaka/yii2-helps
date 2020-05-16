@@ -500,4 +500,11 @@ class Bh{
         $array = array_merge($partStart, [$key=>$val], $partEnd);
         return $array;
     }
+    
+    public static function wph_cut_by_words($maxlen, $text) {
+        $len = (mb_strlen($text) > $maxlen)? mb_strripos(mb_substr($text, 0, $maxlen), ' ') : $maxlen;
+        $cutStr = mb_substr($text, 0, $len);
+        $temp = (mb_strlen($text) > $maxlen)? $cutStr. '...' : $cutStr;
+        return $temp;
+    }
 }
