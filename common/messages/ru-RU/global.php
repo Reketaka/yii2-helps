@@ -1,6 +1,7 @@
 <?php
 
 $config = [
+    'content'=>'Содержимое',
     'dashboard'=>'Сводка',
     'login_enter'=>'Вход',
     'authorization'=>'Авторизация',

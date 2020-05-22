@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use reketaka\helps\modules\adminMenu\models\MenuItem;
+use const SORT_DESC;
 
 /**
  * MenuItemSearch represents the model behind the search form of `backend\models\menu\MenuItem`.
@@ -44,7 +45,8 @@ class MenuItemSearch extends MenuItem
         $query = MenuItem::find()
             ->with([
                 'section'
-            ]);
+            ])
+            ->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

@@ -3,7 +3,11 @@
 
 namespace reketaka\helps\common\controllers;
 
+use reketaka\helps\modules\adminMenu\models\MenuItem;
+use reketaka\helps\modules\adminMenu\models\MenuItemRoles;
 use reketaka\helps\modules\adminMenu\models\MenuSection;
+use yii\db\Exception;
+use yii\helpers\Console;
 use function array_key_exists;
 use common\models\BaseHelper;
 use DateTime;
@@ -198,7 +202,137 @@ class Migration extends \yii\db\Migration{
         $menuSection->delete();
 
         return true;
+    }
 
+    public function deleteMenuItem($sectionAlias, $itemAlias){
+        if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
+            throw new Exception("Раздел меню не найден");
+        }
 
+        $itemAlias = $sectionAlias."-".$itemAlias;
+
+        if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
+            throw new Exception("Элемент меню не найден");
+        }
+
+        $menuItem->delete();
+
+        echo Console::ansiFormat("--- Элемент меню {$menuItem->alias} удален", [Console::FG_GREEN]).PHP_EOL;
+
+        return true;
+    }
+
+    public function deleteMenuItemAllRoles($sectionAlias, $menuItemAlias){
+        if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
+            throw new Exception("Раздел меню не найден");
+        }
+
+        $itemAlias = $sectionAlias."-".$menuItemAlias;
+
+        if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
+            throw new Exception("Элемент меню не найден");
+        }
+
+        MenuItemRoles::deleteAll(['menu_item_id'=>$menuItem->id]);
+
+        echo Console::ansiFormat("--- Все роли элемента меню {$menuItem->alias} удалены", [Console::FG_GREEN]).PHP_EOL;
+
+        return true;
+
+    }
+
+    public function deleteMenuItemRoles($sectionAlias, $menuItemAlias, $roles = []){
+        if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
+            throw new Exception("Раздел меню не найден");
+        }
+
+        $itemAlias = $sectionAlias."-".$menuItemAlias;
+
+        if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
+            throw new Exception("Элемент меню не найден");
+        }
+
+        foreach($roles as $roleName){
+            MenuItemRoles::deleteAll(['role_name'=>$roleName]);
+
+            echo Console::ansiFormat("--- Роль {$roleName} элемента меню {$menuItem->alias} удалена", [Console::FG_GREEN]).PHP_EOL;
+        }
+        return true;
+    }
+
+    /**
+     * @param $alias
+     * @param $label
+     * @param bool $icon
+     */
+    public function createMenuSection($alias, $label, $icon = false){
+
+        if(!$menuSection = MenuSection::findOne(['alias'=>$alias])){
+            $menuSection = new MenuSection([
+                'alias'=>$alias,
+            ]);
+        }
+
+        $menuSection->title = $label;
+        if($icon){
+            $menuSection->icon = $icon;
+        }
+
+        $menuSection->save();
+
+        echo Console::ansiFormat("*** Раздел меню {$menuSection->title} создан/обновлен", [Console::FG_GREEN]).PHP_EOL;
+
+        return true;
+    }
+
+    /**
+     * @param $sectionAlias
+     * @param $postItemAlias
+     * @param $label
+     * @param $url
+     * @param $controllerUniqueId
+     */
+    public function createMenuItem($sectionAlias, $postItemAlias, $label, $url, $controllerUniqueId, $roles = [], $icon = false){
+
+        if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
+            throw new Exception("Раздел меню не найден");
+        }
+
+        $itemAlias = $sectionAlias."-".$postItemAlias;
+
+        if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
+            $menuItem = new MenuItem([
+                'alias'=>$itemAlias
+            ]);
+        }
+
+        $menuItem->title = $label;
+        $menuItem->url = $url[0];
+        if($icon){
+            $menuItem->icon = $icon;
+        }
+        $menuItem->controller_uniq_id = $controllerUniqueId;
+        $menuItem->section_id = $menuSection->id;
+        $menuItem->save();
+
+        echo Console::ansiFormat("--- Элемент меню {$menuItem->alias} создан/обновлен, раздел {$menuSection->alias}, id: {$menuItem->id}", [Console::FG_GREEN]).PHP_EOL;
+
+        foreach($roles as $roleName){
+            if(!MenuItemRoles::findOne([
+                'role_name'=>$roleName,
+                'menu_item_id'=>$menuItem->id
+            ])){
+                $itemRole = new MenuItemRoles([
+                    'role_name'=>$roleName,
+                    'menu_item_id'=>$menuItem->id
+                ]);
+            }
+
+            echo Console::ansiFormat("### Добавлена роль {$roleName} для пункта меню {$menuItem->alias}", [Console::FG_GREEN]).PHP_EOL;
+
+            $itemRole->save();
+        }
+
+        return true;
     }
 }
