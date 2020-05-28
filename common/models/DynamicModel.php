@@ -10,7 +10,7 @@ class DynamicModel extends \yii\base\DynamicModel{
         $this->_labels[$attribute] = $label;
     }
 
-    public function setAttributeLabels($labels){
+    public function setAttributeLabels(array $labels = []){
         $this->_labels = $labels;
     }
 
