@@ -6,6 +6,7 @@ namespace reketaka\helps\common\controllers;
 use reketaka\helps\modules\adminMenu\models\MenuItem;
 use reketaka\helps\modules\adminMenu\models\MenuItemRoles;
 use reketaka\helps\modules\adminMenu\models\MenuSection;
+use reketaka\helps\modules\dictionaries\models\DictionariesValue;
 use yii\db\Exception;
 use yii\helpers\Console;
 use function array_key_exists;
@@ -153,6 +154,42 @@ class Migration extends \yii\db\Migration{
         if(!array_key_exists('Field', $query)){
             return false;
         }
+
+        return true;
+    }
+
+    public function addElementDictionary($alias, $title, $elementAlias){
+        if(!$dictionary = DictionariesName::findOne(['alias'=>$alias])){
+            throw new Exception("Dictonary not found");
+        }
+
+        if($dictionaryValue = DictionariesValue::findOne(['alias'=>$elementAlias])){
+            throw new Exception("Dictionary value already exist");
+        }
+
+        $dictionaryValue = new DictionariesValue([
+            'alias' => $elementAlias,
+            'value' => $title,
+            'dictionary_id' => $dictionary->id
+        ]);
+
+        $dictionaryValue->save();
+
+        echo "Добавлен новый элемент $elementAlias справочника $alias".PHP_EOL;
+
+        return true;
+    }
+
+    public function deleteElementDictionary($alias, $elementAlias){
+        if(!$dictionary = DictionariesName::findOne(['alias'=>$alias])){
+            throw new Exception("Dictonary not found");
+        }
+
+        $dictionaryValue = DictionariesValue::findOne(['dictionary_id'=>$dictionary->id, 'alias'=>$elementAlias]);
+
+        $dictionaryValue->delete();
+
+        echo "Удален элемент $elementAlias справочника $alias".PHP_EOL;
 
         return true;
     }
