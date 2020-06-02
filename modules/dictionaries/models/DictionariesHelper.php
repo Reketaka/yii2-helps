@@ -156,10 +156,6 @@ class DictionariesHelper extends Model{
      * @return boolean
      */
     public static function create($alias, $values=[], $title=false, $valueWithAlias=false){
-        if(!$values){
-            return false;
-        }
-
         $dictionary = new DictionariesName([
             'alias'=>$alias,
             'title'=>$title?$title:$alias

@@ -177,7 +177,7 @@ class Migration extends \yii\db\Migration{
 
         echo "Добавлен новый элемент $elementAlias справочника $alias".PHP_EOL;
 
-        return true;
+        return $dictionaryValue->id;
     }
 
     public function deleteElementDictionary($alias, $elementAlias){
@@ -201,7 +201,7 @@ class Migration extends \yii\db\Migration{
      * @param $values
      * @return bool
      */
-    public function createDictionary($alias, $title, $values){
+    public function createDictionary($alias, $title, $values=[]){
         $dictionary = DictionariesHelper::create($alias, $values, $title, true);
 
         return $dictionary;

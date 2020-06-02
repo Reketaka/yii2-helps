@@ -5,6 +5,12 @@ namespace reketaka\helps\common\behaviors\cacheModel;
 use reketaka\helps\common\behaviors\cacheModel\BaseCacheModel;
 use yii\base\Behavior;
 
+/**
+ * Class CacheModelBehavior
+ * @package reketaka\helps\common\behaviors\cacheModel
+ *
+ * @property BaseCacheModel $cache
+ */
 class CacheModelBehavior extends Behavior{
 
     private $_cacheModel;
