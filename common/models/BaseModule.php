@@ -19,13 +19,13 @@ class BaseModule extends Module{
         $namespaceArray = implode("\\", $namespaceArray);
 
         if($this->isFrontend()){
-            $this->viewPath = $this->getBasePath()."/viewsFrontend/";
-            $this->controllerNamespace = $namespaceArray.'\frontendControllers';
+            $this->viewPath = $this->getBasePath()."/frontend/views/";
+            $this->controllerNamespace = $namespaceArray.'\frontend\controllers';
         }
 
         if($this->isBackend()){
-            $this->viewPath = $this->getBasePath()."/viewsBackend/";
-            $this->controllerNamespace = $namespaceArray."\backendControllers";
+            $this->viewPath = $this->getBasePath()."/backend/views/";
+            $this->controllerNamespace = $namespaceArray."\backend\controllers";
         }
 
         if($this->isConsole()){
