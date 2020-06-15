@@ -355,7 +355,7 @@ class Migration extends \yii\db\Migration{
         echo Console::ansiFormat("--- Элемент меню {$menuItem->alias} создан/обновлен, раздел {$menuSection->alias}, id: {$menuItem->id}", [Console::FG_GREEN]).PHP_EOL;
 
         foreach($roles as $roleName){
-            if(!MenuItemRoles::findOne([
+            if(!$itemRole = MenuItemRoles::findOne([
                 'role_name'=>$roleName,
                 'menu_item_id'=>$menuItem->id
             ])){

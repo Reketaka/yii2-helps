@@ -190,5 +190,9 @@ class CommonRecord extends ActiveRecord{
         return ArrayHelper::map($items, $key, $value);
     }
 
+    public function flashMessage($msg, $type = 'success'){
+        Yii::$app->session->setFlash($type, $msg);
+        return true;
+    }
 
 }
