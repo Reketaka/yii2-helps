@@ -8,6 +8,8 @@ use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use function array_search;
+use function in_array;
 
 /**
  * Class UpdateAction
@@ -48,7 +50,6 @@ class CreateAction extends BaseAction {
             $this->columns = array_merge($this->columns, array_keys($this->model->attributes));
         }
 
-
         foreach(['id', 'created_at', 'updated_at'] as $column):
             if(in_array($column, $this->columns)){
                 $key = array_search($column, $this->columns);
@@ -70,7 +71,8 @@ class CreateAction extends BaseAction {
         return $this->controller->render($this->renderView, [
             'model'=>$this->model,
             'columns'=>$this->columns,
-            'optionals'=>$this->optionals
+            'optionals'=>$this->optionals,
+            'booleanAttributes'=>$this->booleanAttributes
         ]);
     }
 

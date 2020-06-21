@@ -2,9 +2,13 @@
 
 namespace reketaka\helps\common\actions\crudReset\index;
 
+use yii\helpers\ArrayHelper;
+use function array_combine;
+use function array_intersect;
 use function array_key_exists;
 use function array_keys;
 use function array_merge;
+use function array_search;
 use function array_shift;
 use function array_unshift;
 use function in_array;
@@ -53,7 +57,12 @@ class IndexAction extends BaseAction {
 
     private function formatColumns(){
         if(!$this->columns){
-            $this->columns = array_keys($this->searchModel->attributes);
+            $keys = array_keys($this->searchModel->attributes);
+            $this->columns = array_combine($keys, $keys);
+
+            foreach(array_intersect($this->booleanAttributes, array_keys($this->columns)) as $column){
+                $this->columns[$column] = "$column:boolean";
+            }
         }
 
         if($this->columns instanceof \Closure){
@@ -61,18 +70,23 @@ class IndexAction extends BaseAction {
             $this->columns = $columnFunction($this->searchModel);
         }
 
+
         if(in_array('id', $this->columns)){
             $key = array_search('id', $this->columns);
             unset($this->columns[$key]);
 
-            array_unshift($this->columns, [
-                'attribute'=>'id',
-                'options'=>[
-                    'style'=>'width:100px'
+            $this->columns = [
+                'id'=>[
+                    'attribute'=>'id',
+                    'options'=>[
+                        'style'=>'width:100px'
+                    ]
                 ]
-            ]);
-            
+            ]+$this->columns;
+
         }
+
+
 
         if(!array_key_exists('actions', $this->columns) && $this->addActions){
             $this->columns['actions'] = [

@@ -40,6 +40,8 @@ class BaseAction extends Action{
      */
     public $model;
 
+    public $booleanAttributes = ['active'];
+
     /**
      * Для передачи дополнительных параметров
      * @var array

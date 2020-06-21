@@ -82,7 +82,8 @@ class UpdateAction extends BaseAction {
         return $this->controller->render($this->renderView, [
             'model'=>$this->model,
             'columns'=>$this->columns,
-            'optionals'=>$this->optionals
+            'optionals'=>$this->optionals,
+            'booleanAttributes'=>$this->booleanAttributes
         ]);
     }
 

@@ -11,8 +11,8 @@ use yii\bootstrap4\Html;
  * @var $model ActiveRecord
  * @var $columns
  * @var $optionals
+ * @var $booleanAttributes
  */
-
 
 ?>
 
@@ -24,9 +24,15 @@ use yii\bootstrap4\Html;
 
         <?php $form = ActiveForm::begin()?>
 
-            <?php foreach($columns as $column):?>
-                <?=$form->field($model, $column)->textInput()?>
-            <?php endforeach; ?>
+            <?php foreach($columns as $column):
+
+                if(in_array($column, $booleanAttributes)){
+                    echo $form->field($model, $column)->checkbox();
+                }else {
+                    echo $form->field($model, $column)->textInput();
+                }
+
+            endforeach; ?>
 
             <div class="form-group">
                 <?=Html::submitButton(Yii::t('app', $model->isNewRecord?'create':'update'), ['class'=>'btn btn-success'])?>
