@@ -1,6 +1,7 @@
 <?php
 
 $config = [
+    'delay'=>'Задержка',
     'content'=>'Содержимое',
     'dashboard'=>'Сводка',
     'login_enter'=>'Вход',
