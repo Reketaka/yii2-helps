@@ -1,5 +1,8 @@
 <?php
 
+use kartik\date\DatePicker;
+use kartik\datetime\DateTimePicker;
+use kartik\select2\Select2;
 use reketaka\helps\common\helpers\Bh;
 use yii\db\ActiveRecord;
 use yii\bootstrap4\ActiveForm;
@@ -12,7 +15,10 @@ use yii\bootstrap4\Html;
  * @var $columns
  * @var $optionals
  * @var $booleanAttributes
+ * @var $dateAttributes
+ * @var $selectAttributes
  */
+
 
 ?>
 
@@ -26,9 +32,25 @@ use yii\bootstrap4\Html;
 
             <?php foreach($columns as $column):
 
-                if(in_array($column, $booleanAttributes)){
+                if(in_array($column, $booleanAttributes)) {
                     echo $form->field($model, $column)->checkbox();
-                }else {
+                }elseif(in_array($column, $dateAttributes)){
+                    echo $form->field($model, $column)->widget(DatePicker::classname(), [
+                        'options' => [
+                            'placeholder' => $model->getAttributeLabel($column),
+                        ],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
+                    ]);
+                }elseif(array_key_exists($column, $selectAttributes)){
+                    echo $form->field($model, $column)->widget(Select2::class, [
+                        'data'=>$selectAttributes[$column]
+                    ]);
+                }else{
+
                     echo $form->field($model, $column)->textInput();
                 }
 

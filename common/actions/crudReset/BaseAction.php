@@ -41,6 +41,8 @@ class BaseAction extends Action{
     public $model;
 
     public $booleanAttributes = ['active'];
+    public $dateAttributes = [];
+    public $selectAttributes = [];
 
     /**
      * Для передачи дополнительных параметров

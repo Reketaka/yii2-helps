@@ -83,7 +83,9 @@ class UpdateAction extends BaseAction {
             'model'=>$this->model,
             'columns'=>$this->columns,
             'optionals'=>$this->optionals,
-            'booleanAttributes'=>$this->booleanAttributes
+            'booleanAttributes'=>$this->booleanAttributes,
+            'dateAttributes'=>$this->dateAttributes,
+            'selectAttributes'=>$this->selectAttributes
         ]);
     }
 
