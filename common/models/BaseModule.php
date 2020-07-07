@@ -11,6 +11,20 @@ use function implode;
 
 class BaseModule extends Module{
 
+    /**
+     * Используется для вызова модуля в чем либо
+     * константа названия модуля
+     */
+    CONST MODULE_NAME = null;
+
+    /**
+     * Список файлов для перевода
+     * @var array
+     */
+    public $i18nFileMap = [];
+
+    public $i18nEnable = true;
+
     public function init(){
         parent::init();
 
@@ -30,9 +44,28 @@ class BaseModule extends Module{
 
         if($this->isConsole()){
             $this->controllerNamespace = $namespaceArray."\commands";
+        }
 
+        if($this->i18nFileMap && $this->i18nEnable && static::MODULE_NAME){
+            $this->registerTranslations();
         }
     }
+
+    public function registerTranslations()
+    {
+        Yii::$app->i18n->translations['modules/'.static::MODULE_NAME.'/*'] = [
+            'class'          => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath'       => $this->getBasePath()."/messages",
+            'fileMap'        => $this->i18nFileMap
+        ];
+    }
+
+    public static function t($category, $message, $params = [], $language = null)
+    {
+        return Yii::t('modules/'.static::MODULE_NAME.'/' . $category, $message, $params, $language);
+    }
+    
 
     public function isBackend(){
         return Yii::$app->id == 'app-backend';
