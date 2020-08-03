@@ -77,7 +77,7 @@ class YmlConfigBase extends BaseObject{
 //        $offerNode->appendChild($linkNode);
 
         foreach($this->module->attributesSendPrice as $attributeName):
-            $paramNode = $dom->createElement('param', htmlspecialchars($item->$attributeName));
+            $paramNode = $dom->createElement('param', preg_replace('/[^a-zA-Zа-яА-Я0-9-#.,\s]/ui', '', htmlspecialchars($item->$attributeName)));
             $paramNode->setAttribute('name', $item->getAttributeLabel($attributeName));
             $offerNode->appendChild($paramNode);
         endforeach;
