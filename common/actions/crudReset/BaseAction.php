@@ -50,6 +50,11 @@ class BaseAction extends Action{
      */
     public $optionals = [];
 
+    /**
+     * Для передачи дополнительных параметров но инициализация при активном методе только
+     */
+    public $optionalsClosure = null;
+
     protected function generateMeta($variable){
 
         if(!$this->$variable){

@@ -3,7 +3,10 @@
 namespace reketaka\helps\common\actions\crudReset\view;
 
 use Closure;
+use function array_fill_keys;
+use function array_intersect;
 use function array_key_exists;
+use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -48,6 +51,8 @@ class ViewAction extends BaseAction {
      */
     public $model = null;
 
+    public $dictionaryAttributes = [];
+
     private function formatColumns(){
 
         if($this->columns instanceof \Closure){
@@ -72,10 +77,25 @@ class ViewAction extends BaseAction {
 
             }, $this->columns);
 
+
+
         }
 
         if(!$this->columns){
-            $this->columns = array_keys($this->model->attributes);
+            $this->columns = array_combine(array_keys($this->model->attributes), array_keys($this->model->attributes));
+
+
+            foreach(array_intersect($this->dictionaryAttributes, $this->columns) as $column){
+
+                $this->columns[$column] = [
+                    'attribute'=>$column,
+                    'format'=>'raw',
+                    'value'=>function()use($column){
+                        return $this->model->getDictionaryValue($column);
+                    }
+                ];
+
+            }
         }
 
 

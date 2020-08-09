@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\actions\crudReset\index;
 
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use function array_combine;
 use function array_intersect;
@@ -17,6 +18,8 @@ use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use function str_replace;
+use function strrpos;
 
 /**
  * Class IndexAction
@@ -38,6 +41,8 @@ use yii\db\ActiveRecord;
  */
 class IndexAction extends BaseAction {
 
+    CONST DICTIONARY_POSTFIX = ':dictionary';
+
     public $columns = [];
     /**
      * @var $searchModel ActiveRecord
@@ -55,6 +60,13 @@ class IndexAction extends BaseAction {
      */
     public $renderView = '@reketaka/helps/common/actions/crudReset/index/views/index';
 
+    /**
+     * Ключ атрибут значение ключ из массива optionalClosure
+     * при указании в значении :dictionary Будет вызван метод модели getDictionaryValue для атрибута
+     * @var array
+     */
+    public $selectAttributes = [];
+
     private function formatColumns(){
         if(!$this->columns){
             $keys = array_keys($this->searchModel->attributes);
@@ -63,11 +75,32 @@ class IndexAction extends BaseAction {
             foreach(array_intersect($this->booleanAttributes, array_keys($this->columns)) as $column){
                 $this->columns[$column] = "$column:boolean";
             }
+
+            foreach(array_intersect(array_keys($this->selectAttributes), array_keys($this->columns)) as $column){
+
+                if(strrpos($this->selectAttributes[$column], self::DICTIONARY_POSTFIX) !== FALSE) {
+                    $columnValue = str_replace(self::DICTIONARY_POSTFIX, "", $this->selectAttributes[$column]);
+                    $this->columns[$column] = [
+                        'attribute' => $column,
+                        'format' => 'raw',
+                        'content' => function ($model)use($column) {
+                            return $model->getDictionaryValue($column);
+                        },
+                        'filter' => Select2::widget([
+                            'attribute' => 'city_id',
+                            'data' => $this->optionals[$columnValue],
+                            'model' => $this->searchModel
+                        ])
+                    ];
+                }
+            }
+
+
         }
 
         if($this->columns instanceof \Closure){
             $columnFunction = $this->columns;
-            $this->columns = $columnFunction($this->searchModel);
+            $this->columns = $columnFunction($this->searchModel, $this->optionals);
         }
 
 
@@ -103,9 +136,17 @@ class IndexAction extends BaseAction {
     public function run(){
 
         $dataProvider = $this->searchModel->search(Yii::$app->request->queryParams);
+
+        if($this->optionalsClosure instanceof \Closure){
+            $m = $this->optionalsClosure;
+            $this->optionals = $m();
+        }
+
         $this->formatColumns();
 
         $this->metaCall();
+
+
 
 
         return $this->controller->render($this->renderView, [
