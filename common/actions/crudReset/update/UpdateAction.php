@@ -67,6 +67,11 @@ class UpdateAction extends BaseAction {
             $this->model->setScenario($this->scenario);
         }
 
+        if($this->optionalsClosure instanceof \Closure){
+            $m = $this->optionalsClosure;
+            $this->optionals = $m();
+        }
+
         if($this->afterFindCallback instanceof Closure){
             $func = $this->afterFindCallback;
             $func($this->model);
@@ -85,7 +90,8 @@ class UpdateAction extends BaseAction {
             'optionals'=>$this->optionals,
             'booleanAttributes'=>$this->booleanAttributes,
             'dateAttributes'=>$this->dateAttributes,
-            'selectAttributes'=>$this->selectAttributes
+            'selectAttributes'=>$this->selectAttributes,
+            'optionalsClosure'=>$this->optionalsClosure
         ]);
     }
 

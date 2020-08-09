@@ -61,6 +61,11 @@ class CreateAction extends BaseAction {
 
     public function run(){
 
+        if($this->optionalsClosure instanceof \Closure){
+            $m = $this->optionalsClosure;
+            $this->optionals = $m();
+        }
+
         $this->formatColumns();
         $this->metaCall();
 
@@ -74,7 +79,8 @@ class CreateAction extends BaseAction {
             'optionals'=>$this->optionals,
             'booleanAttributes'=>$this->booleanAttributes,
             'dateAttributes'=>$this->dateAttributes,
-            'selectAttributes'=>$this->selectAttributes
+            'selectAttributes'=>$this->selectAttributes,
+            'optionalsClosure'=>$this->optionalsClosure
         ]);
     }
 

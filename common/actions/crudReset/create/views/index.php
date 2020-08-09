@@ -17,6 +17,7 @@ use yii\bootstrap4\Html;
  * @var $booleanAttributes
  * @var $dateAttributes
  * @var $selectAttributes
+ * @var $optionalsClosure
  */
 
 
@@ -46,8 +47,15 @@ use yii\bootstrap4\Html;
                         ]
                     ]);
                 }elseif(array_key_exists($column, $selectAttributes)){
+
+
+                    $items = $selectAttributes[$column];
+                    if($optionalsClosure instanceof \Closure){
+                        $items = $optionals[$selectAttributes[$column]];
+                    }
+
                     echo $form->field($model, $column)->widget(Select2::class, [
-                        'data'=>$selectAttributes[$column]
+                        'data'=>$items
                     ]);
                 }else{
 
