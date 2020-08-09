@@ -19,6 +19,7 @@ class BaseModule extends Module{
 
     /**
      * Список файлов для перевода
+     * ['modules/testModule/app'=>'app.php']
      * @var array
      */
     public $i18nFileMap = [];
