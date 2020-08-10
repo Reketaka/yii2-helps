@@ -30,7 +30,17 @@ use function strrpos;
  *  return [
  *       'index' => [
  *           'class' => 'reketaka\helps\common\actions\crudReset\index\IndexAction',
- *           'searchModel'=>new SiteSearch()
+ *           'searchModel'=>new SiteSearch(),
+ *           'selectAttributes' => [
+ *              'organization_id'=>'organizations:relation(organization, title)',
+ *              'city_id'=>'cities:dictionary'
+ *           ],
+ *           'optionalsClosure'=>function(){
+ *              return [
+ *                 'organizations'=>OrganizationRecord::getArrayMap(),
+ *                 'cities'=>[]
+ *              ];
+ *            }
  *       ]
  *    ];
  *  }
@@ -41,7 +51,6 @@ use function strrpos;
  */
 class IndexAction extends BaseAction {
 
-    CONST DICTIONARY_POSTFIX = ':dictionary';
 
     public $columns = [];
     /**
@@ -78,21 +87,46 @@ class IndexAction extends BaseAction {
 
             foreach(array_intersect(array_keys($this->selectAttributes), array_keys($this->columns)) as $column){
 
+                $mode = null;
+                $columnValues = $this->selectAttributes[$column];
+                $columnValues = explode(":", $columnValues);
+                $columnValue = array_shift($columnValues);
+
                 if(strrpos($this->selectAttributes[$column], self::DICTIONARY_POSTFIX) !== FALSE) {
                     $columnValue = str_replace(self::DICTIONARY_POSTFIX, "", $this->selectAttributes[$column]);
-                    $this->columns[$column] = [
-                        'attribute' => $column,
-                        'format' => 'raw',
-                        'content' => function ($model)use($column) {
-                            return $model->getDictionaryValue($column);
-                        },
-                        'filter' => Select2::widget([
-                            'attribute' => 'city_id',
-                            'data' => $this->optionals[$columnValue],
-                            'model' => $this->searchModel
-                        ])
-                    ];
+                    $mode = self::DICTIONARY_POSTFIX;
                 }
+
+                $modeRelation = null;
+                $modeRelationTitle = null;
+                if(strrpos($this->selectAttributes[$column], self::RELATION_POSTFIX) !== FALSE){
+                    $mode = self::RELATION_POSTFIX;
+
+                    $relationData = array_shift($columnValues);
+                    $relationData = str_replace([str_replace(":", "", self::RELATION_POSTFIX), '(', ')'], "", $relationData);
+                    $relationData = explode(", ", $relationData);
+                    list($modeRelation, $modeRelationTitle) = $relationData;
+                }
+
+
+
+                $this->columns[$column] = [
+                    'attribute' => $column,
+                    'format' => 'raw',
+                    'content' => function ($model)use($column, $mode, $modeRelation, $modeRelationTitle) {
+                        if($mode == self::DICTIONARY_POSTFIX) {
+                            return $model->getDictionaryValue($column);
+                        }
+                        if($mode == self::RELATION_POSTFIX){
+                            return $model->$modeRelation->$modeRelationTitle;
+                        }
+                    },
+                    'filter' => Select2::widget([
+                        'attribute' => $column,
+                        'data' => $this->optionals[$columnValue],
+                        'model' => $this->searchModel
+                    ])
+                ];
             }
 
 

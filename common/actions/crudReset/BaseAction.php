@@ -9,6 +9,8 @@ use yii\db\ActiveRecord;
 
 class BaseAction extends Action{
 
+    CONST DICTIONARY_POSTFIX = ':dictionary';
+    CONST RELATION_POSTFIX = ':relation';
     /**
      * Шаблон вывода render
      * @var string

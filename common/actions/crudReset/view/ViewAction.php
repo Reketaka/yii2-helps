@@ -11,6 +11,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_unshift;
+use function explode;
 use function in_array;
 use reketaka\helps\common\actions\crudReset\BaseAction;
 use reketaka\helps\common\helpers\Bh;
@@ -18,6 +19,8 @@ use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use function str_replace;
+use function strrpos;
 
 /**
  * Class ViewAction
@@ -84,8 +87,47 @@ class ViewAction extends BaseAction {
         if(!$this->columns){
             $this->columns = array_combine(array_keys($this->model->attributes), array_keys($this->model->attributes));
 
+            foreach(array_intersect($this->booleanAttributes, $this->columns) as $column){
+                $this->columns[$column] = "$column:boolean";
+            }
 
-            foreach(array_intersect($this->dictionaryAttributes, $this->columns) as $column){
+            foreach(array_intersect(array_keys($this->selectAttributes), $this->columns) as $column){
+
+
+                $mode = null;
+                $columnValues = $this->selectAttributes[$column];
+                $columnValues = explode(":", $columnValues);
+                $columnValue = array_shift($columnValues);
+
+                if(strrpos($this->selectAttributes[$column], self::DICTIONARY_POSTFIX) !== FALSE) {
+                    $columnValue = str_replace(self::DICTIONARY_POSTFIX, "", $this->selectAttributes[$column]);
+                    $mode = self::DICTIONARY_POSTFIX;
+                }
+
+                $modeRelation = null;
+                $modeRelationTitle = null;
+                if(strrpos($this->selectAttributes[$column], self::RELATION_POSTFIX) !== FALSE){
+                    $mode = self::RELATION_POSTFIX;
+
+                    $relationData = array_shift($columnValues);
+                    $relationData = str_replace([str_replace(":", "", self::RELATION_POSTFIX), '(', ')'], "", $relationData);
+                    $relationData = explode(", ", $relationData);
+                    list($modeRelation, $modeRelationTitle) = $relationData;
+                }
+
+                $this->columns[$column] = [
+                    'attribute'=>$column,
+                    'format'=>'raw',
+                    'value'=>function()use($column, $modeRelationTitle, $modeRelation, $mode){
+                        if($mode == self::RELATION_POSTFIX){
+                            return $this->model->$modeRelation->$modeRelationTitle;
+                        }
+                    }
+                ];
+            }
+
+
+            foreach(array_intersect($this->dictionaryAttributes, array_keys($this->columns)) as $column){
 
                 $this->columns[$column] = [
                     'attribute'=>$column,

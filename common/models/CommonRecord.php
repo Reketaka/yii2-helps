@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\models;
 
 use reketaka\helps\common\behaviors\AliasBehavior;
+use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
@@ -10,6 +11,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 use yii\log\Logger;
+use function array_merge;
 
 class CommonRecord extends ActiveRecord{
 
@@ -195,4 +197,38 @@ class CommonRecord extends ActiveRecord{
         return true;
     }
 
+    /**
+     * Добавляет правила
+     * ```
+     * intStringRequired
+     * [[$attribute], 'required'],
+     * [[$attribute], 'string', 'max'=>255],
+     * [[$attribute], 'filter', 'filter'=>'trim'],
+     * [[$attribute], 'reketaka\helps\common\validators\OnlyInteger'],
+     *
+     * boolean
+     * [[$attribute], 'integer', 'min'=>0, 'max'=>1],
+     * [[$attribute], 'default', 'value'=>0],
+     * ```
+     *
+     * @param $rules
+     * @param $attribute
+     * @param $type
+     * @return bool
+     */
+    public function addRule(&$rules, $attribute, $type){
+
+        if($type == 'intStringRequired') {
+            $rules = array_merge($rules, [[[$attribute], 'required']]);
+            $rules = array_merge($rules, [[[$attribute], 'string', 'max'=>255]]);
+            $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
+            $rules = array_merge($rules, [[[$attribute], 'reketaka\helps\common\validators\OnlyInteger']]);
+        }
+        if($type == 'boolean'){
+            $rules = array_merge($rules, [[[$attribute], 'integer', 'min'=>0, 'max'=>1]]);
+            $rules = array_merge($rules, [[[$attribute], 'default', 'value'=>0]]);
+
+        }
+        return true;
+    }
 }
