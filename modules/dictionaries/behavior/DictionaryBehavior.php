@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 
 class DictionaryBehavior extends Behavior{
 
-
+    CONST BEHAVIOR_NAME = 'dictionaryBehavior';
 
     public $settings;
 
@@ -21,7 +21,7 @@ class DictionaryBehavior extends Behavior{
         }
 
         if(!$this->owner->$field){
-            return false;
+            return null;
         }
 
         $value = DictionariesHelper::findInValues($this->settings[$field], $this->owner->$field, 'id', 'value');

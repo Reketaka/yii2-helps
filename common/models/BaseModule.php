@@ -44,7 +44,7 @@ class BaseModule extends Module{
         }
 
         if($this->isConsole()){
-            $this->controllerNamespace = $namespaceArray."\commands";
+            $this->controllerNamespace = $namespaceArray."\commands\controllers";
         }
 
         if($this->i18nFileMap && $this->i18nEnable && static::MODULE_NAME){
@@ -60,6 +60,8 @@ class BaseModule extends Module{
             'basePath'       => $this->getBasePath()."/messages",
             'fileMap'        => $this->i18nFileMap
         ];
+
+
     }
 
     public static function t($category, $message, $params = [], $language = null)

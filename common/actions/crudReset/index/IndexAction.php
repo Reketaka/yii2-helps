@@ -85,6 +85,10 @@ class IndexAction extends BaseAction {
                 $this->columns[$column] = "$column:boolean";
             }
 
+            foreach(array_intersect($this->timestampAttributes, array_keys($this->columns)) as $column){
+                $this->columns[$column] = "$column:datetime";
+            }
+
             foreach(array_intersect(array_keys($this->selectAttributes), array_keys($this->columns)) as $column){
 
                 $mode = null;

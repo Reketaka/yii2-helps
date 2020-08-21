@@ -126,6 +126,9 @@ class ViewAction extends BaseAction {
                 ];
             }
 
+            foreach(array_intersect($this->timestampAttributes, array_keys($this->columns)) as $column){
+                $this->columns[$column] = "$column:datetime";
+            }
 
             foreach(array_intersect($this->dictionaryAttributes, array_keys($this->columns)) as $column){
 

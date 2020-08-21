@@ -36,6 +36,7 @@ class BaseAction extends Action{
     public $scenario = null;
 
     public $afterFindCallback = null;
+    public $afterInitCallback = null;
 
     /**
      * @var $model ActiveRecord
@@ -45,6 +46,8 @@ class BaseAction extends Action{
     public $booleanAttributes = ['active'];
     public $dateAttributes = [];
     public $selectAttributes = [];
+    public $timestampAttributes = [];
+
 
     /**
      * Для передачи дополнительных параметров

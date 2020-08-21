@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\models;
 
+use Yii;
 use yii\base\Model;
 
 class CommonModel extends Model{

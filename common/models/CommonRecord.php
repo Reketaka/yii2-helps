@@ -216,18 +216,57 @@ class CommonRecord extends ActiveRecord{
      * @param $type
      * @return bool
      */
-    public function addRule(&$rules, $attribute, $type){
+    public function addRule(&$rules, $attributes, $type){
+
+        if(!is_array($attributes)){
+            $attributes = [$attributes];
+        }
+
+        if($type == 'stringRequired') {
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules, [[[$attribute], 'required']]);
+                $rules = array_merge($rules, [[[$attribute], 'string', 'max' => 255]]);
+                $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
+                $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'mb_strtolower']]);
+            }
+        }
 
         if($type == 'intStringRequired') {
-            $rules = array_merge($rules, [[[$attribute], 'required']]);
-            $rules = array_merge($rules, [[[$attribute], 'string', 'max'=>255]]);
-            $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
-            $rules = array_merge($rules, [[[$attribute], 'reketaka\helps\common\validators\OnlyInteger']]);
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules, [[[$attribute], 'required']]);
+                $rules = array_merge($rules, [[[$attribute], 'reketaka\helps\common\validators\OnlyInteger']]);
+                $rules = array_merge($rules, [[[$attribute], 'string', 'max' => 255]]);
+                $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
+            }
         }
-        if($type == 'boolean'){
-            $rules = array_merge($rules, [[[$attribute], 'integer', 'min'=>0, 'max'=>1]]);
-            $rules = array_merge($rules, [[[$attribute], 'default', 'value'=>0]]);
 
+        if($type == 'intString') {
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules, [[[$attribute], 'string', 'max' => 255]]);
+                $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
+                $rules = array_merge($rules, [[[$attribute], 'reketaka\helps\common\validators\OnlyInteger']]);
+            }
+        }
+
+        if($type == 'text') {
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules, [[[$attribute], 'string']]);
+                $rules = array_merge($rules, [[[$attribute], 'default', 'value' => null]]);
+            }
+        }
+
+        if($type == 'boolean'){
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules, [[[$attribute], 'integer', 'min' => 0, 'max' => 1]]);
+                $rules = array_merge($rules, [[[$attribute], 'default', 'value' => 0]]);
+            }
+        }
+
+        if($type == 'dateTimestamp'){
+            foreach($attributes as $attribute) {
+                $rules = array_merge($rules,
+                    [[[$attribute], 'datetime', 'format' => 'php:Y-m-d H:i', 'timestampAttribute' => $attribute]]);
+            }
         }
         return true;
     }

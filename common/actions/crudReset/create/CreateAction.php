@@ -3,6 +3,7 @@
 namespace reketaka\helps\common\actions\crudReset\create;
 
 
+use Closure;
 use reketaka\helps\common\actions\crudReset\BaseAction;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
@@ -64,6 +65,11 @@ class CreateAction extends BaseAction {
         if($this->optionalsClosure instanceof \Closure){
             $m = $this->optionalsClosure;
             $this->optionals = $m();
+        }
+
+        if($this->afterInitCallback instanceof Closure){
+            $func = $this->afterInitCallback;
+            $func($this->model);
         }
 
         $this->formatColumns();
