@@ -4,8 +4,10 @@ namespace reketaka\helps\common\actions\crudReset;
 
 use Closure;
 use reketaka\helps\common\helpers\Bh;
+use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use function array_merge;
 
 class BaseAction extends Action{
 
@@ -59,6 +61,22 @@ class BaseAction extends Action{
      * Для передачи дополнительных параметров но инициализация при активном методе только
      */
     public $optionalsClosure = null;
+
+    /**
+     * Выберает метод render or renderAjax, добавляет параметр renderMethod
+     * @param $view
+     * @param array $params
+     * @return string
+     */
+    public function render($view, $params = []){
+        $methodRender = Yii::$app->request->isAjax?"renderAjax":"render";
+
+        $params = array_merge($params, [
+            'renderMethod'=>$methodRender
+        ]);
+
+        return $this->controller->$methodRender($this->renderView, $params);
+    }
 
     protected function generateMeta($variable){
 

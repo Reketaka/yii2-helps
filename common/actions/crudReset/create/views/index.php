@@ -18,6 +18,7 @@ use yii\bootstrap4\Html;
  * @var $dateAttributes
  * @var $selectAttributes
  * @var $optionalsClosure
+ * @var $renderMethod
  */
 
 

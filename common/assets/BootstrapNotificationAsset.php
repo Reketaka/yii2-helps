@@ -25,7 +25,7 @@ class BootstrapNotificationAsset extends AssetBundle
         $bsVersion = ArrayHelper::getValue(Yii::$app->params, 'bsVersion', 3);
         $bsVersion = Bh::onlyNumbers($bsVersion);
         if($bsVersion >= 4){
-            $this->sourcePath = '@npm/bs4-toast';
+            $this->sourcePath = '@npm/bs4-toast/src';
             $this->css = ['css/toast.css'];
             $this->js = ['js/toast.js'];
             $this->depends[] = 'yii\bootstrap4\BootstrapAsset';

@@ -76,10 +76,19 @@ class CreateAction extends BaseAction {
         $this->metaCall();
 
         if(Yii::$app->request->isPost && ($this->model->load(Yii::$app->request->post())) && $this->model->validate() && $this->model->save()){
+
+            if (Yii::$app->request->isAjax) {
+                // JSON response is expected in case of successful save
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return ['success' => true];
+            }
+
             return $this->controller->redirect([$this->redirect, 'id'=>$this->model->getPrimaryKey()]);
         }
 
-        return $this->controller->render($this->renderView, [
+
+
+        return $this->render($this->renderView, [
             'model'=>$this->model,
             'columns'=>$this->columns,
             'optionals'=>$this->optionals,
