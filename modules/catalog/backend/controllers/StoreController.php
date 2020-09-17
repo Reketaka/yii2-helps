@@ -1,17 +1,20 @@
 <?php
 
-namespace reketaka\helps\modules\catalog\controllers;
+namespace reketaka\helps\modules\catalog\backend\controllers;
 
-use reketaka\azia\models\View;
 use reketaka\helps\common\interfaces\ISetAttribute;
 use reketaka\helps\modules\catalog\models\PriceType;
 use reketaka\helps\modules\catalog\models\PriceTypeSearch;
+use reketaka\helps\modules\catalog\models\Store;
+use reketaka\helps\modules\catalog\models\StoreSearch;
 use reketaka\helps\modules\catalog\Module;
-use Yii;
+use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class PriceTypeController extends Controller{
+class StoreController extends Controller{
+
+    use ModuleTrait;
 
     public function actions()
     {
@@ -24,18 +27,13 @@ class PriceTypeController extends Controller{
 
     public function actionIndex(){
 
-        $searchModel = new PriceTypeSearch();
+        $searchModel = new StoreSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
-        $this->view->title = Module::t('title', 'price-type-index');
+        $this->view->title = Module::t('title', 'store-index');
 
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
-        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.price-type');
-
-        if(Yii::$app->view instanceof View){
-            $this->view->h1 = Module::t('h1', 'price-type-index');
-            $this->view->description = Module::t('description', 'price-type-index');
-        }
+        $this->view->params['breadcrumbs'][] = Module::t('app', 'bc.store');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -45,21 +43,17 @@ class PriceTypeController extends Controller{
     }
 
     public function actionCreate(){
-        $model = new PriceType();
+        $model = new Store();
 
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
         }
 
-        $this->view->title = Module::t('title', 'price-type-create');
+        $this->view->title = Module::t('title', 'store-create');
 
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
-        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.store'), 'url'=>['store/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._create');
-
-        if(Yii::$app->view instanceof View){
-            $this->view->h1 = Module::t('h1', 'price-type-create');
-        }
 
         return $this->render('create', [
             'model'=>$model
@@ -69,20 +63,15 @@ class PriceTypeController extends Controller{
     public function actionUpdate($id){
         $model = $this->findModel($id);
 
-
         if($model->load(\Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['index']);
         }
 
-        $this->view->title = Module::t('title', 'price-type-update', ['id'=>$model->id]);
+        $this->view->title = Module::t('title', 'store-update', ['id'=>$model->id]);
 
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
-        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.store'), 'url'=>['store/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._update', ['id'=>$model->id]);
-
-        if(Yii::$app->view instanceof View){
-            $this->view->h1 = Module::t('h1', 'price-type-update');
-        }
 
         return $this->render('update', [
             'model'=>$model
@@ -92,15 +81,11 @@ class PriceTypeController extends Controller{
     public function actionView($id){
         $model = $this->findModel($id);
 
-        $this->view->title = Module::t('title', 'price-type-view', ['id'=>$model->id]);
+        $this->view->title = Module::t('title', 'store-view', ['id'=>$model->id]);
 
         $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
-        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.price-type'), 'url'=>['price-type/index']];
+        $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.store'), 'url'=>['store/index']];
         $this->view->params['breadcrumbs'][] = Module::t('app', 'bc._view', ['id'=>$model->id]);
-
-        if(Yii::$app->view instanceof View){
-            $this->view->h1 = Module::t('h1', 'price-type-view');
-        }
 
         return $this->render('view', [
             'model'=>$model
@@ -108,8 +93,8 @@ class PriceTypeController extends Controller{
     }
 
     public function findModel($id){
-        if(!$model = PriceType::findOne($id)){
-            throw new NotFoundHttpException('Price Type Not Found');
+        if(!$model = $this->getModule()->storeClass::findOne($id)){
+            throw new NotFoundHttpException('Store Not Found');
         }
 
         return $model;

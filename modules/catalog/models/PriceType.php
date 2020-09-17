@@ -46,5 +46,16 @@ class PriceType extends BaseModel {
         ];
     }
 
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        ItemPrice::deleteAll(['price_type_id'=>$this->id]);
+
+        return true;
+    }
+
 
 }

@@ -16,6 +16,7 @@ use reketaka\helps\modules\catalog\Module;
 ?>
 
 <?=Html::a(Module::t('app', 'create'), ['create'], ['class'=>'btn btn-success'])?>
+<p></p>
 
 <?=GridView::widget([
     'dataProvider' => $dataProvider,

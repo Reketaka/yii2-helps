@@ -1,6 +1,6 @@
 <?php
 
-namespace reketaka\helps\modules\catalog\controllers;
+namespace reketaka\helps\modules\catalog\backend\controllers;
 
 use reketaka\helps\modules\catalog\models\ItemPrice;
 use reketaka\helps\modules\catalog\models\ItemPriceSearch;

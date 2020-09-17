@@ -2,13 +2,31 @@
 
 namespace reketaka\helps\modules\catalog;
 
+use reketaka\helps\common\models\BaseModule;
+use reketaka\helps\modules\catalog\models\Catalog;
+use reketaka\helps\modules\catalog\models\Item;
+use reketaka\helps\modules\catalog\models\ItemStore;
+use reketaka\helps\modules\catalog\models\PriceType;
+use yii\base\BootstrapInterface;
+use yii\base\Event;
 use function array_keys;
 use common\helpers\BaseHelper;
 use yii\db\Schema;
+use function array_pop;
+use function explode;
+use function implode;
 
-class Module extends \yii\base\Module{
+class Module extends BaseModule implements BootstrapInterface {
 
+    CONST MODULE_NAME = 'catalog';
     CONST TYPE = 'type';
+
+    public $i18nFileMap = [
+        'modules/catalog/app'=>'app.php',
+        'modules/catalog/title'=>'title.php',
+        'modules/catalog/description'=>'description.php',
+        'modules/catalog/h1'=>'h1.php',
+    ];
 
     public static $tablePrefix = '';
 
@@ -22,63 +40,30 @@ class Module extends \yii\base\Module{
     public $ymlPriceProgresDir = '@console/runtime/prices/xml/progress/';
     public $ymlPriceCompleteDir = '@console/runtime/prices/xml/complete/';
 
+    public $modelsPath = [
+        'ItemUpdateModel'=>'reketaka\helps\modules\catalog\backend\models\ItemUpdateModel',
+        'PriceType'=>'reketaka\helps\modules\catalog\models\PriceType'
+    ];
+
     public function init(){
         parent::init();
 
-        if (\Yii::$app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'reketaka\helps\modules\catalog\commands';
-        }
-
-        #$this->registerTranslations();
     }
 
-    public function getFields(){
-        if(!$this->tableItemFields){
-            return [];
-        }
-
-        return array_keys($this->tableItemFields);
-    }
-
-    public function getItemsFields(){
-        $schema = \Yii::$app->getDb()->getSchema();
-
-        $baseItemFields = [
-            'id'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_PK)
-            ],
-            'title'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_STRING)->null()
-            ],
-            'uid'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_STRING)->null()->asIndex()
-            ],
-            'total_amount'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_INTEGER)->defaultValue(0)
-            ],
-            'active'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_SMALLINT)->defaultValue(1),
-            ],
-            'created_at'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_DATETIME)->asIndex()
-            ],
-            'updated_at'=>[
-                self::TYPE=>$schema->createColumnSchemaBuilder(Schema::TYPE_DATETIME)->asIndex()
-            ]
-        ];
-
-        foreach($this->tableItemFields as $key=> $fieldCallback){
-            $this->tableItemFields[$key] = $fieldCallback($schema);
-        }
-
-        $this->tableItemFields = array_merge($baseItemFields, $this->tableItemFields);
-
-        return $this->tableItemFields;
-    }
-
-    public static function t($category, $message, $params = [], $language = null)
+    public function bootstrap($app)
     {
-        return \Yii::t('modules/catalog/' . $category, $message, $params, $language);
+        Event::on(Item::class, Item::EVENT_AFTER_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\ItemCallbackEvent', 'changeAttribute']);
+        Event::on(Item::class, Item::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\ItemCallbackEvent', 'changeAttribute']);
+
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_DELETE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+        Event::on(PriceType::class, PriceType::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\PriceTypeCallbackEvent', 'setDefault']);
+
+        Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_UPDATE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
+        Event::on(ItemStore::class, ItemStore::EVENT_AFTER_INSERT, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'addTotalAmount']);
+        Event::on(ItemStore::class, ItemStore::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\ItemStoreCallbackEvent', 'changeTotalAmount']);
+
+        Event::on(Catalog::class, Catalog::EVENT_BEFORE_DELETE, ['reketaka\helps\modules\catalog\eventCallback\CatalogCallbackEvent', 'onDelete']);
     }
 
 }
