@@ -1,6 +1,6 @@
 <?php
 
-namespace reketaka\helps\modules\catalog\controllers;
+namespace reketaka\helps\modules\catalog\backend\controllers;
 
 use backend\common\controllers\BackendController;
 use reketaka\helps\modules\catalog\models\Discount;
@@ -93,7 +93,7 @@ class SendPriceController extends BackendController
             ],
             'update' => [
                 'class' => 'reketaka\helps\common\actions\crudReset\update\UpdateAction',
-                'renderView' => '@reketaka/helps/modules/catalog/views/send-price/form.php',
+                'renderView' => '@reketaka/helps/modules/catalog/backend/views/send-price/form.php',
                 'breadcrumbs' => function($model){
                     $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.main'), 'url'=>['default/index']];
                     $this->view->params['breadcrumbs'][] = ['label'=>Module::t('app', 'bc.send-price'), 'url'=>['send-price/index']];
@@ -105,7 +105,7 @@ class SendPriceController extends BackendController
             ],
             'create'=>[
                 'class'=>'reketaka\helps\common\actions\crudReset\create\CreateAction',
-                'renderView' => '@reketaka/helps/modules/catalog/views/send-price/form.php',
+                'renderView' => '@reketaka/helps/modules/catalog/backend/views/send-price/form.php',
 
                 'model'=> new SendPrice(),
                 'breadcrumbs' => function($model){

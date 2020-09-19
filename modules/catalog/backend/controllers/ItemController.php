@@ -1,7 +1,8 @@
 <?php
 
-namespace reketaka\helps\modules\catalog\controllers;
+namespace reketaka\helps\modules\catalog\backend\controllers;
 
+use common\modules\client\models\records\ClientRecord;
 use reketaka\azia\models\View;
 use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\catalog\models\Item;
@@ -11,9 +12,14 @@ use reketaka\helps\modules\catalog\models\Store;
 use reketaka\helps\modules\catalog\Module;
 use reketaka\helps\modules\catalog\traits\ModuleTrait;
 use Yii;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use function array_map;
+use function implode;
+use function strlen;
 
 class ItemController extends Controller{
 
@@ -48,7 +54,7 @@ class ItemController extends Controller{
 
     public function actionCreate(){
 
-        $modelClass = $this->module->itemClass;
+        $modelClass = $this->module->modelsPath['ItemUpdateModel'];
         $model = new $modelClass();
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
@@ -65,16 +71,17 @@ class ItemController extends Controller{
             $this->view->h1 = Module::t('h1', 'item-create');
         }
 
-        $fields = Yii::$app->getModule('catalog')->getFields();
+        $priceTypes = $this->module->modelsPath['PriceType']::find()->all();
 
         return $this->render('create', [
             'model'=>$model,
-            'fields'=>$fields
+            'priceTypes'=>$priceTypes
         ]);
     }
 
     public function actionUpdate($id){
         $model = $this->findModel($id);
+        $model->loadPrices();
 
         $this->view->title = Module::t('title', 'item-update', ['id'=>$model->id]);
 
@@ -90,11 +97,12 @@ class ItemController extends Controller{
             return $this->redirect(['view', 'id'=>$model->id]);
         }
 
-        $fields = Yii::$app->getModule('catalog')->getFields();
+        $priceTypes = $this->module->modelsPath['PriceType']::find()->all();
+
 
         return $this->render('update', [
             'model'=>$model,
-            'fields'=>$fields
+            'priceTypes'=>$priceTypes
         ]);
     }
 
@@ -117,17 +125,32 @@ class ItemController extends Controller{
             $this->view->h1 = Module::t('h1', 'item-view');
         }
 
-        $fields = Yii::$app->getModule('catalog')->getFields();
 
         $itemPrices = $model->getPrices()->with(['priceType'])->all();
         $itemStores = $model->getItemStores()->with(['store'])->all();
 
         return $this->render('view', [
             'model'=>$model,
-            'fields'=>$fields,
             'itemPrices'=>$itemPrices,
             'itemStores'=>$itemStores
         ]);
+    }
+
+    public function actionFindByTitle($q){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(strlen($q) < 3){
+            return [];
+        }
+
+        $items = $this->module->itemClass::find()
+            ->select(['id', new Expression("title as 'text'")])
+            ->where(['like', 'title', new Expression("'$q%'")])
+            ->asArray()
+            ->all();
+
+
+        return $items;
     }
 
     /**
@@ -137,7 +160,7 @@ class ItemController extends Controller{
      */
     public function findModel($id){
 
-        $itemClass = Yii::$app->getModule('catalog')->itemClass;
+        $itemClass = $this->module->modelsPath['ItemUpdateModel'];
         if(!$model = $itemClass::findOne($id)){
             throw new NotFoundHttpException('Item not found');
         }

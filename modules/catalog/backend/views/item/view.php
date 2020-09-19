@@ -27,6 +27,8 @@ use reketaka\helps\modules\catalog\models\ItemStore;
         <?=Html::a(Module::t('app', 'update'), ['update', 'id'=>$model->id], ['class'=>'btn btn-success'])?>
     </div>
 
+    <p></p>
+
     <?php
 
         $attributes = [
@@ -46,7 +48,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
             'uid',
         ];
 
-        $attributes = array_merge($attributes, $fields);
+        $attributes = array_merge($attributes, []);
 
         $attributes = array_merge($attributes, [
             'created_at',
@@ -68,7 +70,7 @@ use reketaka\helps\modules\catalog\models\ItemStore;
         'attributes'=>$attributes
     ])?>
 
-    <div class="row">
+    <div class="row mt-3">
         <?php if($itemPrices):?>
             <div class="col-md-6">
                 <?php

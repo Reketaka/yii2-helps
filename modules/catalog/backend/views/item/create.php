@@ -12,5 +12,5 @@ use yii\web\View;
 
 <?=$this->render('_form', [
     'model'=>$model,
-    'fields'=>$fields
+    'priceTypes'=>$priceTypes
 ])?>

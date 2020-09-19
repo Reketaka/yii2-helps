@@ -1,7 +1,7 @@
 <?php
 
 use yii\web\View;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 use reketaka\helps\modules\catalog\Module;
 use kartik\select2\Select2;
@@ -27,15 +27,12 @@ use kartik\select2\Select2;
         </div>
 
         <div class="col-md-4">
-            <?=$form->field($model, 'uid')->textInput()?>
+            <?=$form->field($model, 'value')->textInput()?>
         </div>
 
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <?=$form->field($model, 'parent_id')->textInput()?>
-        </div>
         <div class="col-md-4">
             <?=$form->field($model, 'active')->checkbox()?>
         </div>
