@@ -2,8 +2,10 @@
 
 namespace reketaka\helps\common\actions;
 
+use reketaka\helps\common\helpers\Bh;
 use yii\base\Action;
 use yii\base\Behavior;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -34,6 +36,9 @@ class ToggleAttributeAction extends Action {
      * @throws NotFoundHttpException
      */
     public function run($id, $attributeName, $value = null){
+        /**
+         * @var $model ActiveRecord
+         */
         $model = $this->controller->findModel($id);
 
         if(!$model->hasAttribute($attributeName)){
@@ -46,7 +51,7 @@ class ToggleAttributeAction extends Action {
             $model->$attributeName = 1;
         }
 
-        $model->save();
+        $model->save(true, [$attributeName]);
 
         return $this->controller->redirect(\Yii::$app->request->referrer);
     }
