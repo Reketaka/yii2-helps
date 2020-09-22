@@ -28,8 +28,11 @@ class BootstrapNotificationAsset extends AssetBundle
         $bsVersion = Bh::onlyNumbers($bsVersion);
         if($bsVersion >= 4){
             $jsText = <<<JS
-            var flashMessage = function(title, type = 'success'){
-                $.toast({title:title, type:type});
+            var flashMessage = function(title, type = 'success', obj = {}){
+                var _obj = {title:title, type:type, delay:5000};
+                
+                _obj = Object.assign(_obj, obj)
+                $.toast(_obj);
             }
 JS;
             $view->registerJs($jsText, View::POS_HEAD);
