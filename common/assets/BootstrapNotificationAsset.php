@@ -29,7 +29,7 @@ class BootstrapNotificationAsset extends AssetBundle
         if($bsVersion >= 4){
             $jsText = <<<JS
             var flashMessage = function(title, type = 'success', obj = {}){
-                var _obj = {title:title, type:type, delay:5000};
+                var _obj = {title:title, type:type, delay:15000};
                 
                 _obj = Object.assign(_obj, obj)
                 $.toast(_obj);
