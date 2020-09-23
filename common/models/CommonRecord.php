@@ -233,8 +233,8 @@ class CommonRecord extends ActiveRecord{
 
         if($type == 'intStringRequired') {
             foreach($attributes as $attribute) {
-                $rules = array_merge($rules, [[[$attribute], 'required']]);
                 $rules = array_merge($rules, [[[$attribute], 'reketaka\helps\common\validators\OnlyInteger']]);
+                $rules = array_merge($rules, [[[$attribute], 'required']]);
                 $rules = array_merge($rules, [[[$attribute], 'string', 'max' => 255]]);
                 $rules = array_merge($rules, [[[$attribute], 'filter', 'filter' => 'trim']]);
             }
