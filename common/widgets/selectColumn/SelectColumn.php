@@ -113,7 +113,7 @@ class SelectColumn extends Column
 
                     $.getJSON('{$setAttributeUrl}'+e.params.data.id, function(response){
                         if(response.success){
-                            $.notify('Атрибут успешно изменен');
+                            flashMessage('Атрибут успешно изменен');
                             $(e.currentTarget).find(\"option[value='\"+e.params.data.id+\"']\").attr('selected', true)
                         }
                     });
@@ -122,7 +122,7 @@ class SelectColumn extends Column
 
                     $.getJSON('{$setAttributeUrl}', function(response){
                         if(response.success){
-                            $.notify('Атрибут успешно изменен');
+                            flashMessage('Атрибут успешно изменен');
                             $('#".Html::getInputId($searchModel, $this->attributeName)."').html('');
                         }
                     });

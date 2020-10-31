@@ -44,7 +44,7 @@ class SetAttributeAction extends Action {
         }
 
         $model->$attributeName = $value;
-        $model->save();
+        $model->save(true, [$attributeName]);
 
         return [
             'success'=>true
