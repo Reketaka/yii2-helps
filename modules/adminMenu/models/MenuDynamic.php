@@ -90,12 +90,15 @@ class MenuDynamic{
 
                 $itemData['active'] = false;
 
-                if(!$itemData['controller_uniq_id']){
+                if(isset($itemData['controller_uniq_id']) && !$itemData['controller_uniq_id']){
                     continue;
                 }
 
-                $controllers = explode(":", $itemData['controller_uniq_id']);
-                $itemData['active'] = in_array($controllerUniqId, $controllers);
+                if(isset($itemData['controller_uniq_id'])) {
+                    $controllers = explode(":", $itemData['controller_uniq_id']);
+                    $itemData['active'] = in_array($controllerUniqId, $controllers);
+                }
+
                 if($itemData['active']) {
 
                     $this->generateBreadcrumbs($itemData);
@@ -158,12 +161,16 @@ class MenuDynamic{
 
             $t = [
                 'label'=>$section->title,
-                'icon'=>$section->icon?$section->icon:'align-left',
+                'icon'=>'typcn typcn-folder',
                 'url'=>'#',
                 'items'=>$this->getItemsSection($section, $userRoles)
             ];
 
-            if($module->i18nUse){
+            if($section->hasAttribute('icon')){
+                $t['icon'] = $section->icon;
+            }
+
+            if($module->hasProperty('i18nUse') && $module->i18nUse){
                 $t['label'] = Yii::t($module->i18nSection, $section->title);
             }
 
@@ -202,11 +209,17 @@ class MenuDynamic{
                 'label'=>$item->title,
                 'url'=>Url::to($item->url),
                 'id'=>$item->id,
-                'icon'=>$item->icon,
-                'controller_uniq_id'=>$item->controller_uniq_id
             ];
 
-            if($module->i18nUse){
+            if($item->hasAttribute('icon')){
+                $t['icon'] = $item->icon;
+            }
+
+            if($item->hasAttribute('controller_uniq_id')){
+                $t['controller_uniq_id'] = $item->controller_uniq_id;
+            }
+
+            if($module->hasProperty('i18nUse') && $module->i18nUse){
                 $t['label'] = Yii::t($module->i18nSection, $item->title);
             }
 
