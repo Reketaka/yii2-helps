@@ -25,6 +25,43 @@ use Yii;
 
 class Bh{
 
+    public static function addToArrayAfter($element, $search, &$array){
+        return self::addToArray($element, $search, $array, 'after');
+    }
+
+    public static function addToArray($element, $search, &$array, $type):bool{
+        if(($searchKey = array_search($search, $array)) === FALSE){
+            return false;
+        }
+
+        if($type == 'after') {
+
+            $sub_pre = array_slice($array, 0, $searchKey+1);
+            $sub_pre[] = $element;
+
+            $sub_aft = array_slice($array, $searchKey+1, count($array));
+
+            $array = array_merge($sub_pre, $sub_aft);
+            return true;
+        }
+
+        if($type == 'before'){
+
+            $sub_pre = array_slice($array, 0, $searchKey);
+            $sub_pre[] = $element;
+
+
+            $sub_aft = array_slice($array, $searchKey, count($array));
+
+            $array = array_merge($sub_pre, $sub_aft);
+
+            return true;
+        }
+
+        return false;
+
+    }
+
     public static function appendWordToMaxLength($ms, $maxLength){
         if(mb_strlen($ms) < $maxLength){
             for($a = 0;($maxLength - mb_strlen($ms));$a++){
