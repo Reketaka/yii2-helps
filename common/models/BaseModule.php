@@ -60,8 +60,14 @@ class BaseModule extends Module{
             'basePath'       => $this->getBasePath()."/messages",
             'fileMap'        => $this->i18nFileMap
         ];
+    }
 
-
+    /**
+     * Возвращает список контроллеров модуля
+     * @return array
+     */
+    public function getControllerList():array{
+        return [];
     }
 
     public static function t($category, $message, $params = [], $language = null)
