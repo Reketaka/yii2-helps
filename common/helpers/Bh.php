@@ -25,6 +25,17 @@ use Yii;
 
 class Bh{
 
+    /**
+     * Заменяет в строке символы unicode длиннее 3 байт для корректного сохранения в базу
+     * @param string $string
+     * @return string
+     */
+    public static function replaceUTF8mb4($string)
+    {
+        return preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xEF\xBF\xBD", $string);
+    }
+
+
     public static function addToArrayAfter($element, $search, &$array){
         return self::addToArray($element, $search, $array, 'after');
     }
