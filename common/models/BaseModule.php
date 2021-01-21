@@ -4,6 +4,7 @@ namespace reketaka\helps\common\models;
 
 use reketaka\helps\common\helpers\Bh;
 use Yii;
+use yii\base\Exception;
 use yii\base\Module;
 use function array_pop;
 use function explode;
@@ -25,6 +26,8 @@ class BaseModule extends Module{
     public $i18nFileMap = [];
 
     public $i18nEnable = true;
+
+    public $modelPah = [];
 
     public function init(){
         parent::init();
@@ -86,6 +89,17 @@ class BaseModule extends Module{
 
     public function isConsole(){
         return \Yii::$app instanceof \yii\console\Application;
+    }
 
+    /**
+     * Возвращает путь до указанной модели
+     * @param $modelAlias
+     * @return string|null
+     */
+    public function getModel($modelAlias){
+        if(!array_key_exists($modelAlias, $this->modelPath)){
+            throw new Exception("Model path not find");
+        }
+        return $this->modelPath[$modelAlias];
     }
 }
