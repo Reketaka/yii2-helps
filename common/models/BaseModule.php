@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\models;
 
+use reketaka\crud\backend\controllers\DefaultController;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Exception;
@@ -53,6 +54,11 @@ class BaseModule extends Module{
         if($this->i18nFileMap && $this->i18nEnable && static::MODULE_NAME){
             $this->registerTranslations();
         }
+
+        if($this->isBackend() && $this->getControllerList()){
+            $this->controllerMap['default'] = DefaultController::class;
+        }
+
     }
 
     public function registerTranslations()
@@ -102,4 +108,19 @@ class BaseModule extends Module{
         }
         return $this->modelPath[$modelAlias];
     }
+
+    /**
+     * Создает ссылку от текущего модуля
+     * @param $data
+     * @return string
+     */
+    public static function createAbsoluteUrl($data){
+        try{
+            $data[0] = "/".static::MODULE_NAME."/".$data[0];
+        }catch (\Exception $exception){
+
+        }
+        return \Yii::$app->urlManagerBackend->createAbsoluteUrl($data);
+    }
+
 }
