@@ -112,15 +112,16 @@ class BaseModule extends Module{
     /**
      * Создает ссылку от текущего модуля
      * @param $data
+     * @param string $urlManager
      * @return string
      */
-    public static function createAbsoluteUrl($data){
+    public static function createAbsoluteUrl($data, $urlManager = 'urlManagerBackend'){
         try{
             $data[0] = "/".static::MODULE_NAME."/".$data[0];
         }catch (\Exception $exception){
 
         }
-        return \Yii::$app->urlManagerBackend->createAbsoluteUrl($data);
+        return \Yii::$app->{$urlManager}->createAbsoluteUrl($data);
     }
 
 }
