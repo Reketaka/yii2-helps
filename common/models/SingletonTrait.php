@@ -3,6 +3,8 @@
 namespace reketaka\helps\common\models;
 
 
+use Yii;
+
 trait SingletonTrait{
 
     public static function getInstance(){
