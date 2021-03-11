@@ -13,8 +13,8 @@ abstract class EnumGroup{
      * @param $constName
      * @return string|null;
      */
-    public function getConstTitle($constName):?string{
-        return $this->getTitles()[$constName]??null;
+    public static function getConstTitle($constName):?string{
+        return static::getTitles()[$constName]??null;
     }
 
     public function getArrayMap():array{
