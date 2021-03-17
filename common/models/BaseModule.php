@@ -124,4 +124,13 @@ class BaseModule extends Module{
         return \Yii::$app->{$urlManager}->createAbsoluteUrl($data);
     }
 
+    public static function createUrl($data, $urlManager = 'urlManager'){
+        try{
+            $data[0] = "/".static::MODULE_NAME."/".$data[0];
+        }catch (\Exception $exception){
+
+        }
+        return \Yii::$app->{$urlManager}->createUrl($data);
+    }
+
 }
