@@ -28,7 +28,7 @@ class BaseModule extends Module{
 
     public $i18nEnable = true;
 
-    public $modelPah = [];
+    public $modelPath = [];
 
     public function init(){
         parent::init();
