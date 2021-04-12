@@ -151,9 +151,9 @@ class CommonRecord extends ActiveRecord{
         }
     }
 
-    public function strictSave()
+    public function strictSave($runValidation = true, $attributeNames = null)
     {
-        if($this->save()){
+        if($this->save($runValidation, $attributeNames)){
             return true;
         }
 
