@@ -555,4 +555,12 @@ class Bh{
         $temp = (mb_strlen($text) > $maxlen)? $cutStr. '...' : $cutStr;
         return $temp;
     }
+
+    public static function flashError($msg){
+        Yii::$app->session->setFlash('error', $msg);
+    }
+
+    public static function flashSuccess($msg){
+        Yii::$app->session->setFlash('success', $msg);
+    }
 }
