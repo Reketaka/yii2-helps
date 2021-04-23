@@ -25,6 +25,8 @@ use Yii;
 
 class Bh{
 
+    CONST MYSQL_FORMAT = 'Y-m-d H:i:s';
+
     /**
      * Заменяет в строке символы unicode длиннее 3 байт для корректного сохранения в базу
      * @param string $string
