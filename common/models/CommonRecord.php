@@ -151,6 +151,17 @@ class CommonRecord extends ActiveRecord{
         }
     }
 
+    public function strictSave($runValidation = true, $attributeNames = null)
+    {
+        if($this->save($runValidation, $attributeNames)){
+            return true;
+        }
+
+        $className = static::basename();
+        Yii::error(["Couldn't save $className object", $this->attributes, $this->errors]);
+        throw new Exception("Error on model saving $className");
+    }
+
     /**
      * Проверяет есть ли ошибки в валидации если есть вешает список всех ошибок в session flash error
      * @return bool
@@ -195,6 +206,22 @@ class CommonRecord extends ActiveRecord{
     public function flashMessage($msg, $type = 'success'){
         Yii::$app->session->setFlash($type, $msg);
         return true;
+    }
+
+    /**
+     * Возвращает ссылку на элемент в фронте
+     * @throws Exception
+     */
+    public function getFrontUrl(){
+        throw new Exception("FrontUrl not set");
+    }
+
+    /**
+     * Возвращает ссылку на элемент в админке
+     * @throws Exception
+     */
+    public function getBackendViewUrl(){
+        throw new Exception("BackendUrl not set");
     }
 
     /**
