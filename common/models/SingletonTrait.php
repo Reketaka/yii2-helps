@@ -7,6 +7,11 @@ use Yii;
 
 trait SingletonTrait{
 
+    /**
+     * @return self
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
     public static function getInstance(){
 
         $container = Yii::$container;
