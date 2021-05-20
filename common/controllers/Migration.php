@@ -7,6 +7,7 @@ use reketaka\helps\modules\adminMenu\models\MenuItem;
 use reketaka\helps\modules\adminMenu\models\MenuItemRoles;
 use reketaka\helps\modules\adminMenu\models\MenuSection;
 use reketaka\helps\modules\dictionaries\models\DictionariesValue;
+use yii\base\BaseObject;
 use yii\db\Exception;
 use yii\helpers\Console;
 use function array_key_exists;
@@ -278,7 +279,7 @@ class Migration extends \yii\db\Migration{
 
     }
 
-    public function deleteMenuItemRoles($sectionAlias, $menuItemAlias, $roles = []){
+    public function addMenuItemRoles($sectionAlias, $menuItemAlias, $roles = []){
         if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
             throw new Exception("Раздел меню не найден");
         }
@@ -287,6 +288,37 @@ class Migration extends \yii\db\Migration{
 
         if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
             throw new Exception("Элемент меню не найден");
+        }
+
+
+        foreach($roles as $roleName){
+            if(!$itemRole = MenuItemRoles::findOne([
+                'role_name'=>$roleName,
+                'menu_item_id'=>$menuItem->id
+            ])){
+                $itemRole = new MenuItemRoles([
+                    'role_name'=>$roleName,
+                    'menu_item_id'=>$menuItem->id
+                ]);
+            }
+
+            echo Console::ansiFormat("### Добавлена роль {$roleName} для пункта меню {$menuItem->alias}", [Console::FG_GREEN]).PHP_EOL;
+
+            $itemRole->save();
+        }
+
+        return true;
+    }
+
+    public function deleteMenuItemRoles($sectionAlias, $menuItemAlias, $roles = []){
+        if(!$menuSection = MenuSection::findOne(['alias'=>$sectionAlias])){
+            throw new Exception("Раздел меню не найден");
+        }
+
+        $itemAlias = $sectionAlias."-".$menuItemAlias;
+
+        if(!$menuItem = MenuItem::findOne(['alias'=>$itemAlias])){
+            throw new Exception("Элемент меню не найден $itemAlias");
         }
 
         foreach($roles as $roleName){
