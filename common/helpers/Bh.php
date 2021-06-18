@@ -8,6 +8,8 @@ use function array_merge;
 use function array_search;
 use function array_slice;
 use function array_values;
+use function count;
+use function floor;
 use function implode;
 use function mb_strlen;
 use reketaka\helps\common\jobs\SendTelegramTextJob;
@@ -564,5 +566,19 @@ class Bh{
 
     public static function flashSuccess($msg){
         Yii::$app->session->setFlash('success', $msg);
+    }
+
+    public static function partition( $list, $p ) {
+        $listlen = count( $list );
+        $partlen = floor( $listlen / $p );
+        $partrem = $listlen % $p;
+        $partition = array();
+        $mark = 0;
+        for ($px = 0; $px < $p; $px++) {
+            $incr = ($px < $partrem) ? $partlen + 1 : $partlen;
+            $partition[$px] = array_slice( $list, $mark, $incr );
+            $mark += $incr;
+        }
+        return $partition;
     }
 }
