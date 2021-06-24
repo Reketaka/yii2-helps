@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\helpers;
 
+use yii\bootstrap\ActiveForm;
 use function array_key_exists;
 use function array_keys;
 use function array_merge;
@@ -580,5 +581,22 @@ class Bh{
             $mark += $incr;
         }
         return $partition;
+    }
+
+    public static function getBootstrapVersion(){
+        return intval(self::onlyNumbers(ArrayHelper::getValue(\Yii::$app->params, 'bsVersion', 3)));
+    }
+
+    /**
+     * @return ActiveForm|\yii\bootstrap4\ActiveForm
+     */
+    public static function getActiveForm()
+    {
+        $activeFormClass = "yii\bootstrap\ActiveForm";
+        if(self::getBootstrapVersion() >= 4){
+            $activeFormClass = 'yii\bootstrap4\ActiveForm';
+        }
+
+        return $activeFormClass;
     }
 }
