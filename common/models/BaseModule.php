@@ -93,6 +93,10 @@ class BaseModule extends Module{
         return Yii::$app->id == 'app-frontend';
     }
 
+    public function isApi(){
+        return Yii::$app->id == 'app-api';
+    }
+
     public function isConsole(){
         return \Yii::$app instanceof \yii\console\Application;
     }
