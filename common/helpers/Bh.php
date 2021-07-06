@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\helpers;
 
+use Closure;
 use yii\bootstrap\ActiveForm;
 use function array_key_exists;
 use function array_keys;
@@ -9,11 +10,15 @@ use function array_merge;
 use function array_search;
 use function array_slice;
 use function array_values;
+use function call_user_func;
+use function chr;
 use function count;
 use function floor;
 use function implode;
 use function mb_strlen;
 use reketaka\helps\common\jobs\SendTelegramTextJob;
+use function ord;
+use function random_int;
 use function strlen;
 use function strrpos;
 use function substr;
@@ -598,5 +603,41 @@ class Bh{
         }
 
         return $activeFormClass;
+    }
+
+    /**
+     * Генерит уникальный uid short с проверкой наличия в базе по указанной $callbackExist должно вернуть true false
+     * @param int $length
+     * @param null $callbackExist
+     * @throws \Exception
+     */
+    public static function generateShortUid($length = 5, $preFix = null, $callbackExist = null){
+        $chars = '';
+        for ($i = 0; $i < 26; $i++) {
+            $chars .= chr(ord('a') + $i);
+            $chars .= chr(ord('A') + $i);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $chars .= chr(ord('0') + $i);
+        }
+
+        $getHash = function () use ($chars, $length, $preFix) {
+            $hash = '';
+            for ($i = 0; $i < $length; $i++) {
+                $hash .= $chars[random_int(0, strlen($chars) - 1)];
+            }
+            return $preFix.$hash;
+        };
+
+        $hash = $getHash();
+
+        if($callbackExist instanceof Closure){
+            while (call_user_func($callbackExist, $hash)) {
+                $hash = $getHash();
+            }
+        }
+
+        return $hash;
     }
 }
