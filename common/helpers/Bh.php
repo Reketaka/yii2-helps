@@ -640,4 +640,8 @@ class Bh{
 
         return $hash;
     }
+
+    public static function markFind($text, $search_string){
+        return preg_replace("#($search_string)#iu", "<span style='background-color: rgb(255, 153, 153);'>$1</span>", $text);
+    }
 }
