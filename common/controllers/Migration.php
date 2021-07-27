@@ -18,7 +18,7 @@ use reketaka\helps\common\helpers\Bh;
 use reketaka\helps\modules\dictionaries\models\DictionariesHelper;
 use reketaka\helps\modules\dictionaries\models\DictionariesName;
 use Yii;
-use yii\db\ColumnSchemaBuilder;
+use reketaka\helps\common\models\db\mysql\ColumnSchemaBuilder;
 use yii\db\Query;
 use yii\db\Schema;
 
@@ -32,14 +32,22 @@ class Migration extends \yii\db\Migration{
             $this->db->createCommand()->addCommentOnColumn($table, $column, $type->comment)->execute();
         }
 
-        if(method_exists($type, "isIndex") && $type->isIndex()){
-            $name = "idx-$table-$column";
-            $unique = $type->getUniqIndex();
+        if (($type instanceof ColumnSchemaBuilder)) {
+            if ($type->isIndex()) {
+                $name = "idx-$table-$column";
+                $unique = $type->getUniqIndex();
 
-            $time = $this->beginCommand('create' . ($unique ? ' unique' : '') . " index $name on $table (" . $column . ')');
-
-            $this->db->createCommand()->createIndex($name, $table, $column, $unique)->execute();
-            $this->endCommand($time);
+                $time = $this->beginCommand('create' . ($unique ? ' unique' : '') . " index $name on $table (" . $column . ')');
+                $this->db->createCommand()->createIndex($name, $table, $column, $unique)->execute();
+                $this->endCommand($time);
+            }
+            if ($type->isForeignKey()) {
+                $this->execute("SET FOREIGN_KEY_CHECKS = 0;");
+                $this->addForeignKey("fk-$table-$column",
+                    $table, $column,
+                    $type->referenceTable, $type->referenceColumn);
+                $this->execute("SET FOREIGN_KEY_CHECKS = 1;");
+            }
         }
 
 
