@@ -162,6 +162,15 @@ class CommonRecord extends ActiveRecord{
         throw new Exception("Error on model saving $className");
     }
 
+    public static function strictFindOne($condition){
+        if(!$model = static::findOne($condition)){
+            Yii::error(['message'=>"Not found ".static::bn(), 'condition'=>$condition], __METHOD__);
+            throw new Exception("Not found ".static::bn());
+        }
+
+        return $model;
+    }
+
     /**
      * Проверяет есть ли ошибки в валидации если есть вешает список всех ошибок в session flash error
      * @return bool
