@@ -9,6 +9,7 @@ use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\log\Logger;
 use function array_merge;
@@ -223,6 +224,26 @@ class CommonRecord extends ActiveRecord{
      */
     public function getFrontUrl(){
         throw new Exception("FrontUrl not set");
+    }
+
+    /**
+     * Возвращает название модели для фронта
+     * @return mixed|null
+     */
+    public function getFrontTitle(){
+        return $this->title??null;
+    }
+
+    /**
+     * Возвращает ссылку на модель фронт
+     * @param string[] $options
+     * @return string
+     * @throws Exception
+     */
+    public function getFrontLink($options = ['target' => '_blank'])
+    {
+        $encodedTitle = Html::encode($this->getFrontTitle());
+        return Html::a($encodedTitle, $this->getFrontUrl(), $options);
     }
 
     /**
