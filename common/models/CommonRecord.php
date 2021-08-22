@@ -2,6 +2,7 @@
 
 namespace reketaka\helps\common\models;
 
+use dosamigos\transliterator\TransliteratorHelper;
 use reketaka\helps\common\behaviors\AliasBehavior;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
@@ -10,6 +11,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use yii\log\Logger;
 use function array_merge;
@@ -232,6 +234,14 @@ class CommonRecord extends ActiveRecord{
      */
     public function getFrontTitle(){
         return $this->title??null;
+    }
+
+    /**
+     * Возвращает title front транслитом
+     * @return string
+     */
+    public function getFrontTitleAlias(){
+        return Inflector::slug(TransliteratorHelper::process($this->getFrontTitle()), '-', true);
     }
 
     /**
