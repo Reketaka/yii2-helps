@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\BaseObject;
+use yii\helpers\FileHelper;
 use function file_put_contents;
 use function implode;
 use function realpath;
@@ -103,6 +104,8 @@ class LogSample extends BaseObject{
         $this->setPath("sample_".$this->name.".log");
 
         $this->generateUniqId();
+
+        FileHelper::createDirectory($this->logDirPath);
 
         $this->checkPermissions();
 
