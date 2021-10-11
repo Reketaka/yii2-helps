@@ -648,4 +648,8 @@ class Bh{
     public static function isFrontend(){
         return Yii::$app->id == 'app-frontend';
     }
+
+    public static function isBackend(){
+        return Yii::$app->id == 'app-backend';
+    }
 }
