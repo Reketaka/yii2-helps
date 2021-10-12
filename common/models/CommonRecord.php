@@ -229,6 +229,14 @@ class CommonRecord extends ActiveRecord{
     }
 
     /**
+     * Возвращает ссылку на элемент в фронте с указанием ДОМЕНА!!!
+     * для переадресации из админки в фронт
+     */
+    public function getFrontUrlAbsolute(){
+        throw new Exception("getFrontUrlDomain not set");
+    }
+
+    /**
      * Возвращает название модели для фронта
      * @return mixed|null
      */
