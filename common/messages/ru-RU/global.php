@@ -100,9 +100,10 @@ $config = [
     'save'=>'Сохранить',
     'settings'=>'Настройки',
     'response'=>'Ответ',
+    'cancel'=>'Отмена',
 
     'bc.view'=>'Просмотр {id}',
-    'bc.update'=>'Изменить {id}'
+    'bc.update'=>'Изменить {id}',
 ];
 
 
