@@ -656,4 +656,24 @@ class Bh{
     public static function isConsole(){
         return \Yii::$app instanceof \yii\console\Application;
     }
+
+    /**
+     * Форматирует номер телефона из 89131112356 = 8(913) 230-95-23
+     * @param $v
+     * @return string
+     */
+    public static function formatTelephoneBeauty($v){
+        $r = [];
+        $r[] = mb_substr($v, 0, 1);
+        $r[] = '(';
+        $r[] = mb_substr($v, 1, 3);
+        $r[] = ') ';
+        $r[] = mb_substr($v, 4, 3);
+        $r[] = '-';
+        $r[] = mb_substr($v, 7, 2);
+        $r[] = '-';
+        $r[] = mb_substr($v, 9, 2);
+
+        return implode('', $r);
+    }
 }
