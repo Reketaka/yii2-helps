@@ -17,8 +17,8 @@ abstract class EnumGroup{
         return static::getTitles()[$constName]??null;
     }
 
-    public function getArrayMap():array{
-        return $this->getTitles();
+    public static function getArrayMap():array{
+        return static::getTitles();
     }
 
 }
