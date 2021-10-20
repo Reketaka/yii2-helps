@@ -7,6 +7,8 @@ use reketaka\helps\common\helpers\Bh;
 use Yii;
 use yii\base\Exception;
 use yii\base\Module;
+use function array_key_exists;
+use function array_merge;
 use function array_pop;
 use function explode;
 use function implode;
@@ -99,6 +101,15 @@ class BaseModule extends Module{
 
     public function isConsole(){
         return \Yii::$app instanceof \yii\console\Application;
+    }
+
+    public function __construct($id, $parent = null, $config = [])
+    {
+        if(array_key_exists('modelPath', $config)) {
+            $config['modelPath'] = array_merge($this->modelPath, $config['modelPath']);
+        }
+
+        parent::__construct($id, $parent, $config);
     }
 
     /**
