@@ -653,6 +653,10 @@ class Bh{
         return Yii::$app->id == 'app-backend';
     }
 
+    public static function isApi(){
+        return Yii::$app->id == 'app-api';
+    }
+
     public static function isConsole(){
         return \Yii::$app instanceof \yii\console\Application;
     }
